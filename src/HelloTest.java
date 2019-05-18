@@ -8,5 +8,6 @@ class HelloTest {
 
     @org.junit.jupiter.api.Test
     void hi() {
+        assertEquals(3,3);
     }
 }
