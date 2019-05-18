@@ -38,7 +38,7 @@ public class Book {
 
     public String toString() {
         String name = "";
-        name = "Title: " + this.title + " ISBN: " + this.isbn + " Count: " + this.count;
+        name = "Title: " + this.title + "\nISBN: " + this.isbn + "\nCount: " + this.count;
         return name;
     }
 }
