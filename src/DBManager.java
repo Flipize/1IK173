@@ -2,7 +2,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DBManager {
-    private static String password = "pw";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
     private static ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<Member>();
@@ -14,7 +16,7 @@ public class DBManager {
             System.out.println("Driver did not load");
         }
         try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", password)) {
+                driver, "root" , password)) {
             System.out.println("Connected");
 
             //Hämta data från tabellerna "superfigur" och "ingar_i"
