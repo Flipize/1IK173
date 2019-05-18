@@ -1,10 +1,10 @@
 public class Member {
 
-    int id;
-    String name;
-    int itemCount = 0;
-    String membershipType;
-    boolean suspended = false;
+    private int id;
+    private String name;
+    private int itemCount = 0;
+    private String membershipType;
+    private boolean suspended = false;
 
     public Member () {}
 
