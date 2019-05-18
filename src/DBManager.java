@@ -5,7 +5,7 @@ public class DBManager {
     private static String password = "pw";
 
     private static ArrayList<Member> getMemberArrayList() {
-        ArrayList<Member> memberArrayList = new ArrayList<Member>();
+        ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
