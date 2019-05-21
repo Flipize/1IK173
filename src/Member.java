@@ -2,16 +2,14 @@ public class Member {
 
     private int id;
     private String name;
-    private int itemCount = 0;
     private String membershipType;
     private boolean suspended = false;
 
     public Member () {}
 
-    public Member (int id, String name, int itemCount, String membershipType) {
+    public Member (int id, String name, String membershipType) {
         this.id = id;
         this.name = name;
-        this.itemCount = itemCount;
         this.membershipType = membershipType;
     }
 
@@ -29,14 +27,6 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getItemCount() {
-        return itemCount;
-    }
-
-    public void setItemCount(int itemCount) {
-        this.itemCount = itemCount;
     }
 
     public String getMembershipType() {
@@ -57,6 +47,6 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Id:" + id + "\nNamn: " + name + "\nItem count: "+  itemCount + "\nMembership type: " + membershipType + "\nSuspended: " + suspended;
+        return "Id:" + id + "\nNamn: " + name  + "\nMembership type: " + membershipType + "\nSuspended: " + suspended;
     }
 }
