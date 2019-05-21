@@ -112,6 +112,40 @@ public class DBManager {
         return addMemberArrayList;
     }
 
+    public static void deleteBook (int id) {
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+            System.out.println("Connected");
+
+            PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
+            statement.executeUpdate();
+
+
+        } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
+        }
+    }
+
+
+
+
+    public static void deleteMember (int id) {
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+            System.out.println("Connected");
+
+            PreparedStatement statement = conn.prepareStatement("DELETE from Member where MemberID = (?) ");
+            statement.executeUpdate();
+
+
+        } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
+        }
+
+    }
+
 
     public static void main(String[] args) {
         ArrayList<Member> m_array = getMemberArrayList();
