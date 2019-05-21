@@ -35,7 +35,7 @@ public class DBManager {
         return memberArrayList;
     }
 
-    private static ArrayList<Book> getBookArrayList() {
+    public static ArrayList<Book> getBookArrayList() {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
         try {
@@ -76,7 +76,7 @@ public class DBManager {
         }
     }
 
-    private static ArrayList<Book> getLoanArrayList() {
+    public static ArrayList<Book> getLoanArrayList() {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
         try {

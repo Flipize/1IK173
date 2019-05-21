@@ -2,6 +2,7 @@ public class Book {
     private int id;
     private int isbn;
     private String title;
+    private boolean status;
 
     public Book() {
     }
@@ -10,6 +11,7 @@ public class Book {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
+        this.status = true;
     }
 
     public int getIsbn() {
@@ -28,17 +30,25 @@ public class Book {
         this.title = title;
     }
 
-    public int getID() {
+    public int getid() {
         return id;
     }
 
-    public void setID(int id) {
+    public void setid(int id) {
         this.id = id;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public String toString() {
         String name = "";
-        name = "ID: " + this.id + "ISBN: " + this.isbn + " Title: " + this.title;
+        name = "ID: " + this.id + " ISBN: " + this.isbn + " Title: " + this.title;
         return name;
     }
 }

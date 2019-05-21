@@ -4,6 +4,7 @@ public class Member {
     private String name;
     private String membershipType;
     private boolean suspended = false;
+    private int suspensions;
 
     public Member () {}
 
@@ -11,6 +12,7 @@ public class Member {
         this.id = id;
         this.name = name;
         this.membershipType = membershipType;
+        this.suspensions = 0;
     }
 
     public int getId() {
@@ -43,6 +45,14 @@ public class Member {
 
     public void setSuspended(boolean suspended) {
         this.suspended = suspended;
+    }
+
+    public int getSuspensions() {
+        return suspensions;
+    }
+
+    public void setSuspensions(int suspensions) {
+        this.suspensions = suspensions;
     }
 
     @Override
