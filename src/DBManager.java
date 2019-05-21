@@ -6,7 +6,7 @@ public class DBManager {
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
-    private static ArrayList<Member> getMemberArrayList() {
+    public static ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {
@@ -24,7 +24,7 @@ public class DBManager {
                     "SELECT * FROM Member");
 
             while (rs_member.next()) {
-                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getString(3), rs_member.getBoolean(4)));
+                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getString(3)));
 
             }
 
@@ -35,7 +35,7 @@ public class DBManager {
         return memberArrayList;
     }
 
-    private static ArrayList<Book> getBookArrayList() {
+    public static ArrayList<Book> getBookArrayList() {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
         try {
@@ -88,7 +88,7 @@ public class DBManager {
     }
 
 
-    public static ArrayList <Member> addMember (int id, String name, String type, boolean suspended ) {
+    public static ArrayList <Member> addMember (int id, String name, String type) {
 
         ArrayList <Member> addMemberArrayList = new ArrayList<>();
 
@@ -100,10 +100,9 @@ public class DBManager {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, type);
-            statement.setBoolean(4, suspended);
 
             statement.executeUpdate();
-            addMemberArrayList.add(new Member(id, name, type, suspended));
+            addMemberArrayList.add(new Member(id, name, type));
 
         } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
