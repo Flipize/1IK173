@@ -3,7 +3,7 @@ public class Member {
     private int id;
     private String name;
     private String membershipType;
-    private boolean suspended = false;
+    private boolean suspended;
     private int suspensions;
 
     public Member () {}
@@ -13,6 +13,7 @@ public class Member {
         this.name = name;
         this.membershipType = membershipType;
         this.suspensions = 0;
+        this.suspended = false;
     }
 
     public int getId() {
