@@ -35,7 +35,7 @@ public class DBManager {
         return memberArrayList;
     }
 
-    private static ArrayList<Book> getBookArrayList() {
+    public static ArrayList<Book> getBookArrayList() {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
         try {
@@ -81,7 +81,7 @@ public class DBManager {
         }
     }
 
-    private static ArrayList<String[]> getLoanArrayList() {
+    public static ArrayList<String[]> getLoanArrayList() {
         ArrayList<String[]> loanArrayList = new ArrayList<>();
         String[] temp = new String[4];
 
@@ -116,6 +116,30 @@ public class DBManager {
 
         return loanArrayList;
     }
+
+    public static ArrayList <Book> addBook (int id, int isbn, String title) {
+
+        ArrayList <Book> bookArrayList = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+            System.out.println("Connected");
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Book VALUES (?, ?, ?)");
+            statement.setInt(1, id);
+            statement.setInt(2, isbn);
+            statement.setString(3, title);
+
+            statement.executeUpdate();
+            bookArrayList.add(new Book(id, isbn, title));
+
+        } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
+        }
+
+        return bookArrayList;
+    }
+
 
 
     public static ArrayList <Member> addMember (int id, String name, String type) {
