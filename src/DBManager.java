@@ -2,9 +2,31 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DBManager {
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+
+
+    public static void main(String[] args) {
+        ArrayList<Member> m_array = getMemberArrayList();
+        for (Member m : m_array) {
+            System.out.println(m.toString());
+        }
+
+        ArrayList<Book> b_array = getBookArrayList();
+        for (Book b : b_array) {
+            System.out.println(b.toString());
+        }
+
+        ArrayList<String[]> l_array = getLoanArrayList();
+        for (String[] s : l_array){
+            System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
+        }
+
+        deleteBook(10);
+
+    }
 
     private static ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<>();
@@ -64,22 +86,6 @@ public class DBManager {
         return bookArrayList;
     }
 
-    public static void main(String[] args) {
-        ArrayList<Member> m_array = getMemberArrayList();
-        for (Member m : m_array) {
-            System.out.println(m.toString());
-        }
-
-        ArrayList<Book> b_array = getBookArrayList();
-        for (Book b : b_array) {
-            System.out.println(b.toString());
-        }
-
-        ArrayList<String[]> l_array = getLoanArrayList();
-        for (String[] s : l_array){
-            System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
-        }
-    }
 
     public static ArrayList<String[]> getLoanArrayList() {
         ArrayList<String[]> loanArrayList = new ArrayList<>();
@@ -171,7 +177,11 @@ public class DBManager {
                 driver, "root" , password)) {
             System.out.println("Connected");
 
+            PreparedStatement statement1 = conn.prepareStatement("DELETE from Loan where BookID = (?)");
+            statement1.executeUpdate();
+
             PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
+
             statement.executeUpdate();
 
 
@@ -179,8 +189,6 @@ public class DBManager {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
-
-
 
 
     public static void deleteMember (int id) {
