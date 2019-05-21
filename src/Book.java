@@ -1,15 +1,15 @@
 public class Book {
+    private int id;
     private int isbn;
     private String title;
-    private int count;
 
     public Book() {
     }
 
-    public Book(int isbn, String title, int count) {
+    public Book(int id, int isbn, String title) {
+        this.id = id;
         this.isbn = isbn;
         this.title = title;
-        this.count = count;
     }
 
     public int getIsbn() {
@@ -28,17 +28,17 @@ public class Book {
         this.title = title;
     }
 
-    public int getCount() {
-        return count;
+    public int getID() {
+        return id;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setID(int id) {
+        this.id = id;
     }
 
     public String toString() {
         String name = "";
-        name = "Title: " + this.title + "\nISBN: " + this.isbn + "\nCount: " + this.count;
+        name = "ID: " + this.id + "ISBN: " + this.isbn + " Title: " + this.title;
         return name;
     }
 }
