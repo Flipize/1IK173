@@ -5,7 +5,7 @@ import static java.lang.Integer.parseInt;
 public class libraryManager {
 
     public static void main(String[] args) {
-        Member newMember = regApplicant("Bran the Broken");
+        Member newMember = regApplicant("Bo Göran");
         checkRegistration(newMember);
     }
 
@@ -50,11 +50,12 @@ public class libraryManager {
         }
         Member newMember = new Member();
         newMember.setName(name);
+        newMember.setSuspended(false);
         return newMember;
     }
 
     public static boolean checkRegistration(Member m) {
-        if (m.getName() != null) {
+        if (m.getMembershipType() != null) {
             if (m.isSuspended()){
                 System.out.println("You are suspended.");
                 return false;
@@ -65,8 +66,10 @@ public class libraryManager {
             }
         }
         else {
-            Member newMember = new Member(90, "Bran the Broken", "Coolboy", true);
-            DBManager.addMember(newMember);
+            m.setId(9029);
+            m.setMembershipType("PhD");
+            DBManager.addMember(m);
+            System.out.println("An account for " + m.getName() + "(" + m.getId() + ") has been created.");
             return true;
         }
     }
