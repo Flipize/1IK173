@@ -83,5 +83,8 @@ public class libraryManager {
         }
     }
 
-
+        public String ettOrd () {
+            String ettOrd = "Ett enda ord";
+           return ettOrd;
+        }
 }
