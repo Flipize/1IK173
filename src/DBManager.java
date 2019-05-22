@@ -36,6 +36,10 @@ public class DBManager {
         //Member newMember = new Member(69, "Ibra", "VIP", false);
         //updateMember(newMember);
 
+        System.out.println(loanCount(5));
+
+
+
     }
 
     public static ArrayList<Member> getMemberArrayList() {
@@ -262,5 +266,21 @@ public class DBManager {
 
         } catch (SQLException ex) {
         }
+    }
+
+    public static int loanCount(int memberID){
+        int count = 0;
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+            Statement statement = conn.createStatement();
+
+            ResultSet result = statement.executeQuery ("SELECT count(MemberID) from loan where MemberID = " + memberID);
+            while (result.next()){
+                count = result.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+        }
+        return count;
     }
 }
