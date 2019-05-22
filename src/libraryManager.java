@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
@@ -29,10 +30,10 @@ public class libraryManager {
         ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
         ArrayList<Book> bookArray = DBManager.getBookArrayList();
 
-        for (String[] st: loanArray) {
+        for (String[] st : loanArray) {
             if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
-                for (Book b : bookArray){
-                    if (b.getId() == bookID){
+                for (Book b : bookArray) {
+                    if (b.getId() == bookID) {
                         b.setAvailable(true);
                         DBManager.updateBook(b);
                     }
@@ -43,10 +44,10 @@ public class libraryManager {
         }
     }
 
-    public static Member regApplicant(String name){
+    public static Member regApplicant(String name) {
         ArrayList<Member> members = DBManager.getMemberArrayList();
         for (Member m : members) {
-            if (m.getName().equals(name)){
+            if (m.getName().equals(name)) {
                 return m;
             }
         }
@@ -57,16 +58,14 @@ public class libraryManager {
 
     public static boolean checkRegistration(Member m) {
         if (m.getMembershipType() != null) {
-            if (m.isSuspended()){
+            if (m.isSuspended()) {
                 System.out.println("You are suspended.");
                 return false;
-            }
-            else {
+            } else {
                 System.out.println("You are already registered.");
                 return false;
             }
-        }
-        else {
+        } else {
             m.setId(9029);
             m.setMembershipType("PhD");
             DBManager.addMember(m);
@@ -75,22 +74,21 @@ public class libraryManager {
         }
     }
 
-    public static void deleteMemberLibrary (int id) {
+    public static void deleteMemberLibrary(int id) {
 
-        ArrayList <Member> tempArray = DBManager.getMemberArrayList();
+        ArrayList<Member> tempArray = DBManager.getMemberArrayList();
 
-        for (Member m : tempArray){
-            if (m.getId() == id)  {
+        for (Member m : tempArray) {
+            if (m.getId() == id) {
                 DBManager.deleteMember(id);
                 System.out.println("Member is deleted");
-            }
-            else
+            } else
                 System.out.println("No member found");
         }
 
     }
 
-    public static void lendItem (int id, String bookName) {
+    public static void lendItem(int id, int isbn) {
 
         ArrayList<Member> members = DBManager.getMemberArrayList();
         ArrayList<Book> books = DBManager.getBookArrayList();
@@ -98,8 +96,7 @@ public class libraryManager {
         for (Member m : members) {
             if (m.getId() == id) {
                 System.out.println("Member found");
-            }
-            else
+            } else
                 System.out.println("Please try again");
 
         }
@@ -110,36 +107,35 @@ public class libraryManager {
                 if (DBManager.loanCount(id) > 3) {
                     System.out.println("Cannot borrow any more books");
                 }
-            }
-            else if (m.getMembershipType().equals("Masterstudent")) {
+            } else if (m.getMembershipType().equals("Masterstudent")) {
                 if (DBManager.loanCount(id) > 5) {
                     System.out.println("Cannot borrow any more books");
                 }
-            }
-            else if (m.getMembershipType().equals("PhD")) {
+            } else if (m.getMembershipType().equals("PhD")) {
                 if (DBManager.loanCount(id) > 7) {
                     System.out.println("Cannot borrow any more books");
                 }
-            }
-            else if (m.getMembershipType().equals("Teacher")) {
+            } else if (m.getMembershipType().equals("Teacher")) {
                 if (DBManager.loanCount(id) > 10) {
                     System.out.println("Cannot borrow any more books");
                 }
-            }
-            else
+            } else
                 System.out.println("Borrowing book allowed");
         }
 
 
-        for (Book b : books){
-            if (b.getIsbn() == isbn){
+        for (Book b : books) {
+            if (b.getIsbn() == isbn) {
                 if (b.isAvailable()) {
                     System.out.println("Book available");
                     DBManager.addLoan(b.getId(), id, Date.valueOf("20190403"), Date.valueOf("20190413"));
                     System.out.println("Congratulations, you have borrowed the book");
-                }
-                else
+                } else
                     System.out.println("Book is currently not availble, please come again");
 
 
+            }
+
+        }
+    }
 }
