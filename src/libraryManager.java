@@ -4,6 +4,11 @@ import static java.lang.Integer.parseInt;
 
 public class libraryManager {
 
+    public static void main(String[] args) {
+        Member newMember = regApplicant("Alex");
+        checkRegistration(newMember);
+    }
+
     public boolean isBookAvailable(String bookTitle) {
         ArrayList<Book> bookArrayList = DBManager.getBookArrayList();
         for (Book b : bookArrayList) {
@@ -17,7 +22,7 @@ public class libraryManager {
     }
 
 
-    public void returnBook(int bookID, int memberID) {
+    public static void returnBook(int bookID, int memberID) {
 
         ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
         ArrayList<Book> bookArray = DBManager.getBookArrayList();
@@ -36,18 +41,18 @@ public class libraryManager {
         }
     }
 
-    public Member regApplicant(String name){
+    public static Member regApplicant(String name){
         ArrayList<Member> members = DBManager.getMemberArrayList();
         for (Member m : members) {
             if (m.getName().equals(name)){
                 return m;
             }
         }
-        return null;
+        return new Member();
     }
 
-    public boolean checkRegistration(Member m) {
-        if (m != null) {
+    public static boolean checkRegistration(Member m) {
+        if (m.getName() != null) {
             if (m.isSuspended()){
                 System.out.println("You are suspended.");
                 return false;
