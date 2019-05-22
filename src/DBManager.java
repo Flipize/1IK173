@@ -38,7 +38,7 @@ public class DBManager {
 
     }
 
-    private static ArrayList<Member> getMemberArrayList() {
+    public static ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {
@@ -134,7 +134,7 @@ public class DBManager {
             statement.setInt(1, b.getId());
             statement.setInt(2, b.getIsbn());
             statement.setString(3, b.getTitle());
-            statement.setBoolean(4, b.isStatus());
+            statement.setBoolean(4, b.isAvailable());
 
             statement.executeUpdate();
         } catch (SQLException ex) {
@@ -236,7 +236,7 @@ public class DBManager {
 
             statement.setInt(1, b.getIsbn());
             statement.setString(2, b.getTitle());
-            statement.setBoolean(3, b.isStatus());
+            statement.setBoolean(3, b.isAvailable());
             statement.setInt(4, b.getId());
 
             statement.executeUpdate();
