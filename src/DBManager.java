@@ -30,15 +30,16 @@ public class DBManager {
         //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
         //deleteLoan(1,1);
 
-        //Book newBook = new Book(69, 2626, "A Song of Ice and Fire", false);
+        Book newBook = new Book(888, 2626, "A Song of Ice and Fire", false);
         //updateBook(newBook);
+        addBook(newBook);
 
-        //Member newMember = new Member(69, "Ibra", "VIP", false);
-        //updateMember(newMember);
+        //Member newMember = new Member(666, "Ibra", "VIP", false);
+        //addMember(newMember);
 
     }
 
-    private static ArrayList<Member> getMemberArrayList() {
+    public static ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {
@@ -94,13 +95,10 @@ public class DBManager {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver loaded");
         } catch (ClassNotFoundException ex) {
-            System.out.println("Driver did not load");
         }
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
-            System.out.println("Connected");
 
             Statement statement = conn.createStatement();
             ResultSet rs_loans = statement.executeQuery(
@@ -118,76 +116,57 @@ public class DBManager {
             }
 
         } catch (SQLException ex) {
-            System.out.println("Something went wrong..." + ex.getMessage());
         }
 
         return loanArrayList;
     }
 
-    public static ArrayList <Book> addBook (int id, int isbn, String title, boolean status) {
-
-        ArrayList <Book> bookArrayList = new ArrayList<>();
+    public static void addBook (Book b) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)");
-            statement.setInt(1, id);
-            statement.setInt(2, isbn);
-            statement.setString(3, title);
-            statement.setBoolean(4, status);
+            statement.setInt(1, b.getId());
+            statement.setInt(2, b.getIsbn());
+            statement.setString(3, b.getTitle());
+            statement.setBoolean(4, b.isStatus());
 
             statement.executeUpdate();
-            bookArrayList.add(new Book(id, isbn, title, status));
 
         } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
-
-        return bookArrayList;
     }
 
-    public static ArrayList <Member> addMember (int id, String name, String type, boolean suspended) {
-
-        ArrayList <Member> addMemberArrayList = new ArrayList<>();
+    public static void addMember (Member m) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
             System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Member VALUES (?, ?, ?, ?)");
-            statement.setInt(1, id);
-            statement.setString(2, name);
-            statement.setString(3, type);
-            statement.setBoolean(4, suspended);
+            statement.setInt(1, m.getId());
+            statement.setString(2, m.getName());
+            statement.setString(3, m.getMembershipType());
+            statement.setBoolean(4, m.isSuspended());
 
             statement.executeUpdate();
-            addMemberArrayList.add(new Member(id, name, type, suspended));
 
         } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
-
-        return addMemberArrayList;
     }
 
     public static void deleteBook (int id) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
             PreparedStatement statement1 = conn.prepareStatement("DELETE from Loan where BookID = (?)");
             statement1.executeUpdate();
 
-            PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
-
-            statement.executeUpdate();
-
-
         } catch (SQLException ex) {
-            System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
 
@@ -249,7 +228,7 @@ public class DBManager {
             statement.setInt(1, b.getIsbn());
             statement.setString(2, b.getTitle());
             statement.setBoolean(3, b.isStatus());
-            statement.setInt(4, b.getid());
+            statement.setInt(4, b.getId());
 
             statement.executeUpdate();
 
