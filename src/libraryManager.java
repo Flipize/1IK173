@@ -1,4 +1,3 @@
-import java.sql.Date;
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
@@ -57,7 +56,7 @@ public class libraryManager {
     }
 
     public static boolean checkRegistration(Member m) {
-        if (m.getName() != null) {
+        if (m.getMembershipType() != null) {
             if (m.isSuspended()){
                 System.out.println("You are suspended.");
                 return false;
@@ -68,8 +67,10 @@ public class libraryManager {
             }
         }
         else {
-            Member newMember = new Member(90, "Bran the Broken", "Coolboy", true);
-            DBManager.addMember(newMember);
+            m.setId(9029);
+            m.setMembershipType("PhD");
+            DBManager.addMember(m);
+            System.out.println("An account for " + m.getName() + "(" + m.getId() + ") has been created.");
             return true;
         }
     }
@@ -89,12 +90,11 @@ public class libraryManager {
 
     }
 
-    public static void lendItem (int id, int isbn) {
+    public static void lendItem (int id, String bookName) {
 
         ArrayList<Member> members = DBManager.getMemberArrayList();
         ArrayList<Book> books = DBManager.getBookArrayList();
 
-        //Kollar om medlemmen finns
         for (Member m : members) {
             if (m.getId() == id) {
                 System.out.println("Member found");
@@ -141,11 +141,5 @@ public class libraryManager {
                 else
                     System.out.println("Book is currently not availble, please come again");
 
-            }
-            else
-                System.out.println("Book doesn't exist");
-        }
-
-    }
 
 }
