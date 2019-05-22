@@ -2,16 +2,16 @@ public class Book {
     private int id;
     private int isbn;
     private String title;
-    private boolean status;
+    private boolean isAvailable;
 
     public Book() {
     }
 
-    public Book(int id, int isbn, String title, boolean status) {
+    public Book(int id, int isbn, String title, boolean isAvailable) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
-        this.status = status;
+        this.isAvailable = isAvailable;
     }
 
     public int getIsbn() {
@@ -30,20 +30,20 @@ public class Book {
         this.title = title;
     }
 
-    public int getid() {
+    public int getId() {
         return id;
     }
 
-    public void setid(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setAvailable(boolean available) {
+        this.isAvailable = available;
     }
 
     public String toString() {

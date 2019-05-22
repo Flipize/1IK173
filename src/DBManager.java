@@ -124,52 +124,40 @@ public class DBManager {
         return loanArrayList;
     }
 
-    public static ArrayList <Book> addBook (int id, int isbn, String title, boolean status) {
-
-        ArrayList <Book> bookArrayList = new ArrayList<>();
+    public static void addBook (Book b) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
             System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)");
-            statement.setInt(1, id);
-            statement.setInt(2, isbn);
-            statement.setString(3, title);
-            statement.setBoolean(4, status);
+            statement.setInt(1, b.getId());
+            statement.setInt(2, b.getIsbn());
+            statement.setString(3, b.getTitle());
+            statement.setBoolean(4, b.isAvailable());
 
             statement.executeUpdate();
-            bookArrayList.add(new Book(id, isbn, title, status));
-
         } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
-
-        return bookArrayList;
     }
 
-    public static ArrayList <Member> addMember (int id, String name, String type, boolean suspended) {
-
-        ArrayList <Member> addMemberArrayList = new ArrayList<>();
+    public static void addMember (Member m) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
             System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Member VALUES (?, ?, ?, ?)");
-            statement.setInt(1, id);
-            statement.setString(2, name);
-            statement.setString(3, type);
-            statement.setBoolean(4, suspended);
+            statement.setInt(1, m.getId());
+            statement.setString(2, m.getName());
+            statement.setString(3, m.getMembershipType());
+            statement.setBoolean(4, m.isSuspended());
 
             statement.executeUpdate();
-            addMemberArrayList.add(new Member(id, name, type, suspended));
-
         } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
-
-        return addMemberArrayList;
     }
 
     public static void deleteBook (int id) {
@@ -248,8 +236,8 @@ public class DBManager {
 
             statement.setInt(1, b.getIsbn());
             statement.setString(2, b.getTitle());
-            statement.setBoolean(3, b.isStatus());
-            statement.setInt(4, b.getid());
+            statement.setBoolean(3, b.isAvailable());
+            statement.setInt(4, b.getId());
 
             statement.executeUpdate();
 
