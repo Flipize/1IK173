@@ -8,12 +8,12 @@ public class Member {
 
     public Member () {}
 
-    public Member (int id, String name, String membershipType) {
+    public Member (int id, String name, String membershipType, boolean suspended) {
         this.id = id;
         this.name = name;
         this.membershipType = membershipType;
         this.suspensions = 0;
-        this.suspended = false;
+        this.suspended = suspended;
     }
 
     public int getId() {

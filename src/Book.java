@@ -7,11 +7,11 @@ public class Book {
     public Book() {
     }
 
-    public Book(int id, int isbn, String title) {
+    public Book(int id, int isbn, String title, boolean status) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
-        this.status = true;
+        this.status = status;
     }
 
     public int getIsbn() {
