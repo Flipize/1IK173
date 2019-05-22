@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "Jim1337!";
+    private static String password = "eldorado5";
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
@@ -27,6 +27,8 @@ public class DBManager {
 
         //deleteBook(10);
 
+        //deleteMember(1555);
+
         //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
         //deleteLoan(1,1);
 
@@ -35,6 +37,10 @@ public class DBManager {
 
         //Member newMember = new Member(69, "Ibra", "VIP", false);
         //updateMember(newMember);
+
+        System.out.println(loanCount(5));
+
+
 
     }
 
@@ -186,6 +192,7 @@ public class DBManager {
             System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("DELETE from Member where MemberID = (?) ");
+            statement.setInt(1, id);
             statement.executeUpdate();
 
 
@@ -262,5 +269,21 @@ public class DBManager {
 
         } catch (SQLException ex) {
         }
+    }
+
+    public static int loanCount(int memberID){
+        int count = 0;
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+            Statement statement = conn.createStatement();
+
+            ResultSet result = statement.executeQuery ("SELECT count(MemberID) from loan where MemberID = " + memberID);
+            while (result.next()){
+                count = result.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+        }
+        return count;
     }
 }
