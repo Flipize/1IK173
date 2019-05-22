@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 
+import static java.lang.Integer.parseInt;
+
 public class libraryManager {
 
     public boolean isBookAvailable(String bookTitle) {
         ArrayList<Book> bookArrayList = DBManager.getBookArrayList();
         for (Book b : bookArrayList) {
-            if (b.getTitle() == bookTitle) {
-                if (b.isStatus()) {
+            if (b.getTitle().equals(bookTitle)) {
+                if (b.isAvailable()) {
                     return true;
                 }
             }
@@ -15,24 +17,24 @@ public class libraryManager {
     }
 
 
-    public static void deleteMemberLibrary (int id) {
+    public void returnBook(int bookID, int memberID) {
 
-        ArrayList <Member> tempArray = DBManager.getMemberArrayList();
+        ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
+        ArrayList<Book> bookArray = DBManager.getBookArrayList();
 
-        for (Member m : tempArray){
-            if (m.getId() == id)  {
-                DBManager.deleteMember(id);
-                System.out.println("Member is deleted");
-            }
-            else
-                System.out.println("No member found");
+        for (String[] st: loanArray) {
+            if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
+                for (Book b : bookArray){
+                    if (b.getid() == bookID){
+                        b.setAvailable(true);
+                        DBManager.updateBook(b);
+                    }
+                    DBManager.deleteLoan(bookID, memberID);
+                    System.out.println("Book succesfully returned.");
+                }
+            } else System.out.println("Book not eligible for return.");
         }
     }
-
-
-
-
-
 
     public Member regApplicant(String name){
         ArrayList<Member> members = DBManager.getMemberArrayList();
