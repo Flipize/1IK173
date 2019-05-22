@@ -2,9 +2,6 @@ import java.util.ArrayList;
 
 public class libraryManager {
 
-    public static void main(String[] args) {
-    }
-
     public boolean isBookAvailable(String bookTitle) {
         ArrayList<Book> bookArrayList = DBManager.getBookArrayList();
         for (Book b : bookArrayList) {
