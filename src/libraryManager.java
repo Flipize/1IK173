@@ -25,7 +25,7 @@ public class libraryManager {
         for (String[] st: loanArray) {
             if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
                 for (Book b : bookArray){
-                    if (b.getid() == bookID){
+                    if (b.getId() == bookID){
                         b.setAvailable(true);
                         DBManager.updateBook(b);
                     }
@@ -63,5 +63,20 @@ public class libraryManager {
             return true;
         }
     }
+
+    public static void deleteMemberLibrary (int id) {
+
+        ArrayList <Member> tempArray = DBManager.getMemberArrayList();
+
+        for (Member m : tempArray){
+            if (m.getId() == id)  {
+                DBManager.deleteMember(id);
+                System.out.println("Member is deleted");
+            }
+            else
+                System.out.println("No member found");
+        }
+    }
+
 
 }
