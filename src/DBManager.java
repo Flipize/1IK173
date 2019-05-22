@@ -1,6 +1,5 @@
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 public class DBManager {
 
@@ -114,7 +113,6 @@ public class DBManager {
 
                 loanArrayList.add(temp);
                 temp = new String[4];
-
             }
 
         } catch (SQLException ex) {
@@ -248,7 +246,7 @@ public class DBManager {
 
             statement.setInt(1, b.getIsbn());
             statement.setString(2, b.getTitle());
-            statement.setBoolean(3, b.isStatus());
+            statement.setBoolean(3, b.isAvailable());
             statement.setInt(4, b.getid());
 
             statement.executeUpdate();
