@@ -38,7 +38,7 @@ public class DBManager {
 
     }
 
-    private static ArrayList<Member> getMemberArrayList() {
+    public static ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {

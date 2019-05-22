@@ -13,4 +13,24 @@ public class libraryManager {
         }
         return false;
     }
+
+
+    public static void deleteMemberLibrary (int id) {
+
+        ArrayList <Member> tempArray = DBManager.getMemberArrayList();
+
+        for (Member m : tempArray){
+            if (m.getId() == id)  {
+                DBManager.deleteMember(id);
+                System.out.println("Member is deleted");
+            }
+            else
+                System.out.println("No member found");
+        }
+    }
+
+
+
+
+
 }
