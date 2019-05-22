@@ -5,7 +5,7 @@ import static java.lang.Integer.parseInt;
 public class libraryManager {
 
     public static void main(String[] args) {
-        Member newMember = regApplicant("Alex");
+        Member newMember = regApplicant("Bran the Broken");
         checkRegistration(newMember);
     }
 
@@ -48,7 +48,9 @@ public class libraryManager {
                 return m;
             }
         }
-        return new Member();
+        Member newMember = new Member();
+        newMember.setName(name);
+        return newMember;
     }
 
     public static boolean checkRegistration(Member m) {
@@ -63,7 +65,7 @@ public class libraryManager {
             }
         }
         else {
-            Member newMember = new Member(19, "Filip Axel Nilsson", "Coolboy", false);
+            Member newMember = new Member(90, "Bran the Broken", "Coolboy", true);
             DBManager.addMember(newMember);
             return true;
         }
@@ -81,10 +83,7 @@ public class libraryManager {
             else
                 System.out.println("No member found");
         }
+
     }
 
-        public String ettOrd () {
-            String ettOrd = "Ett enda ord";
-           return ettOrd;
-        }
 }
