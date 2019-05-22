@@ -1,17 +1,39 @@
 import java.util.ArrayList;
 
+import static java.lang.Integer.parseInt;
+
 public class libraryManager {
 
     public boolean isBookAvailable(String bookTitle) {
         ArrayList<Book> bookArrayList = DBManager.getBookArrayList();
         for (Book b : bookArrayList) {
-            if (b.getTitle() == bookTitle) {
+            if (b.getTitle().equals(bookTitle)) {
                 if (b.isAvailable()) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+
+    public void returnBook(int bookID, int memberID) {
+
+        ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
+        ArrayList<Book> bookArray = DBManager.getBookArrayList();
+
+        for (String[] st: loanArray) {
+            if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
+                for (Book b : bookArray){
+                    if (b.getid() == bookID){
+                        b.setAvailable(true);
+                        DBManager.updateBook(b);
+                    }
+                    DBManager.deleteLoan(bookID, memberID);
+                    System.out.println("Book succesfully returned.");
+                }
+            } else System.out.println("Book not eligible for return.");
+        }
     }
 
     public Member regApplicant(String name){
