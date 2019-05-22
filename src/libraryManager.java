@@ -86,4 +86,27 @@ public class libraryManager {
 
     }
 
+    public static void lendItem (int id, String bookName) {
+
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        ArrayList<Book> books = DBManager.getBookArrayList();
+
+        for (Member m : members) {
+            if (m.getId() == id) {
+                System.out.println("Member found");
+            }
+            else
+                System.out.println("Please try again");
+
+        }
+
+        for (Member m : members) {
+            if (m.getMembershipType().equals("Undergraduate")) {
+            }
+        }
+
+
+    }
+
+
 }

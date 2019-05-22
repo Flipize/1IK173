@@ -4,9 +4,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -26,6 +26,8 @@ public class DBManager {
         }*/
 
         //deleteBook(10);
+
+        //deleteMember(1555);
 
         //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
         //deleteLoan(1,1);
@@ -168,14 +170,11 @@ public class DBManager {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
-            PreparedStatement statement1 = conn.prepareStatement("DELETE from Loan where BookID = (?)");
+            PreparedStatement statement1 = conn.prepareStatement("DELETE from Book where BookID = (?) ");
+            statement1.setInt(1, id);
             statement1.executeUpdate();
 
-            PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
-
-            statement.executeUpdate();
 
 
         } catch (SQLException ex) {
@@ -190,6 +189,7 @@ public class DBManager {
             System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("DELETE from Member where MemberID = (?) ");
+            statement.setInt(1, id);
             statement.executeUpdate();
 
 
