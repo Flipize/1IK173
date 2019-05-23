@@ -944,75 +944,80 @@
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <key id="239" parent="233" name="PRIMARY">
+    <column id="239" parent="233" name="isAvailable">
+      <Position>4</Position>
+      <DataType>tinyint(1)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="240" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>BookID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="240" parent="234" name="BookID">
+    <column id="241" parent="234" name="BookID">
       <Position>1</Position>
       <DataType>int(6)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="234" name="MemberID">
+    <column id="242" parent="234" name="MemberID">
       <Position>2</Position>
       <DataType>int(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="242" parent="234" name="StartDate">
+    <column id="243" parent="234" name="StartDate">
       <Position>3</Position>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="234" name="EndDate">
+    <column id="244" parent="234" name="EndDate">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="244" parent="234" name="BookID">
+    <index id="245" parent="234" name="BookID">
       <ColNames>BookID</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="245" parent="234" name="MemberID">
+    <index id="246" parent="234" name="MemberID">
       <ColNames>MemberID</ColNames>
       <Type>btree</Type>
     </index>
-    <foreign-key id="246" parent="234" name="loan_ibfk_1">
+    <foreign-key id="247" parent="234" name="loan_ibfk_1">
       <ColNames>BookID</ColNames>
       <RefSchemaName>library</RefSchemaName>
       <RefTableName>Book</RefTableName>
       <RefColNames>BookID</RefColNames>
     </foreign-key>
-    <foreign-key id="247" parent="234" name="loan_ibfk_2">
+    <foreign-key id="248" parent="234" name="loan_ibfk_2">
       <ColNames>MemberID</ColNames>
       <RefSchemaName>library</RefSchemaName>
       <RefTableName>Member</RefTableName>
       <RefColNames>MemberID</RefColNames>
     </foreign-key>
-    <column id="248" parent="235" name="MemberID">
+    <column id="249" parent="235" name="MemberID">
       <Position>1</Position>
       <DataType>int(4)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="235" name="Name">
+    <column id="250" parent="235" name="Name">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="250" parent="235" name="Type">
+    <column id="251" parent="235" name="Type">
       <Position>3</Position>
       <DataType>varchar(25)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="251" parent="235" name="Suspended">
+    <column id="252" parent="235" name="Suspended">
       <Position>4</Position>
       <DataType>tinyint(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="252" parent="235" name="PRIMARY">
+    <key id="253" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>MemberID</ColNames>
       <Primary>1</Primary>
