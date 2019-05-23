@@ -113,7 +113,7 @@ public class DBManager {
                     "SELECT * FROM Suspension");
 
             while (rs_suspension.next()) {
-                suspensionsList.add(new Suspension(rs_suspension.getInt(1), rs_suspension.getBoolean(2), rs_suspension.getDate(3), rs_suspension.getDate(4)));
+                suspensionsList.add(new Suspension(rs_suspension.getInt(1), rs_suspension.getInt(2), rs_suspension.getDate(3), rs_suspension.getDate(4)));
             }
 
         } catch (SQLException ex) {
@@ -296,6 +296,10 @@ public class DBManager {
 
         } catch (SQLException ex) {
         }
+    }
+
+    public static void addSuspension (int memberId){
+
     }
 
   /*  public static void suspendMember (int memberID) {
