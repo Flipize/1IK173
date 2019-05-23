@@ -10,10 +10,10 @@ public class DBManager {
 
 
     public static void main(String[] args) {
-        /*ArrayList<Member> m_array = getMemberArrayList();
+        ArrayList<Member> m_array = getMemberArrayList();
         for (Member m : m_array) {
             System.out.println(m.toString());
-        }*/
+        }
 
         /*ArrayList<Book> b_array = getBookArrayList();
         for (Book b : b_array) {
@@ -25,7 +25,7 @@ public class DBManager {
             System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
         }*/
 
-        deleteBook(2222);
+        //deleteBook(2222);
 
         //addMember(new Member(6969, "Kim larksson", "Student", false));
 
@@ -33,7 +33,7 @@ public class DBManager {
 
         //deleteMember(6969);
 
-        //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
+        addLoan(6764, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
         //deleteLoan(1,1);
 
         //Book newBook = new Book(69, 2626, "A Song of Ice and Fire", false);
@@ -42,7 +42,7 @@ public class DBManager {
         //Member newMember = new Member(69, "Ibra", "VIP", false);
         //updateMember(newMember);
 
-        System.out.println(loanCount(5));
+        //System.out.println(loanCount(5));
 
 
 
@@ -63,7 +63,7 @@ public class DBManager {
                     "SELECT * FROM Member");
 
             while (rs_member.next()) {
-                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getInt(3), rs_member.getString(4)));
+                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getLong(3), rs_member.getString(4)));
 
             }
 
@@ -185,7 +185,7 @@ public class DBManager {
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Member VALUES (?, ?, ?, ?)");
             statement.setInt(1, m.getId());
             statement.setString(2, m.getName());
-            statement.setInt(3, m.getPersonalNumber());
+            statement.setLong(3, m.getPersonalNumber());
             statement.setString(4, m.getMembershipType());
 
 
@@ -288,7 +288,7 @@ public class DBManager {
 
             statement.setString(1, m.getName());
             statement.setString(2, m.getMembershipType());
-            statement.setInt(3, m.getPersonalNumber());
+            statement.setLong(3, m.getPersonalNumber());
             statement.setInt(4, m.getId());
 
             statement.executeUpdate();

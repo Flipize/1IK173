@@ -2,12 +2,12 @@ public class Member {
 
     private int id;
     private String name;
-    private int personalNumber;
+    private long personalNumber;
     private String membershipType;
 
     public Member () {}
 
-    public Member (int id, String name, int personalNumber, String membershipType) {
+    public Member (int id, String name, long personalNumber, String membershipType) {
         this.id = id;
         this.name = name;
         this.personalNumber = personalNumber;
@@ -30,7 +30,7 @@ public class Member {
         this.name = name;
     }
 
-    public int getPersonalNumber() {
+    public long getPersonalNumber() {
         return personalNumber;
     }
 
