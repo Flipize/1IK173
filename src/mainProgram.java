@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class mainProgram {
@@ -13,18 +14,29 @@ public class mainProgram {
             System.out.println("1 - Add a member");
             System.out.println("2 - Add a book");
             System.out.println("3 - Borrow a book");
-            System.out.println("5 - Return a book");
-            System.out.println("6 - Suspend a member");
-            System.out.println("7 - Remove a member");
-            System.out.println("8 - Remove a book");
-            System.out.println("9 - Exit library manager. :(");
+            System.out.println("4 - Return a book");
+            System.out.println("5 - Suspend a member");
+            System.out.println("6 - Remove a member");
+            System.out.println("7 - Remove a book");
+            System.out.println("0 - Exit library manager. :(");
 
             choice = input.nextInt();
 
             switch (choice)
             {
                 case 1:
+                    System.out.println("Please enter member ID: ");
+                    int memberID = input.nextInt();
+                    System.out.println("Please enter member name: ");
+                    String memberName = textInput.nextLine();
+                    System.out.println("Please enter personal number: ");
+                    int personalNumber = input.nextInt();
+                    System.out.println("Please enter membership type: ");
+                    String type = textInput.nextLine();
 
+                    Member newMember = new Member(memberID, memberName, personalNumber, type);
+                    DBManager.addMember(newMember);
+                    System.out.println("Member successfully added.");
                     break;
                 case 2:
                     System.out.println("Please enter book ID: ");
@@ -39,23 +51,24 @@ public class mainProgram {
                     System.out.println("Book successfully added.");
                     break;
                 case 3:
-                    // .. exit program
                     break;
                 case 4:
-                    // do something
+                    ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
+                    for (Suspension s: lista
+                         ) {
+                        System.out.println(s.memberID);
+                    }
+                    break;
                 case 5:
                     // do something
                     break;
                 case 6:
-                    // ..something else
-                    break;
-                case 7:
                     System.out.println("Enter the members ID to remove the member: ");
-                    int memberID = input.nextInt();
-                    DBManager.deleteMember(memberID);
+                    int usedMemberID = input.nextInt();
+                    DBManager.deleteMember(usedMemberID);
                     System.out.println("Member successfully removed.");
                     break;
-                case 8:
+                case 7:
                     System.out.println("Enter the book ID to remove it: ");
                     int bookID = input.nextInt();
                     DBManager.deleteBook(bookID);
@@ -66,11 +79,8 @@ public class mainProgram {
                     break;
                   //  System.out.println("Choice must be a value between 1 and 9.");
             }
-        } while (choice != 9);
+        } while (choice != 0);
             System.out.println("Thanks for using library manager.");
-
-
-
 
     }
 }

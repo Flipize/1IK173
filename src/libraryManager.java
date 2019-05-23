@@ -56,7 +56,7 @@ public class libraryManager {
         return newMember;
     }
 
-    public static boolean checkRegistration(Member m) {
+/*    public static boolean checkRegistration(Member m) {
         if (m.getMembershipType() != null) {
             if (m.isSuspended()) {
                 System.out.println("You are suspended.");
@@ -72,7 +72,7 @@ public class libraryManager {
             System.out.println("An account for " + m.getName() + "(" + m.getId() + ") has been created.");
             return true;
         }
-    }
+    }*/
 
     public static void deleteMemberLibrary(int id) {
 
@@ -93,19 +93,15 @@ public class libraryManager {
         ArrayList<Member> members = DBManager.getMemberArrayList();
         ArrayList<Book> books = DBManager.getBookArrayList();
 
-        for (Member m : members) {
-            if (m.getId() == id) {
-                System.out.println("Member found");
-            } else
-                System.out.println("Please try again");
 
-        }
+
 
         //Kollar om medlemmen får låna fler böcker
         for (Member m : members) {
             if (m.getMembershipType().equals("Undergraduate")) {
                 if (DBManager.loanCount(id) > 3) {
                     System.out.println("Cannot borrow any more books");
+                    return;
                 }
             } else if (m.getMembershipType().equals("Masterstudent")) {
                 if (DBManager.loanCount(id) > 5) {
