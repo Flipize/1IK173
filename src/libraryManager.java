@@ -8,10 +8,7 @@ import static java.lang.Integer.parseInt;
 public class libraryManager {
 
     public static void main(String[] args) {
-        //Member newMember = regApplicant("Bran the Broken");
-        //checkRegistration(newMember);
-        Scanner reader = new Scanner(System.in);
-        registerNewMember(reader.nextLine());
+        registerNewMember(199405019886L);
 
     }
 
@@ -47,21 +44,21 @@ public class libraryManager {
         }
     }
 
-    public static Member regApplicant(String name) {
+    public static Member regApplicant(long personalNumber) {
         ArrayList<Member> members = DBManager.getMemberArrayList();
         for (Member m : members) {
-            if (m.getName().equals(name)) {
+            if (m.getPersonalNumber() == personalNumber) {
                 return m;
             }
         }
         Member newMember = new Member();
-        newMember.setName(name);
+        newMember.setPersonalNumber(personalNumber);
         return newMember;
     }
 
-   /* public static boolean checkRegistration(Member m) {
+    public static boolean checkRegistration(Member m) {
         if (m.getMembershipType() != null) {
-            if (m.isSuspended()) {
+            if (isBanned(m.getPersonalNumber())) {
                 System.out.println("You are suspended.");
                 return false;
             } else {
@@ -81,7 +78,7 @@ public class libraryManager {
             System.out.println("An account for " + m.getName() + " (" + m.getId() + ") has successfully been created.");
             return true;
         }
-    }*/
+    }
 
     public static void deleteMemberLibrary(int id) {
 
@@ -180,9 +177,22 @@ public class libraryManager {
         return true;
     }
 
-    public static void registerNewMember(String name){
-        Member m = regApplicant(name);
-        checkRegistration(m);
+    public static void registerNewMember(Long personalNumber){
+        Member m = regApplicant(personalNumber);
+        if (checkRegistration(m)){
+            System.out.println("success");
+        }
     }
+
+   public static boolean isBanned(Long personalNumber){
+       ArrayList<Long> members = DBManager.getBannedMembers();
+
+       for (Long l : members) {
+           if (personalNumber == l) {
+               return true;
+           }
+       }
+       return false;
+   }
 }
 

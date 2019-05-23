@@ -34,7 +34,7 @@ public class mainProgram {
                     System.out.println("Please enter membership type: ");
                     String type = textInput.nextLine();
                     System.out.println("Who do you want to register?");
-                    libraryManager.registerNewMember(input.nextLine());
+                    //libraryManager.registerNewMember(input.nextLine());
                     input.nextLine();
 
                     Member newMember = new Member(memberID, memberName, personalNumber, type);
