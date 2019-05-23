@@ -116,7 +116,7 @@ public class DBManager {
                     "SELECT * FROM Suspension");
 
             while (rs_suspension.next()) {
-                suspensionsList.add(new Suspension(rs_suspension.getInt(1), rs_suspension.getInt(2), rs_suspension.getDate(3), rs_suspension.getDate(4)));
+                suspensionsList.add(new Suspension(rs_suspension.getInt(1), rs_suspension.getInt(2), rs_suspension.getDate(3).toLocalDate(), rs_suspension.getDate(4).toLocalDate()));
             }
 
         } catch (SQLException ex) {
@@ -303,19 +303,70 @@ public class DBManager {
 
     public static void addSuspension (int memberId){
 
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+            System.out.println("Connected");
+
+            //är member suspended
+
+            LocalDate date = LocalDate.now();
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Suspension VALUES (?, ?, ?, ?)");
+            statement.setInt(1, memberId);
+            statement.setInt(2, 1);
+            statement.setDate(3, Date.valueOf(date));
+            statement.setDate(4, Date.valueOf(date.plusDays(15)));
+
+            statement.executeUpdate();
+
+    } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
+        }
     }
 
-  /*  public static void suspendMember (int memberID) {
+   public static void isMemberSuspended (int memberID) {
+        ArrayList<Suspension> suspensionList = getSuspensionsArrayList();
         ArrayList<Member> memberList = getMemberArrayList();
 
-        for (Member m: memberList) {
-           if(m.getId() == memberID) {
-               m.setSuspended(true);
-               m.suspensions++;
-               DBManager.updateMember(m);
+        for (Suspension s: suspensionList) {
+           if(s.getMemberID() == memberID) {
+               if (s.getSuspensions() > 0 && s.getSuspensions() < 3) {
+                   int nmrOfsusp = s.getSuspensions();
+                   nmrOfsusp++;
+                   s.setSuspensions(nmrOfsusp);
+                   LocalDate endDate = s.getEndDate();
+                   s.setEndDate(endDate.plusDays(15));
+
+
+               }
+           } else if (s.getSuspensions() > 2) {
+               banMember(memberID);
            }
         }
-    }*/
+    }
+
+/*
+    public static void updateSuspension (Suspension s, int memberId) {
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+
+            PreparedStatement statement = conn.prepareStatement("UPDATE Suspension set Suspensions = (?), StartDate = (?), EndDate = (?) WHERE MemberID = (?)");
+
+            statement.setInt(1, s.getSuspensions());
+            statement.setString(2, s.getStartDate());
+            statement.setInt(3, m.getPersonalNumber());
+            statement.setInt(4, m.getId());
+
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+        }
+    }
+*/
+
+    public static void banMember (int memberId) {}
 
     public static int loanCount(int memberID){
         int count = 0;
