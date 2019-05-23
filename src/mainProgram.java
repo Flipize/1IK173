@@ -50,13 +50,21 @@ public class mainProgram {
                     // ..something else
                     break;
                 case 7:
-                    // .. exit program
+                    System.out.println("Enter the members ID to remove the member: ");
+                    int memberID = input.nextInt();
+                    DBManager.deleteMember(memberID);
+                    System.out.println("Member successfully removed.");
                     break;
                 case 8:
-                    // do something
+                    System.out.println("Enter the book ID to remove it: ");
+                    int bookID = input.nextInt();
+                    DBManager.deleteBook(bookID);
+                    System.out.println("Book successfully removed.");
+                    break;
 
                 default:
-                    System.out.println("Choice must be a value between 1 and 9.");
+                    break;
+                  //  System.out.println("Choice must be a value between 1 and 9.");
             }
         } while (choice != 9);
             System.out.println("Thanks for using library manager.");
