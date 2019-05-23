@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "Jim1337!";
+    private static String password = "eldorado5";
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
@@ -26,7 +26,7 @@ public class DBManager {
             System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
         }*/
 
-        deleteBook(2222);
+        //deleteBook(2222);
 
         //addMember(new Member(6969, "Kim larksson", "Student", false));
 
@@ -42,10 +42,12 @@ public class DBManager {
 
         //Member newMember = new Member(69, "Ibra", "VIP", false);
         //updateMember(newMember);
+        /*ArrayList<Long> banned = getBannedMembers();
+        for (Long l : banned){
+            System.out.println(l);
+        }*/
 
-        System.out.println(loanCount(5));
-
-
+        addLoan(3,4, LocalDate.now(), LocalDate.now().plusDays(7));
 
     }
 
@@ -129,13 +131,10 @@ public class DBManager {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver loaded");
         } catch (ClassNotFoundException ex) {
-            System.out.println("Driver did not load");
         }
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
-            System.out.println("Connected");
 
             Statement statement = conn.createStatement();
             ResultSet rs_loans = statement.executeQuery(
@@ -186,7 +185,7 @@ public class DBManager {
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Member VALUES (?, ?, ?, ?)");
             statement.setInt(1, m.getId());
             statement.setString(2, m.getName());
-            statement.setInt(3, m.getPersonalNumber());
+            statement.setLong(3, m.getPersonalNumber());
             statement.setString(4, m.getMembershipType());
 
 
@@ -230,7 +229,7 @@ public class DBManager {
 
     }
 
-    public static void addLoan(int bookID, int memberID, Date startDate, Date endDate){
+    public static void addLoan(int bookID, int memberID, LocalDate startDate, LocalDate endDate){
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
@@ -238,8 +237,8 @@ public class DBManager {
             PreparedStatement statement = conn.prepareStatement("INSERT INTO loan VALUES (?, ?, ?, ?)");
             statement.setInt(1, bookID);
             statement.setInt(2, memberID);
-            statement.setDate(3, startDate);
-            statement.setDate(4, endDate);
+            statement.setDate(3, Date.valueOf(startDate));
+            statement.setDate(4, Date.valueOf(endDate));
 
             statement.executeUpdate();
             return;
@@ -289,7 +288,7 @@ public class DBManager {
 
             statement.setString(1, m.getName());
             statement.setString(2, m.getMembershipType());
-            statement.setInt(3, m.getPersonalNumber());
+            statement.setLong(3, m.getPersonalNumber());
             statement.setInt(4, m.getId());
 
             statement.executeUpdate();
@@ -381,4 +380,25 @@ public class DBManager {
         }
         return count;
     }
+
+    public static ArrayList<Long> getBannedMembers(){
+        ArrayList<Long> bannedMembers = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(
+            driver, "root", password)) {
+
+        Statement statement = conn.createStatement();
+        ResultSet rs_banned = statement.executeQuery(
+                "SELECT PersonalNumber FROM OldMembers WHERE Banned = true;");
+
+        while (rs_banned.next()) {
+            bannedMembers.add(rs_banned.getLong(1));
+        }
+
+    } catch (SQLException ex) {
+    }
+
+        return bannedMembers;
+}
+
 }

@@ -1,15 +1,15 @@
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
 public class libraryManager {
 
     public static void main(String[] args) {
-        //Member newMember = regApplicant("Bran the Broken");
-        //checkRegistration(newMember);
+        registerNewMember(199405019886L);
 
-        lendItem(5, 100001);
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -44,21 +44,21 @@ public class libraryManager {
         }
     }
 
-    public static Member regApplicant(String name) {
+    public static Member regApplicant(long personalNumber) {
         ArrayList<Member> members = DBManager.getMemberArrayList();
         for (Member m : members) {
-            if (m.getName().equals(name)) {
+            if (m.getPersonalNumber() == personalNumber) {
                 return m;
             }
         }
         Member newMember = new Member();
-        newMember.setName(name);
+        newMember.setPersonalNumber(personalNumber);
         return newMember;
     }
 
-   /* public static boolean checkRegistration(Member m) {
+    public static boolean checkRegistration(Member m) {
         if (m.getMembershipType() != null) {
-            if (m.isSuspended()) {
+            if (isBanned(m.getPersonalNumber())) {
                 System.out.println("You are suspended.");
                 return false;
             } else {
@@ -66,13 +66,19 @@ public class libraryManager {
                 return false;
             }
         } else {
-            m.setId(9029);
-            m.setMembershipType("PhD");
+            int rndId = getRandId();
+            while (!idIsValid(rndId)){
+                rndId = getRandId();
+            }
+            m.setId(rndId);
+            Scanner reader = new Scanner(System.in);
+            System.out.println("What membership type? ");
+            m.setMembershipType(reader.nextLine());
             DBManager.addMember(m);
-            System.out.println("An account for " + m.getName() + "(" + m.getId() + ") has been created.");
+            System.out.println("An account for " + m.getName() + " (" + m.getId() + ") has successfully been created.");
             return true;
         }
-    }*/
+    }
 
     public static void deleteMemberLibrary(int id) {
 
@@ -150,5 +156,43 @@ public class libraryManager {
 
 
     }
+
+    public static int getRandId(){
+        StringBuilder numberStringB = new StringBuilder();
+        Random rnd = new Random();
+        for (int i = 0; i < 4; i++){
+            numberStringB.append(rnd.nextInt(9));
+        }
+        int number = Integer.parseInt(numberStringB.toString());
+        return number;
+    }
+
+    public static boolean idIsValid(int id) {
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        for (Member m : members) {
+            if (id == m.getId()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void registerNewMember(Long personalNumber){
+        Member m = regApplicant(personalNumber);
+        if (checkRegistration(m)){
+            System.out.println("success");
+        }
+    }
+
+   public static boolean isBanned(Long personalNumber){
+       ArrayList<Long> members = DBManager.getBannedMembers();
+
+       for (Long l : members) {
+           if (personalNumber == l) {
+               return true;
+           }
+       }
+       return false;
+   }
 }
 

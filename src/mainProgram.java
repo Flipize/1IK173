@@ -20,7 +20,7 @@ public class mainProgram {
             System.out.println("7 - Remove a book");
             System.out.println("0 - Exit library manager. :(");
 
-            choice = input.nextInt();
+            choice = Integer.parseInt(input.nextLine());
 
             switch (choice)
             {
@@ -33,6 +33,9 @@ public class mainProgram {
                     int personalNumber = input.nextInt();
                     System.out.println("Please enter membership type: ");
                     String type = textInput.nextLine();
+                    System.out.println("Who do you want to register?");
+                    //libraryManager.registerNewMember(input.nextLine());
+                    input.nextLine();
 
                     Member newMember = new Member(memberID, memberName, personalNumber, type);
                     DBManager.addMember(newMember);
@@ -51,6 +54,7 @@ public class mainProgram {
                     System.out.println("Book successfully added.");
                     break;
                 case 3:
+                    // .. exit program
                     break;
                 case 4:
                     ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
@@ -84,6 +88,9 @@ public class mainProgram {
             }
         } while (choice != 0);
             System.out.println("Thanks for using library manager.");
+
+
+
 
     }
 }
