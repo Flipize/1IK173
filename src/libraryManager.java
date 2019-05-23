@@ -95,28 +95,20 @@ public class libraryManager {
         boolean found = false;
 
         for (Member m : members) {
-            if (m.getId() == memberID) {
-                found = true;
-                System.out.println("Member found: " + m.getName());
-                break;
+            if (m.getId() == id) {
+                System.out.println("Member found");
+            } else
+                System.out.println("Please try again");
 
-            }
-            }
-        if (!found) {
-            System.out.println("No member found.");
-        } //else System.out.println("Member found: ");
-
-
-
+        }
 
         //Kollar om medlemmen får låna fler böcker
 
         boolean canMemberLend = false;
         for (Member m : members) {
             if (m.getMembershipType().equals("Undergraduate")) {
-                if (DBManager.loanCount(memberID) >= 3) {
-                    canMemberLend = true;
-                    break;
+                if (DBManager.loanCount(id) > 3) {
+                    System.out.println("Cannot borrow any more books");
                 }
             } else if (m.getMembershipType().equals("Masterstudent")) {
                 if (DBManager.loanCount(memberID) >= 5) {
