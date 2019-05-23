@@ -4,9 +4,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -25,9 +25,13 @@ public class DBManager {
             System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
         }*/
 
-        //deleteBook(10);
+        deleteBook(2222);
 
-        //deleteMember(1555);
+        //addMember(new Member(6969, "Kim larksson", "Student", false));
+
+        //addBook(new Book(2222, 233223, "Sopboken", true));
+
+        //deleteMember(6969);
 
         //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
         //deleteLoan(1,1);
@@ -172,11 +176,9 @@ public class DBManager {
                 driver, "root" , password)) {
             System.out.println("Connected");
 
-            PreparedStatement statement1 = conn.prepareStatement("DELETE from Loan where BookID = (?)");
-            statement1.executeUpdate();
 
-            PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
-
+            PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) AND isAvailable = true ");
+            statement.setInt(1, id);
             statement.executeUpdate();
 
 
