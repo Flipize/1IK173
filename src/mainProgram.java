@@ -56,11 +56,14 @@ public class mainProgram {
                     ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
                     for (Suspension s: lista
                          ) {
-                        System.out.println(s.memberID);
+                        System.out.println(s.getEndDate());
                     }
                     break;
                 case 5:
-                    // do something
+                    System.out.println("Enter memberId to suspend: ");
+                    int suspendMemberId = input.nextInt();
+                    DBManager.addSuspension(suspendMemberId);
+                    System.out.println("Member suspended for 15 days.");
                     break;
                 case 6:
                     System.out.println("Enter the members ID to remove the member: ");
