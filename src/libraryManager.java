@@ -10,6 +10,7 @@ public class libraryManager {
     public static void main(String[] args) {
         registerNewMember(199405019886L);
 
+        lendItem(5, 100001);
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -94,27 +95,37 @@ public class libraryManager {
 
     }
 
+
     public static void lendItem(int memberID, int bookID) {
 
         ArrayList<Member> members = DBManager.getMemberArrayList();
         ArrayList<Book> books = DBManager.getBookArrayList();
+
         boolean found = false;
+
 
         for (Member m : members) {
             if (m.getId() == memberID) {
-                System.out.println("Member found");
-            } else
-                System.out.println("Please try again");
+                found = true;
+                System.out.println("Member found: " + m.getName());
+                break;
 
+            }
         }
+        if (!found) {
+            System.out.println("No member found.");
+        } //else System.out.println("Member found: ");
+
 
         //Kollar om medlemmen får låna fler böcker
 
         boolean canMemberLend = false;
+
         for (Member m : members) {
-            if (m.getMembershipType().equals("Undergraduate")) {
-                if (DBManager.loanCount(memberID) > 3) {
-                    System.out.println("Cannot borrow any more books");
+            if (m.getMembershipType().equals("Student")) {
+                if (DBManager.loanCount(memberID) >= 3) {
+                    canMemberLend = true;
+                    break;
                 }
             } else if (m.getMembershipType().equals("Masterstudent")) {
                 if (DBManager.loanCount(memberID) >= 5) {
@@ -132,28 +143,29 @@ public class libraryManager {
                     break;
                 }
             }
-        } if (!canMemberLend){
-            System.out.println("Borrowing books allowed. Loan count is currently: " + DBManager.loanCount(memberID) + " books") ;
         }
-        else
-            System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + DBManager.loanCount(memberID) + " books" );
+        if (!canMemberLend) {
+            System.out.println("Borrowing books allowed. Loan count is currently: " + DBManager.loanCount(memberID) + " books");
+        } else
+            System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + DBManager.loanCount(memberID) + " books");
 
 
-
-
+        boolean foundBook = false;
         for (Book b : books) {
             if (b.getId() == bookID) {
-                if (isBookAvailable(bookID)) {
+                if (b.isAvailable()) {
                     System.out.println("Book available");
-                    //DBManager.addLoan(b.getId(), memberID, Date.valueOf(""), Date.valueOf(""));
-                    System.out.println("Congratulations, you have borrowed the book");
-                } else if (!b.isAvailable())
+                    foundBook = true;
+                    DBManager.addLoan(b.getId(), memberID, Date.valueOf("20190202"), Date.valueOf("20190213"));
+                    b.setAvailable(false);
+                    DBManager.updateBook(b);
+                }else
                     System.out.println("Book is currently not available, please come again");
 
             }
 
-        }
-
+        }if (!foundBook){
+            System.out.println("Book not found"); }
 
     }
 
@@ -195,4 +207,5 @@ public class libraryManager {
        return false;
    }
 }
+
 

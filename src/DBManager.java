@@ -1,13 +1,12 @@
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -131,10 +130,13 @@ public class DBManager {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Driver loaded");
         } catch (ClassNotFoundException ex) {
+            System.out.println("Driver did not load");
         }
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
+            System.out.println("Connected");
 
             Statement statement = conn.createStatement();
             ResultSet rs_loans = statement.executeQuery(
