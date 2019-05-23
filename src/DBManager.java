@@ -176,11 +176,9 @@ public class DBManager {
                 driver, "root" , password)) {
             System.out.println("Connected");
 
-            PreparedStatement statement1 = conn.prepareStatement("DELETE from Loan where BookID = (?)");
-            statement1.executeUpdate();
 
             PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
-
+            statement.setInt(1, id);
             statement.executeUpdate();
 
 
