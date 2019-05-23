@@ -12,10 +12,10 @@ public class libraryManager {
         lendItem(5, 100001);
     }
 
-    public boolean isBookAvailable(String bookTitle) {
+    public static boolean isBookAvailable(int isbn) {
         ArrayList<Book> bookArrayList = DBManager.getBookArrayList();
         for (Book b : bookArrayList) {
-            if (b.getTitle().equals(bookTitle)) {
+            if (b.getIsbn() == isbn) {
                 if (b.isAvailable()) {
                     return true;
                 }
@@ -88,54 +88,75 @@ public class libraryManager {
 
     }
 
-    public static void lendItem(int id, int isbn) {
+    public static void lendItem(int memberID, int bookID) {
 
         ArrayList<Member> members = DBManager.getMemberArrayList();
         ArrayList<Book> books = DBManager.getBookArrayList();
+        boolean found = false;
 
         for (Member m : members) {
-            if (m.getId() == id) {
-                System.out.println("Member found");
-            } else
-                System.out.println("Please try again");
+            if (m.getId() == memberID) {
+                found = true;
+                System.out.println("Member found: " + m.getName());
+                break;
 
-        }
+            }
+            }
+        if (!found) {
+            System.out.println("No member found.");
+        } //else System.out.println("Member found: ");
+
+
+
 
         //Kollar om medlemmen får låna fler böcker
+
+        boolean canMemberLend = false;
         for (Member m : members) {
             if (m.getMembershipType().equals("Undergraduate")) {
-                if (DBManager.loanCount(id) > 3) {
-                    System.out.println("Cannot borrow any more books");
+                if (DBManager.loanCount(memberID) >= 3) {
+                    canMemberLend = true;
+                    break;
                 }
             } else if (m.getMembershipType().equals("Masterstudent")) {
-                if (DBManager.loanCount(id) > 5) {
-                    System.out.println("Cannot borrow any more books");
+                if (DBManager.loanCount(memberID) >= 5) {
+                    canMemberLend = true;
+                    break;
                 }
             } else if (m.getMembershipType().equals("PhD")) {
-                if (DBManager.loanCount(id) > 7) {
-                    System.out.println("Cannot borrow any more books");
+                if (DBManager.loanCount(memberID) >= 7) {
+                    canMemberLend = true;
+                    break;
                 }
             } else if (m.getMembershipType().equals("Teacher")) {
-                if (DBManager.loanCount(id) > 10) {
-                    System.out.println("Cannot borrow any more books");
+                if (DBManager.loanCount(memberID) >= 10) {
+                    canMemberLend = true;
+                    break;
                 }
-            } else
-                System.out.println("Borrowing book allowed");
+            }
+        } if (!canMemberLend){
+            System.out.println("Borrowing books allowed. Loan count is currently: " + DBManager.loanCount(memberID) + " books") ;
         }
+        else
+            System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + DBManager.loanCount(memberID) + " books" );
+
+
 
 
         for (Book b : books) {
-            if (b.getIsbn() == isbn) {
-                if (b.isAvailable()) {
+            if (b.getId() == bookID) {
+                if (isBookAvailable(bookID)) {
                     System.out.println("Book available");
-                    DBManager.addLoan(b.getId(), id, Date.valueOf("20190403"), Date.valueOf("20190413"));
+                    //DBManager.addLoan(b.getId(), memberID, Date.valueOf(""), Date.valueOf(""));
                     System.out.println("Congratulations, you have borrowed the book");
-                } else
-                    System.out.println("Book is currently not availble, please come again");
-
+                } else if (!b.isAvailable())
+                    System.out.println("Book is currently not available, please come again");
 
             }
 
         }
+
+
     }
 }
+

@@ -4,9 +4,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class DBManager {
             System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
         }*/
 
-        deleteBook(2222);
+        //deleteBook(2222);
 
         //addMember(new Member(6969, "Kim larksson", "Student", false));
 
@@ -33,7 +33,7 @@ public class DBManager {
 
         //deleteMember(6969);
 
-        //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
+        addLoan(2222, 5, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-01"));
         //deleteLoan(1,1);
 
         //Book newBook = new Book(69, 2626, "A Song of Ice and Fire", false);
