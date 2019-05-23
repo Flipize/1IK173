@@ -2,18 +2,16 @@ public class Member {
 
     private int id;
     private String name;
+    private int personalNumber;
     private String membershipType;
-    private boolean suspended;
-    private int suspensions;
 
     public Member () {}
 
-    public Member (int id, String name, String membershipType, boolean suspended) {
+    public Member (int id, String name, int personalNumber, String membershipType) {
         this.id = id;
         this.name = name;
+        this.personalNumber = personalNumber;
         this.membershipType = membershipType;
-        this.suspensions = 0;
-        this.suspended = suspended;
     }
 
     public int getId() {
@@ -32,6 +30,14 @@ public class Member {
         this.name = name;
     }
 
+    public int getPersonalNumber() {
+        return personalNumber;
+    }
+
+    public void setPersonalNumber(int personalNumber) {
+        this.personalNumber = personalNumber;
+    }
+
     public String getMembershipType() {
         return membershipType;
     }
@@ -40,24 +46,9 @@ public class Member {
         this.membershipType = membershipType;
     }
 
-    public boolean isSuspended() {
-        return suspended;
-    }
-
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
-    }
-
-    public int getSuspensions() {
-        return suspensions;
-    }
-
-    public void setSuspensions(int suspensions) {
-        this.suspensions = suspensions;
-    }
 
     @Override
     public String toString() {
-        return "Id:" + id + "\nNamn: " + name  + "\nMembership type: " + membershipType + "\nSuspended: " + suspended;
+        return "Id:" + id + "\nNamn: " + name  + "\nPersonal Number: " + personalNumber +  "\nMembership type: " + membershipType;
     }
 }

@@ -4,9 +4,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -63,7 +63,7 @@ public class DBManager {
                     "SELECT * FROM Member");
 
             while (rs_member.next()) {
-                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getString(3), rs_member.getBoolean(4)));
+                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getInt(3), rs_member.getString(4)));
 
             }
 
@@ -96,6 +96,30 @@ public class DBManager {
         }
 
         return bookArrayList;
+    }
+
+    public static ArrayList<Suspension> getSuspensionsArrayList() {
+        ArrayList<Suspension> suspensionsList = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+        }
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root", password)) {
+
+            Statement statement = conn.createStatement();
+            ResultSet rs_suspension = statement.executeQuery(
+                    "SELECT * FROM Suspension");
+
+            while (rs_suspension.next()) {
+                suspensionsList.add(new Suspension(rs_suspension.getInt(1), rs_suspension.getInt(2), rs_suspension.getDate(3), rs_suspension.getDate(4)));
+            }
+
+        } catch (SQLException ex) {
+        }
+
+        return suspensionsList;
     }
 
     public static ArrayList<String[]> getLoanArrayList() {
@@ -158,8 +182,9 @@ public class DBManager {
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Member VALUES (?, ?, ?, ?)");
             statement.setInt(1, m.getId());
             statement.setString(2, m.getName());
-            statement.setString(3, m.getMembershipType());
-            statement.setBoolean(4, m.isSuspended());
+            statement.setInt(3, m.getPersonalNumber());
+            statement.setString(4, m.getMembershipType());
+
 
             statement.executeUpdate();
         } catch (SQLException ex) {
@@ -256,11 +281,11 @@ public class DBManager {
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
-            PreparedStatement statement = conn.prepareStatement("UPDATE member set Name = (?), Type = (?), Suspended = (?) WHERE MemberID = (?)");
+            PreparedStatement statement = conn.prepareStatement("UPDATE member set Name = (?), Type = (?), PersonalNumber = (?) WHERE MemberID = (?)");
 
             statement.setString(1, m.getName());
             statement.setString(2, m.getMembershipType());
-            statement.setBoolean(3, m.isSuspended());
+            statement.setInt(3, m.getPersonalNumber());
             statement.setInt(4, m.getId());
 
             statement.executeUpdate();
@@ -269,6 +294,22 @@ public class DBManager {
         } catch (SQLException ex) {
         }
     }
+
+    public static void addSuspension (int memberId){
+
+    }
+
+  /*  public static void suspendMember (int memberID) {
+        ArrayList<Member> memberList = getMemberArrayList();
+
+        for (Member m: memberList) {
+           if(m.getId() == memberID) {
+               m.setSuspended(true);
+               m.suspensions++;
+               DBManager.updateMember(m);
+           }
+        }
+    }*/
 
     public static int loanCount(int memberID){
         int count = 0;
