@@ -104,13 +104,10 @@ public class DBManager {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver loaded");
         } catch (ClassNotFoundException ex) {
-            System.out.println("Driver did not load");
         }
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
-            System.out.println("Connected");
 
             Statement statement = conn.createStatement();
             ResultSet rs_loans = statement.executeQuery(

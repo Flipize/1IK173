@@ -19,11 +19,14 @@ public class mainProgram {
             System.out.println("8 - Remove a book");
             System.out.println("9 - Exit library manager. :(");
 
-            choice = input.nextInt();
+            choice = Integer.parseInt(input.nextLine());
 
             switch (choice)
             {
                 case 1:
+                    System.out.println("Who do you want to register?");
+                    libraryManager.registerNewMember(input.nextLine());
+                    input.nextLine();
 
                     break;
                 case 2:
