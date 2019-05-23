@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
+    private static String password = "Jim1337!";
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
@@ -172,8 +172,6 @@ public class DBManager {
                 driver, "root" , password)) {
             System.out.println("Connected");
 
-            PreparedStatement statement1 = conn.prepareStatement("DELETE from Loan where BookID = (?)");
-            statement1.executeUpdate();
 
             PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
 
