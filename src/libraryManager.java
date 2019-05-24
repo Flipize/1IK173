@@ -67,10 +67,11 @@ public class libraryManager {
         return newMember;
     }
 
-    public static boolean checkRegistration(Member m) {
-        if (m.getMembershipType() != null) {
+  /*  public static boolean checkRegistration(int id, String name, String type) {
+        Scanner reader = new Scanner(System.in);
+        if (get) {
             if (isBanned(m.getPersonalNumber())) {
-                System.out.println("You are suspended.");
+                System.out.println("The account has been terminated.");
                 return false;
             } else {
                 System.out.println("You are already registered.");
@@ -82,14 +83,16 @@ public class libraryManager {
                 rndId = getRandId();
             }
             m.setId(rndId);
-            Scanner reader = new Scanner(System.in);
+            System.out.println("Enter name: ");
+            m.setName(reader.nextLine());
+
             System.out.println("What membership type? ");
             m.setMembershipType(reader.nextLine());
             DBManager.addMember(m);
             System.out.println("An account for " + m.getName() + " (" + m.getId() + ") has successfully been created.");
             return true;
         }
-    }
+    } */
 
     public static void deleteMemberLibrary(int id) {
 
@@ -217,12 +220,14 @@ public class libraryManager {
         return true;
     }
 
-    public static void registerNewMember(Long personalNumber){
-        Member m = regApplicant(personalNumber);
+    /*public static void registerNewMember(Long personalNumber){
+        if (checkIfExistingMember(personalNumber)) {
+
+        }
         if (checkRegistration(m)){
             System.out.println("success");
         }
-    }
+    }*/
 
     public static boolean isBanned(Long personalNumber){
        ArrayList<Long> members = DBManager.getBannedMembers();
@@ -289,6 +294,18 @@ public class libraryManager {
         return found;
     }
 
+    public static Member getMemberByPN(long personalNum) {
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        Member newMember = new Member();
+        for(Member m : members) {
+            if (m.getPersonalNumber() == personalNum) {
+                newMember = m;
+                return newMember;
+            }
+        }
+        return null;
+    }
+
     public static boolean isSuspensionIn(int id){
         ArrayList<Suspension> susp = DBManager.getSuspensionsArrayList();
         boolean found = false;
@@ -304,4 +321,22 @@ public class libraryManager {
     public static void addMember(int id, String name, long personalNumber, String membershipType){
         DBManager.addMember(new Member(id, name, personalNumber, membershipType));
     }
+
+    public static boolean checkIfExistingMember(long personalNum){
+        Member newMember = new Member();
+        if (getMemberByPN(personalNum) != null && !(isBanned(personalNum))) {
+            newMember = getMemberByPN(personalNum);
+            System.out.println(newMember.getName() + " (" + newMember.getPersonalNumber() + ") is already registered.");
+            return true;
+        }
+        else if (getMemberByPN(personalNum) == null && isBanned(personalNum)) {
+            System.out.println("The account has been terminated due to misconduct.");
+            return false;
+        }
+        else {
+            System.out.println("continue");
+            return true;
+        }
+    }
+
 }
