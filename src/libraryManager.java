@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Integer.valueOf;
 
 public class libraryManager {
 
@@ -52,6 +53,16 @@ public class libraryManager {
         }
         else {
             System.out.println("Something went wrong. The book is not eligible for return.");
+        }
+        LocalDate todaysDate = LocalDate.now();
+        for (String[] st : loanArray) {
+            if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
+                String date = st[3];
+                LocalDate endDate = LocalDate.parse(date);
+                if (todaysDate.isAfter(endDate)) {
+                    libraryManager.suspendMember(memberID);
+                }
+            }
         }
     }
 
@@ -237,6 +248,7 @@ public class libraryManager {
     public static void ban(Member m){
         DBManager.addOldMember(m, true);
         DBManager.deleteMember(m.getId());
+        DBManager.deleteSuspension(m.getId());
    }
 
     public static Member getMemberById(int id) {
