@@ -11,7 +11,7 @@ public class libraryManager {
     public static void main(String[] args) {
         //registerNewMember(199405011212L);
 
-        //returnBook(1,1);
+        returnBook(1,1);
         //lendItem(2, 100005);
     }
 
