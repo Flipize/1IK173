@@ -1,5 +1,9 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 public class mainProgram {
 
@@ -15,15 +19,16 @@ public class mainProgram {
             System.out.println("2 - Add a book");
             System.out.println("3 - Borrow a book");
             System.out.println("4 - Return a book");
-            System.out.println("5 - Suspend a member");
-            System.out.println("6 - Remove a member");
-            System.out.println("7 - Remove a book");
+            System.out.println("5 - Remove a book");
+            System.out.println("6 - Suspend a member");
+            System.out.println("7 - Ban a member");
+            System.out.println("8 - Remove a member");
+
             System.out.println("0 - Exit library manager. :(");
 
             choice = Integer.parseInt(input.nextLine());
 
-            switch (choice)
-            {
+            switch (choice) {
                 case 1:
                     String name;
                     long personalNum = 0L;
@@ -70,47 +75,52 @@ public class mainProgram {
                     System.out.println("Book successfully added.");
                     break;
                 case 3:
-                    // .. exit program
+                    System.out.println("Please enter your member ID: ");
+                    int memID = Integer.parseInt(input.nextLine());
+                    System.out.println("Please enter the ISBN of your requested book: ");
+                    int borrowISBN = Integer.parseInt(input.nextLine());
+                    libraryManager.lendItem(memID, borrowISBN);
                     break;
                 case 4:
-
-                   // libraryManager.ban(libraryManager.getMemberById(6));
-                   libraryManager.suspendMember(1);
-
-                    /*ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
-                    for (Suspension s: lista
-                         ) {
-                        System.out.println(s.getMemberID());
-                    }*/
+                    System.out.println("Please enter book ID: ");
+                    int book_ID = Integer.parseInt(input.nextLine());
+                    System.out.println("Please enter your member ID: ");
+                    int memb_ID = Integer.parseInt(input.nextLine());
+                    libraryManager.returnBook(book_ID, memb_ID);
                     break;
                 case 5:
-                    System.out.println("Enter memberId to suspend: ");
-                    int suspendMemberId = Integer.parseInt(input.nextLine());
-                    DBManager.addSuspension(suspendMemberId);
-                    System.out.println("Member suspended for 15 days.");
-                    break;
-                case 6:
-                    System.out.println("Enter the members ID to remove the member: ");
-                    int usedMemberID = Integer.parseInt(input.nextLine());
-                    DBManager.deleteMember(usedMemberID);
-                    System.out.println("Member successfully removed.");
-                    break;
-                case 7:
                     System.out.println("Enter the book ID to remove it: ");
                     int bookID = Integer.parseInt(input.nextLine());
                     DBManager.deleteBook(bookID);
                     System.out.println("Book successfully removed.");
                     break;
-
-                default:
+                case 6:
+                    System.out.println("Enter memberId to suspend: ");
+                    int suspendMemberId = Integer.parseInt(input.nextLine());
+                    DBManager.addSuspension(suspendMemberId);
+                    System.out.println("Member suspended for 15 days.");
                     break;
-                  //  System.out.println("Choice must be a value between 1 and 9.");
+                case 7:
+                    System.out.println("Enter memberId to ban: ");
+                    int banMember = Integer.parseInt(input.nextLine());
+                    libraryManager.ban(libraryManager.getMemberById(banMember));
+                    System.out.println("Member successfully banned.");
+                case 8:
+                    System.out.println("Enter the members ID to remove the member: ");
+                    int usedMemberID = Integer.parseInt(input.nextLine());
+                    DBManager.deleteMember(usedMemberID);
+                    System.out.println("Member successfully removed.");
+                    break;
+                case 9:
+                    default:
+                    break;
+                        //  System.out.println("Choice must be a value between 1 and 9.");
+
+                        }
+                    }
+                    while (choice != 0) ;
+                    System.out.println("Thanks for using library manager.");
+
+
             }
-        } while (choice != 0);
-            System.out.println("Thanks for using library manager.");
-
-
-
-
-    }
-}
+        }
