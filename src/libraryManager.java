@@ -9,10 +9,10 @@ import static java.lang.Integer.parseInt;
 public class libraryManager {
 
     public static void main(String[] args) {
-        //registerNewMember(199405011212L);
 
         //returnBook(1,1);
         //lendItem(2, 100005);
+        ban(getMemberById(6));
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -227,13 +227,26 @@ public class libraryManager {
 
    public static boolean isBanned(Long personalNumber){
        ArrayList<Long> members = DBManager.getBannedMembers();
-
        for (Long l : members) {
            if (personalNumber == l) {
                return true;
            }
        }
        return false;
+   }
+
+   public static void ban(Member m){
+        DBManager.deleteMember(m.getId());
+        DBManager.addOldMember(m, true);
+   }
+
+   public static Member getMemberById(int id) {
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        for(Member m : members) {
+            if (m.getId() == id) {
+                return m;
+            }
+        }return null;
    }
 }
 

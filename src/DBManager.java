@@ -46,8 +46,11 @@ public class DBManager {
         for (Long l : banned){
             System.out.println(l);
         }*/
+        Member newMember = new Member(1211, "Testare", 1232233212L, "Student");
 
         //addLoan(3,4, LocalDate.now(), LocalDate.now().plusDays(7));
+
+        addOldMember(newMember, true);
 
     }
 
@@ -162,7 +165,6 @@ public class DBManager {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Book VALUES (?, ?, ?, ?)");
             statement.setInt(1, b.getId());
@@ -342,7 +344,7 @@ public class DBManager {
 
     public static void updateSuspension (Suspension s, int memberId) {
 
-        try (Connection conn = DriverManager.getConnection(
+       /* try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
             PreparedStatement statement = conn.prepareStatement("UPDATE Suspension set Suspensions = (?), StartDate = (?), EndDate = (?) WHERE MemberID = (?)");
@@ -355,7 +357,7 @@ public class DBManager {
             statement.executeUpdate();
 
         } catch (SQLException ex) {
-        }
+        }*/
     }
 
     public static void banMember (int memberId) {}
@@ -395,5 +397,20 @@ public class DBManager {
 
         return bannedMembers;
 }
+
+    public static void addOldMember(Member m, boolean banned) {
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root" , password)) {
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO oldmembers VALUES (?, ?, ?)");
+            statement.setLong(1, m.getPersonalNumber());
+            statement.setString(2, m.getName());
+            statement.setBoolean(3, banned);
+
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
+        }
+    }
 
 }
