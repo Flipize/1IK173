@@ -225,7 +225,7 @@ public class libraryManager {
         }
     }
 
-   public static boolean isBanned(Long personalNumber){
+    public static boolean isBanned(Long personalNumber){
        ArrayList<Long> members = DBManager.getBannedMembers();
        for (Long l : members) {
            if (personalNumber == l) {
@@ -235,12 +235,12 @@ public class libraryManager {
        return false;
    }
 
-   public static void ban(Member m){
+    public static void ban(Member m){
         DBManager.deleteMember(m.getId());
         DBManager.addOldMember(m, true);
    }
 
-   public static Member getMemberById(int id) {
+    public static Member getMemberById(int id) {
         ArrayList<Member> members = DBManager.getMemberArrayList();
         for(Member m : members) {
             if (m.getId() == id) {
@@ -270,5 +270,28 @@ public class libraryManager {
                 ban(getMemberById(memberID));
             }
         }
+    }
+    public static boolean isMemberIn(int id){
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        boolean found = false;
+
+        for (Member m : members){
+            if (m.getId() == id) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public static boolean isSuspensionIn(int id){
+        ArrayList<Suspension> susp = DBManager.getSuspensionsArrayList();
+        boolean found = false;
+
+        for (Suspension s : susp){
+            if (s.getMemberID() == id) {
+                found = true;
+            }
+        }
+        return found;
     }
 }
