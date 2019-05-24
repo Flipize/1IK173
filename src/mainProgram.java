@@ -96,29 +96,10 @@ public class mainProgram {
                     System.out.println("Member successfully removed.");
                     break;
                 case 9:
+                    default:
+                    break;
+                        //  System.out.println("Choice must be a value between 1 and 9.");
 
-                    int medlem = 5;
-                    int book = 5;
-                    ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
-                    ArrayList<Book> bookArray = DBManager.getBookArrayList();
-                    LocalDate todaysDate = LocalDate.now();
-                    for (String[] st : loanArray) {
-                        if (parseInt(st[1]) == medlem && (parseInt(st[0]) == book)) {
-                           // LocalDate endDate = LocalDate.of(Integer.parseInt(st[3].substring(0,3)), Integer.parseInt(st[3].substring(4,5)), Integer.parseInt(st[3].substring(6,7)));
-                            String date = st[3];
-                            System.out.println(date);
-                            LocalDate endDate = LocalDate.parse(date);
-                            System.out.println(endDate);
-                            if (todaysDate.isAfter(endDate)) {
-                                libraryManager.suspendMember(medlem);
-                            }
-                        }
-                    }
-
-
-                            default:
-                                break;
-                            //  System.out.println("Choice must be a value between 1 and 9.");
                         }
                     }
                     while (choice != 0) ;
