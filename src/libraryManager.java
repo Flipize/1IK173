@@ -12,7 +12,7 @@ public class libraryManager {
 
         //returnBook(1,1);
         //lendItem(2, 100005);
-        ban(getMemberById(4));
+        ban(getMemberById(6));
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -254,29 +254,28 @@ public class libraryManager {
         ArrayList<Suspension> suspensionList = DBManager.getSuspensionsArrayList();
         ArrayList<Member> memberList = DBManager.getMemberArrayList();
         boolean found = false;
-        Suspension susp = new Suspension();
+        Suspension eS = new Suspension();
 
         for (Suspension s: suspensionList) {
             if (s.getMemberID() == memberID) {
                 found = true;
-                susp = s;
-            }
-        }
+                eS = s;
+            }}
                 if (!found) {
                     DBManager.addSuspension(memberID);
                 }
-                else if (susp.getMemberID() == memberID && susp.getSuspensions() == 1) {
-                    int nmrOfsusp = susp.getSuspensions();
+                else if (eS.getMemberID() == memberID && eS.getSuspensions() == 1) {
+                    int nmrOfsusp = eS.getSuspensions();
                     nmrOfsusp++;
-                    susp.setSuspensions(nmrOfsusp);
-                    LocalDate endDate = susp.getEndDate();
-                    susp.setEndDate(endDate.plusDays(15));
-                    DBManager.updateSuspension(susp, memberID);
+                    eS.setSuspensions(nmrOfsusp);
+                    LocalDate endDate = eS.getEndDate();
+                    eS.setEndDate(endDate.plusDays(15));
+                    DBManager.updateSuspension(eS, memberID);
                 }
-             else if (susp.getMemberID() == memberID && susp.getSuspensions() >= 2) {
+             else if (eS.getMemberID() == memberID && eS.getSuspensions() >= 2) {
                 ban(getMemberById(memberID));
             }
-    }
+        }
 
     public static boolean isMemberIn(int id){
         ArrayList<Member> members = DBManager.getMemberArrayList();
