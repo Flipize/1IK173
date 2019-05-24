@@ -26,11 +26,11 @@ public class mainProgram {
             {
                 case 1:
                     System.out.println("Please enter member ID: ");
-                    int memberID = input.nextInt();
+                    int memberID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter member name: ");
                     String memberName = textInput.nextLine();
                     System.out.println("Please enter personal number: ");
-                    int personalNumber = input.nextInt();
+                    int personalNumber = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter membership type: ");
                     String type = textInput.nextLine();
                     System.out.println("Who do you want to register?");
@@ -43,9 +43,9 @@ public class mainProgram {
                     break;
                 case 2:
                     System.out.println("Please enter book ID: ");
-                    int ID = input.nextInt();
+                    int ID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter book ISBN: ");
-                    int ISBN = input.nextInt();
+                    int ISBN = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter book title: ");
                     String Title = textInput.nextLine();
 
@@ -57,27 +57,29 @@ public class mainProgram {
                     // .. exit program
                     break;
                 case 4:
-                    ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
+                    DBManager.suspendMember(6);
+
+                    /*ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
                     for (Suspension s: lista
                          ) {
-                        System.out.println(s.getEndDate());
-                    }
+                        System.out.println(s.getMemberID());
+                    }*/
                     break;
                 case 5:
                     System.out.println("Enter memberId to suspend: ");
-                    int suspendMemberId = input.nextInt();
+                    int suspendMemberId = Integer.parseInt(input.nextLine());
                     DBManager.addSuspension(suspendMemberId);
                     System.out.println("Member suspended for 15 days.");
                     break;
                 case 6:
                     System.out.println("Enter the members ID to remove the member: ");
-                    int usedMemberID = input.nextInt();
+                    int usedMemberID = Integer.parseInt(input.nextLine());
                     DBManager.deleteMember(usedMemberID);
                     System.out.println("Member successfully removed.");
                     break;
                 case 7:
                     System.out.println("Enter the book ID to remove it: ");
-                    int bookID = input.nextInt();
+                    int bookID = Integer.parseInt(input.nextLine());
                     DBManager.deleteBook(bookID);
                     System.out.println("Book successfully removed.");
                     break;
