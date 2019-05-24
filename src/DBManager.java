@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "Jim1337!";
+    private static String password = "eldorado5";
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
@@ -318,8 +318,6 @@ public class DBManager {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
-
-
 
     public static void updateSuspension (Suspension s, int memberId) {
 

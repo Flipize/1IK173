@@ -12,7 +12,7 @@ public class libraryManager {
 
         //returnBook(1,1);
         //lendItem(2, 100005);
-        ban(getMemberById(6));
+        ban(getMemberById(9090));
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -26,7 +26,6 @@ public class libraryManager {
         }
         return false;
     }
-
 
     public static void returnBook(int bookID, int memberID) {
 
@@ -236,17 +235,19 @@ public class libraryManager {
    }
 
     public static void ban(Member m){
-        DBManager.deleteMember(m.getId());
         DBManager.addOldMember(m, true);
+        DBManager.deleteMember(m.getId());
    }
 
     public static Member getMemberById(int id) {
         ArrayList<Member> members = DBManager.getMemberArrayList();
+        Member newMember = new Member();
         for(Member m : members) {
             if (m.getId() == id) {
-                return m;
+                newMember = m;
             }
-        }return null;
+        }
+        return newMember;
    }
 
     public static void suspendMember (int memberID) {
@@ -271,6 +272,7 @@ public class libraryManager {
             }
         }
     }
+
     public static boolean isMemberIn(int id){
         ArrayList<Member> members = DBManager.getMemberArrayList();
         boolean found = false;
