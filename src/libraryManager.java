@@ -12,7 +12,7 @@ public class libraryManager {
 
         //returnBook(1,1);
         //lendItem(2, 100005);
-        System.out.println(getMemberById(1).getName());
+        ban(getMemberById(6));
     }
 
     public static boolean isBookAvailable(int isbn) {
