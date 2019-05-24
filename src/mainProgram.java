@@ -57,7 +57,9 @@ public class mainProgram {
                     // .. exit program
                     break;
                 case 4:
-                    libraryManager.suspendMember(6);
+
+                   // libraryManager.ban(libraryManager.getMemberById(6));
+                   libraryManager.suspendMember(1);
 
                     /*ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
                     for (Suspension s: lista
