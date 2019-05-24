@@ -411,4 +411,18 @@ public class DBManager {
         }
     }
 
+    public static void deleteSuspension (int memberID) {
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root", password)) {
+
+            PreparedStatement statement = conn.prepareStatement("DELETE from Suspension where MemberID = (?) ");
+            statement.setInt(1, memberID);
+            statement.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
+        }
+    }
+
 }
