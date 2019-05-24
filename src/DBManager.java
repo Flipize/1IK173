@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "Hallonsaft1";
-    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "eldorado5";
+    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -35,9 +35,9 @@ public class DBManager {
         //deleteMember(6969);
 
         //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
-        //deleteLoan(1,1);
+        //deleteLoan(5,2);
 
-        //Book newBook = new Book(69, 2626, "A Song of Ice and Fire", false);
+        //Book newBook = new Book(2, 2626, "A Song of Ice and Fire", false);
         //updateBook(newBook);
 
         //Member newMember = new Member(69, "Ibra", "VIP", false);
@@ -47,7 +47,7 @@ public class DBManager {
             System.out.println(l);
         }*/
 
-        addLoan(3,4, LocalDate.now(), LocalDate.now().plusDays(7));
+        //addLoan(3,4, LocalDate.now(), LocalDate.now().plusDays(7));
 
     }
 
@@ -66,7 +66,7 @@ public class DBManager {
                     "SELECT * FROM Member");
 
             while (rs_member.next()) {
-                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getInt(3), rs_member.getString(4)));
+                memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getLong(3), rs_member.getString(4)));
 
             }
 
@@ -131,13 +131,10 @@ public class DBManager {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver loaded");
         } catch (ClassNotFoundException ex) {
-            System.out.println("Driver did not load");
         }
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
-            System.out.println("Connected");
 
             Statement statement = conn.createStatement();
             ResultSet rs_loans = statement.executeQuery(
@@ -183,7 +180,6 @@ public class DBManager {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Member VALUES (?, ?, ?, ?)");
             statement.setInt(1, m.getId());
@@ -202,8 +198,6 @@ public class DBManager {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
-
 
             PreparedStatement statement = conn.prepareStatement("DELETE from Book where BookID = (?) ");
             statement.setInt(1, id);
@@ -219,7 +213,6 @@ public class DBManager {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
             PreparedStatement statement = conn.prepareStatement("DELETE from Member where MemberID = (?) ");
             statement.setInt(1, id);
@@ -269,7 +262,7 @@ public class DBManager {
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
-            PreparedStatement statement = conn.prepareStatement("UPDATE book set ISBN = (?), Title = (?), Status = (?) WHERE BookID = (?)");
+            PreparedStatement statement = conn.prepareStatement("UPDATE book set ISBN = (?), Title = (?), isAvailable = (?) WHERE BookID = (?)");
 
             statement.setInt(1, b.getIsbn());
             statement.setString(2, b.getTitle());
@@ -306,7 +299,6 @@ public class DBManager {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-            System.out.println("Connected");
 
             //är member suspended
 
