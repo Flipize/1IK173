@@ -9,10 +9,10 @@ import static java.lang.Integer.parseInt;
 public class libraryManager {
 
     public static void main(String[] args) {
-        //registerNewMember(199405011212L);
 
         returnBook(1,1);
         //lendItem(2, 100005);
+        ban(getMemberById(6));
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -26,7 +26,6 @@ public class libraryManager {
         }
         return false;
     }
-
 
     public static void returnBook(int bookID, int memberID) {
 
@@ -105,7 +104,6 @@ public class libraryManager {
         }
 
     }
-
 
     public static void lendItem(int memberID, int isbn) {
 
@@ -198,6 +196,7 @@ public class libraryManager {
                 }
             }
     }
+
     public static int getRandId(){
         StringBuilder numberStringB = new StringBuilder();
         Random rnd = new Random();
@@ -225,9 +224,8 @@ public class libraryManager {
         }
     }
 
-   public static boolean isBanned(Long personalNumber){
+    public static boolean isBanned(Long personalNumber){
        ArrayList<Long> members = DBManager.getBannedMembers();
-
        for (Long l : members) {
            if (personalNumber == l) {
                return true;
@@ -235,6 +233,75 @@ public class libraryManager {
        }
        return false;
    }
+
+    public static void ban(Member m){
+        DBManager.addOldMember(m, true);
+        DBManager.deleteMember(m.getId());
+   }
+
+    public static Member getMemberById(int id) {
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        Member newMember = new Member();
+        for(Member m : members) {
+            if (m.getId() == id) {
+                newMember = m;
+            }
+        }
+        return newMember;
+   }
+
+    public static void suspendMember (int memberID) {
+        ArrayList<Suspension> suspensionList = DBManager.getSuspensionsArrayList();
+        ArrayList<Member> memberList = DBManager.getMemberArrayList();
+        boolean found = false;
+        Suspension eS = new Suspension();
+
+        for (Suspension s: suspensionList) {
+            if (s.getMemberID() == memberID) {
+                found = true;
+                eS = s;
+            }}
+                if (!found) {
+                    DBManager.addSuspension(memberID);
+                }
+                else if (eS.getMemberID() == memberID && eS.getSuspensions() == 1) {
+                    int nmrOfsusp = eS.getSuspensions();
+                    nmrOfsusp++;
+                    eS.setSuspensions(nmrOfsusp);
+                    LocalDate endDate = eS.getEndDate();
+                    eS.setEndDate(endDate.plusDays(15));
+                    DBManager.updateSuspension(eS, memberID);
+                }
+             else if (eS.getMemberID() == memberID && eS.getSuspensions() >= 2) {
+                ban(getMemberById(memberID));
+            }
+        }
+
+    public static boolean isMemberIn(int id){
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        boolean found = false;
+
+        for (Member m : members){
+            if (m.getId() == id) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public static boolean isSuspensionIn(int id){
+        ArrayList<Suspension> susp = DBManager.getSuspensionsArrayList();
+        boolean found = false;
+
+        for (Suspension s : susp){
+            if (s.getMemberID() == id) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public static void addMember(int id, String name, long personalNumber, String membershipType){
+        DBManager.addMember(new Member(id, name, personalNumber, membershipType));
+    }
 }
-
-
