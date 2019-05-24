@@ -28,7 +28,7 @@ public class DBManager {
 
         //deleteBook(2222);
 
-        //addMember(new Member(6969, "Kim larksson", "Student", false));
+        //addMember(new Member(6969, "Kim larksson", 94030256, "Student"));
 
         //addBook(new Book(2222, 233223, "Sopboken", true));
 

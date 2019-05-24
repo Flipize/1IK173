@@ -28,61 +28,89 @@ public class mainProgram {
             switch (choice)
             {
                 case 1:
-                    System.out.println("Please enter member ID: ");
-                    int memberID = Integer.parseInt(input.nextLine());
-                    System.out.println("Please enter member name: ");
-                    String memberName = textInput.nextLine();
-                    System.out.println("Please enter personal number: ");
-                    long personalNumber = Long.parseLong(input.nextLine());
-                    System.out.println("Please enter membership type: ");
-                    String type = textInput.nextLine();
-                    System.out.println("Who do you want to register?");
-                    //libraryManager.registerNewMember(input.nextLine());
-                    input.nextLine();
 
-                    Member newMember = new Member(memberID, memberName, personalNumber, type);
-                    DBManager.addMember(newMember);
-                    System.out.println("Member successfully added.");
+                    try {
+                        System.out.println("Please enter member ID: ");
+                        int memberID = Integer.parseInt(input.nextLine());
+                        System.out.println("Please enter member name: ");
+                        String memberName = textInput.nextLine();
+                        System.out.println("Please enter personal number: ");
+                        long personalNumber = Long.parseLong(input.nextLine());
+                        System.out.println("Please enter membership type: ");
+                        String type = textInput.nextLine();
+                        System.out.println("Who do you want to register?");
+                        //libraryManager.registerNewMember(input.nextLine());
+                        input.nextLine();
+
+                        Member newMember = new Member(memberID, memberName, personalNumber, type);
+                        DBManager.addMember(newMember);
+                        System.out.println("Member successfully added.");
+                    }catch (NumberFormatException efe){
+                        System.out.println("Wrong information input");
+                    }
                     break;
                 case 2:
-                    System.out.println("Please enter book ID: ");
-                    int ID = Integer.parseInt(input.nextLine());
-                    System.out.println("Please enter book ISBN: ");
-                    int ISBN = Integer.parseInt(input.nextLine());
-                    System.out.println("Please enter book title: ");
-                    String Title = textInput.nextLine();
+                    try {
+                        System.out.println("Please enter book ID: ");
+                        int ID = Integer.parseInt(input.nextLine());
+                        System.out.println("Please enter book ISBN: ");
+                        int ISBN = Integer.parseInt(input.nextLine());
+                        System.out.println("Please enter book title: ");
+                        String Title = textInput.nextLine();
 
-                    Book newBook = new Book(ID, ISBN, Title, true);
-                    DBManager.addBook(newBook);
-                    System.out.println("Book successfully added.");
-                    break;
+                        Book newBook = new Book(ID, ISBN, Title, true);
+                        DBManager.addBook(newBook);
+                        System.out.println("Book successfully added.");
+                    }catch (NumberFormatException nfe){
+                        System.out.println("Wrong information input");
+                    }break;
+
                 case 3:
                     // .. exit program
                     break;
                 case 4:
-                    System.out.println("Enter member ID");
-                    int enterMemberID = Integer.parseInt(input.nextLine());
-                    System.out.println("Enter book ID");
-                    int enterBookID = Integer.parseInt(input.nextLine());
-                    libraryManager.returnBook(enterBookID, enterMemberID);
-                    break;
+                    try {
+                        System.out.println("Enter member ID");
+                        int enterMemberID = Integer.parseInt(input.nextLine());
+                        System.out.println("Enter book ID");
+                        int enterBookID = Integer.parseInt(input.nextLine());
+                        libraryManager.returnBook(enterBookID, enterMemberID);
+
+                    }catch (NumberFormatException nfe){
+                        System.out.println("Wrong information input");
+                    }break;
+
                 case 5:
-                    System.out.println("Enter memberId to suspend: ");
-                    int suspendMemberId = Integer.parseInt(input.nextLine());
-                    DBManager.addSuspension(suspendMemberId);
-                    System.out.println("Member suspended for 15 days.");
-                    break;
+                    try {
+                        System.out.println("Enter memberId to suspend: ");
+                        int suspendMemberId = Integer.parseInt(input.nextLine());
+                        DBManager.addSuspension(suspendMemberId);
+                        System.out.println("Member suspended for 15 days.");
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Wrong information input");
+
+                    }break;
                 case 6:
-                    System.out.println("Enter the members ID to remove the member: ");
-                    int usedMemberID = Integer.parseInt(input.nextLine());
-                    DBManager.deleteMember(usedMemberID);
-                    System.out.println("Member successfully removed.");
-                    break;
+                    try {
+                        System.out.println("Enter the members ID to remove the member: ");
+                        int usedMemberID = Integer.parseInt(input.nextLine());
+                        DBManager.deleteMember(usedMemberID);
+                        System.out.println("Member successfully removed.");
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Wrong information input");
+
+                    }break;
+
                 case 7:
-                    System.out.println("Enter the book ID to remove it: ");
-                    int bookID = Integer.parseInt(input.nextLine());
-                    DBManager.deleteBook(bookID);
-                    System.out.println("Book successfully removed.");
+                    try {
+                        System.out.println("Enter the book ID to remove it: ");
+                        int bookID = Integer.parseInt(input.nextLine());
+                        DBManager.deleteBook(bookID);
+                        System.out.println("Book successfully removed.");
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Wrong information input");
+
+                    }
                     break;
 
                 default:
