@@ -248,6 +248,27 @@ public class libraryManager {
             }
         }return null;
    }
+
+    public static void suspendMember (int memberID) {
+        ArrayList<Suspension> suspensionList = DBManager.getSuspensionsArrayList();
+        ArrayList<Member> memberList = DBManager.getMemberArrayList();
+
+        for (Suspension s: suspensionList) {
+            if(s.getMemberID() == memberID) {
+                if (s.getMemberID() < 1) {
+                    DBManager.addSuspension(memberID);
+                }
+                else if (s.getSuspensions() == 1) {
+                    int nmrOfsusp = s.getSuspensions();
+                    nmrOfsusp++;
+                    s.setSuspensions(nmrOfsusp);
+                    LocalDate endDate = s.getEndDate();
+                    s.setEndDate(endDate.plusDays(15));
+                    DBManager.updateSuspension(s, memberID);
+                }
+            } else if (s.getSuspensions() > 2) {
+                ban(getMemberById(memberID));
+            }
+        }
+    }
 }
-
-

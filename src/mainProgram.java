@@ -57,7 +57,7 @@ public class mainProgram {
                     // .. exit program
                     break;
                 case 4:
-                    DBManager.suspendMember(6);
+                    libraryManager.suspendMember(6);
 
                     /*ArrayList<Suspension> lista = DBManager.getSuspensionsArrayList();
                     for (Suspension s: lista

@@ -319,32 +319,11 @@ public class DBManager {
         }
     }
 
-   public static void suspendMember (int memberID) {
-        ArrayList<Suspension> suspensionList = getSuspensionsArrayList();
-        ArrayList<Member> memberList = getMemberArrayList();
 
-        for (Suspension s: suspensionList) {
-           if(s.getMemberID() == memberID) {
-               if (s.getMemberID() < 1) {
-                   addSuspension(memberID);
-               }
-               else if (s.getSuspensions() == 1) {
-                   int nmrOfsusp = s.getSuspensions();
-                   nmrOfsusp++;
-                   s.setSuspensions(nmrOfsusp);
-                   LocalDate endDate = s.getEndDate();
-                   s.setEndDate(endDate.plusDays(15));
-                   updateSuspension(s, memberID);
-               }
-               } else if (s.getSuspensions() > 2) {
-               banMember(memberID);
-           }
-        }
-    }
 
     public static void updateSuspension (Suspension s, int memberId) {
 
-       /* try (Connection conn = DriverManager.getConnection(
+        try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
             PreparedStatement statement = conn.prepareStatement("UPDATE Suspension set Suspensions = (?), StartDate = (?), EndDate = (?) WHERE MemberID = (?)");
@@ -357,10 +336,8 @@ public class DBManager {
             statement.executeUpdate();
 
         } catch (SQLException ex) {
-        }*/
+        }
     }
-
-    public static void banMember (int memberId) {}
 
     public static int loanCount(int memberID){
         int count = 0;
