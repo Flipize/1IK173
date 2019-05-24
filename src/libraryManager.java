@@ -105,7 +105,6 @@ public class libraryManager {
 
     }
 
-
     public static void lendItem(int memberID, int isbn) {
 
         ArrayList<Member> members = DBManager.getMemberArrayList();
@@ -197,6 +196,7 @@ public class libraryManager {
                 }
             }
     }
+
     public static int getRandId(){
         StringBuilder numberStringB = new StringBuilder();
         Random rnd = new Random();
@@ -254,26 +254,28 @@ public class libraryManager {
         ArrayList<Suspension> suspensionList = DBManager.getSuspensionsArrayList();
         ArrayList<Member> memberList = DBManager.getMemberArrayList();
         boolean found = false;
+        Suspension susp = new Suspension();
 
         for (Suspension s: suspensionList) {
-            if(s.getMemberID() == memberID) {
+            if (s.getMemberID() == memberID) {
                 found = true;
+                susp = s;
             }
+        }
                 if (!found) {
                     DBManager.addSuspension(memberID);
                 }
-                else if (s.getMemberID() == memberID && s.getSuspensions() == 1) {
-                    int nmrOfsusp = s.getSuspensions();
+                else if (susp.getMemberID() == memberID && susp.getSuspensions() == 1) {
+                    int nmrOfsusp = susp.getSuspensions();
                     nmrOfsusp++;
-                    s.setSuspensions(nmrOfsusp);
-                    LocalDate endDate = s.getEndDate();
-                    s.setEndDate(endDate.plusDays(15));
-                    DBManager.updateSuspension(s, memberID);
+                    susp.setSuspensions(nmrOfsusp);
+                    LocalDate endDate = susp.getEndDate();
+                    susp.setEndDate(endDate.plusDays(15));
+                    DBManager.updateSuspension(susp, memberID);
                 }
-             else if (s.getMemberID() == memberID && s.getSuspensions() >= 2) {
+             else if (susp.getMemberID() == memberID && susp.getSuspensions() >= 2) {
                 ban(getMemberById(memberID));
             }
-        }
     }
 
     public static boolean isMemberIn(int id){
@@ -298,5 +300,9 @@ public class libraryManager {
             }
         }
         return found;
+    }
+
+    public static void addMember(int id, String name, long personalNumber, String membershipType){
+        DBManager.addMember(new Member(id, name, personalNumber, membershipType));
     }
 }
