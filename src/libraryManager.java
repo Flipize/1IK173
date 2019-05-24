@@ -257,7 +257,7 @@ public class libraryManager {
         Suspension eS = new Suspension();
 
         for (Suspension s: suspensionList) {
-            if(s.getMemberID() == memberID) {
+            if (s.getMemberID() == memberID) {
                 found = true;
                 eS = s;
             }}
@@ -299,5 +299,9 @@ public class libraryManager {
             }
         }
         return found;
+    }
+
+    public static void addMember(int id, String name, long personalNumber, String membershipType){
+        DBManager.addMember(new Member(id, name, personalNumber, membershipType));
     }
 }

@@ -927,99 +927,149 @@
     <table id="233" parent="2" name="Book"/>
     <table id="234" parent="2" name="Loan"/>
     <table id="235" parent="2" name="Member"/>
-    <column id="236" parent="233" name="BookID">
+    <table id="236" parent="2" name="OldMembers"/>
+    <table id="237" parent="2" name="Suspension"/>
+    <column id="238" parent="233" name="BookID">
       <Position>1</Position>
       <DataType>int(4)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="233" name="ISBN">
+    <column id="239" parent="233" name="ISBN">
       <Position>2</Position>
       <DataType>int(6)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="238" parent="233" name="Title">
+    <column id="240" parent="233" name="Title">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="239" parent="233" name="isAvailable">
+    <column id="241" parent="233" name="isAvailable">
       <Position>4</Position>
       <DataType>tinyint(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="240" parent="233" name="PRIMARY">
+    <key id="242" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>BookID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="241" parent="234" name="BookID">
+    <column id="243" parent="234" name="BookID">
       <Position>1</Position>
       <DataType>int(6)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="242" parent="234" name="MemberID">
+    <column id="244" parent="234" name="MemberID">
       <Position>2</Position>
       <DataType>int(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="234" name="StartDate">
+    <column id="245" parent="234" name="StartDate">
       <Position>3</Position>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="234" name="EndDate">
+    <column id="246" parent="234" name="EndDate">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="245" parent="234" name="BookID">
+    <index id="247" parent="234" name="BookID">
       <ColNames>BookID</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="246" parent="234" name="MemberID">
+    <index id="248" parent="234" name="MemberID">
       <ColNames>MemberID</ColNames>
       <Type>btree</Type>
     </index>
-    <foreign-key id="247" parent="234" name="loan_ibfk_1">
+    <foreign-key id="249" parent="234" name="loan_ibfk_1">
       <ColNames>BookID</ColNames>
       <RefSchemaName>library</RefSchemaName>
       <RefTableName>Book</RefTableName>
       <RefColNames>BookID</RefColNames>
     </foreign-key>
-    <foreign-key id="248" parent="234" name="loan_ibfk_2">
+    <foreign-key id="250" parent="234" name="loan_ibfk_2">
       <ColNames>MemberID</ColNames>
       <RefSchemaName>library</RefSchemaName>
       <RefTableName>Member</RefTableName>
       <RefColNames>MemberID</RefColNames>
     </foreign-key>
-    <column id="249" parent="235" name="MemberID">
+    <column id="251" parent="235" name="MemberID">
       <Position>1</Position>
       <DataType>int(4)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="235" name="Name">
+    <column id="252" parent="235" name="Name">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="251" parent="235" name="Type">
+    <column id="253" parent="235" name="PersonalNumber">
       <Position>3</Position>
+      <DataType>bigint(12)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="254" parent="235" name="Type">
+      <Position>4</Position>
       <DataType>varchar(25)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
       <Collation>utf8_general_ci</Collation>
     </column>
-    <column id="252" parent="235" name="Suspended">
-      <Position>4</Position>
+    <key id="255" parent="235" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>MemberID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="256" parent="236" name="PersonalNumber">
+      <Position>1</Position>
+      <DataType>bigint(12)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="257" parent="236" name="Name">
+      <Position>2</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+      <Collation>utf8_general_ci</Collation>
+    </column>
+    <column id="258" parent="236" name="Banned">
+      <Position>3</Position>
       <DataType>tinyint(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="253" parent="235" name="PRIMARY">
+    <key id="259" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>MemberID</ColNames>
+      <ColNames>PersonalNumber</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="260" parent="237" name="MemberId">
+      <Position>1</Position>
+      <DataType>int(4)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="261" parent="237" name="Suspensions">
+      <Position>2</Position>
+      <DataType>int(1)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="262" parent="237" name="StartDate">
+      <Position>3</Position>
+      <DataType>date|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="263" parent="237" name="EndDate">
+      <Position>4</Position>
+      <DataType>date|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="264" parent="237" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>MemberId</ColNames>
       <Primary>1</Primary>
     </key>
   </database-model>
