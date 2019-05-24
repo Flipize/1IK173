@@ -12,7 +12,7 @@ public class libraryManager {
 
         //returnBook(1,1);
         //lendItem(2, 100005);
-        ban(getMemberById(4));
+        ban(getMemberById(6));
     }
 
     public static boolean isBookAvailable(int isbn) {
@@ -105,7 +105,6 @@ public class libraryManager {
 
     }
 
-
     public static void lendItem(int memberID, int isbn) {
 
         ArrayList<Member> members = DBManager.getMemberArrayList();
@@ -197,6 +196,7 @@ public class libraryManager {
                 }
             }
     }
+
     public static int getRandId(){
         StringBuilder numberStringB = new StringBuilder();
         Random rnd = new Random();
@@ -254,27 +254,28 @@ public class libraryManager {
         ArrayList<Suspension> suspensionList = DBManager.getSuspensionsArrayList();
         ArrayList<Member> memberList = DBManager.getMemberArrayList();
         boolean found = false;
+        Suspension eS = new Suspension();
 
         for (Suspension s: suspensionList) {
             if(s.getMemberID() == memberID) {
                 found = true;
-            }
+                eS = s;
+            }}
                 if (!found) {
                     DBManager.addSuspension(memberID);
                 }
-                else if (s.getMemberID() == memberID && s.getSuspensions() == 1) {
-                    int nmrOfsusp = s.getSuspensions();
+                else if (eS.getMemberID() == memberID && eS.getSuspensions() == 1) {
+                    int nmrOfsusp = eS.getSuspensions();
                     nmrOfsusp++;
-                    s.setSuspensions(nmrOfsusp);
-                    LocalDate endDate = s.getEndDate();
-                    s.setEndDate(endDate.plusDays(15));
-                    DBManager.updateSuspension(s, memberID);
+                    eS.setSuspensions(nmrOfsusp);
+                    LocalDate endDate = eS.getEndDate();
+                    eS.setEndDate(endDate.plusDays(15));
+                    DBManager.updateSuspension(eS, memberID);
                 }
-             else if (s.getMemberID() == memberID && s.getSuspensions() >= 2) {
+             else if (eS.getMemberID() == memberID && eS.getSuspensions() >= 2) {
                 ban(getMemberById(memberID));
             }
         }
-    }
 
     public static boolean isMemberIn(int id){
         ArrayList<Member> members = DBManager.getMemberArrayList();
