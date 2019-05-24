@@ -27,7 +27,6 @@ public class libraryManager {
         return false;
     }
 
-
     public static void returnBook(int bookID, int memberID) {
 
         ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
@@ -225,7 +224,7 @@ public class libraryManager {
         }
     }
 
-   public static boolean isBanned(Long personalNumber){
+    public static boolean isBanned(Long personalNumber){
        ArrayList<Long> members = DBManager.getBannedMembers();
        for (Long l : members) {
            if (personalNumber == l) {
@@ -235,18 +234,20 @@ public class libraryManager {
        return false;
    }
 
-   public static void ban(Member m){
-        DBManager.deleteMember(m.getId());
+    public static void ban(Member m){
         DBManager.addOldMember(m, true);
+        DBManager.deleteMember(m.getId());
    }
 
-   public static Member getMemberById(int id) {
+    public static Member getMemberById(int id) {
         ArrayList<Member> members = DBManager.getMemberArrayList();
+        Member newMember = new Member();
         for(Member m : members) {
             if (m.getId() == id) {
-                return m;
+                newMember = m;
             }
-        }return null;
+        }
+        return newMember;
    }
 
     public static void suspendMember (int memberID) {
@@ -273,5 +274,29 @@ public class libraryManager {
                 ban(getMemberById(memberID));
             }
         }
+    }
+
+    public static boolean isMemberIn(int id){
+        ArrayList<Member> members = DBManager.getMemberArrayList();
+        boolean found = false;
+
+        for (Member m : members){
+            if (m.getId() == id) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    public static boolean isSuspensionIn(int id){
+        ArrayList<Suspension> susp = DBManager.getSuspensionsArrayList();
+        boolean found = false;
+
+        for (Suspension s : susp){
+            if (s.getMemberID() == id) {
+                found = true;
+            }
+        }
+        return found;
     }
 }
