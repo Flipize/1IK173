@@ -28,7 +28,7 @@ public class DBManager {
 
         //deleteBook(2222);
 
-        //addMember(new Member(6969, "Kim larksson", 94030256, "Student"));
+        //addMember(new Member(6969, "Kim larksson", "Student", false));
 
         //addBook(new Book(2222, 233223, "Sopboken", true));
 
@@ -319,46 +319,23 @@ public class DBManager {
         }
     }
 
-   public static void isMemberSuspended (int memberID) {
-        ArrayList<Suspension> suspensionList = getSuspensionsArrayList();
-        ArrayList<Member> memberList = getMemberArrayList();
-
-        for (Suspension s: suspensionList) {
-           if(s.getMemberID() == memberID) {
-               if (s.getSuspensions() > 0 && s.getSuspensions() < 3) {
-                   int nmrOfsusp = s.getSuspensions();
-                   nmrOfsusp++;
-                   s.setSuspensions(nmrOfsusp);
-                   LocalDate endDate = s.getEndDate();
-                   s.setEndDate(endDate.plusDays(15));
-
-
-               }
-           } else if (s.getSuspensions() > 2) {
-               banMember(memberID);
-           }
-        }
-    }
-
     public static void updateSuspension (Suspension s, int memberId) {
 
-       /* try (Connection conn = DriverManager.getConnection(
+        try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
             PreparedStatement statement = conn.prepareStatement("UPDATE Suspension set Suspensions = (?), StartDate = (?), EndDate = (?) WHERE MemberID = (?)");
 
             statement.setInt(1, s.getSuspensions());
-            statement.setString(2, s.getStartDate());
-            statement.setInt(3, m.getPersonalNumber());
-            statement.setInt(4, m.getId());
+            statement.setDate(2, Date.valueOf(s.getStartDate()));
+            statement.setDate(3, Date.valueOf(s.getEndDate()));
+            statement.setInt(4, s.getMemberID());
 
             statement.executeUpdate();
 
         } catch (SQLException ex) {
-        }*/
+        }
     }
-
-    public static void banMember (int memberId) {}
 
     public static int loanCount(int memberID){
         int count = 0;

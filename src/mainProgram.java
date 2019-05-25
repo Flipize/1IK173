@@ -11,23 +11,55 @@ public class mainProgram {
 
         Scanner input = new Scanner(System.in);
         Scanner textInput = new Scanner(System.in);
-        int choice;
+        int choice = 0;
+        boolean validChoice = false;
 
+        System.out.println("Log in");
+        int id = 0;
 
         do {
-            System.out.println("Welcome to your library manager! Please enter a number below: ");
-            System.out.println("1 - Add a member");
-            System.out.println("2 - Add a book");
-            System.out.println("3 - Borrow a book");
-            System.out.println("4 - Return a book");
-            System.out.println("5 - Remove a book");
-            System.out.println("6 - Suspend a member");
-            System.out.println("7 - Ban a member");
-            System.out.println("8 - Remove a member");
+            System.out.println("User ID: ");
+            try {
+                id = Integer.parseInt(input.nextLine());
+                if (id != testID) {
+                    System.out.println("ID is not registered.");
+                }
+            }catch (NumberFormatException e) {
+                System.out.println("ID not valid. Enter an ID consisting of 4 digits.");
+            }
+        }while (id != testID);
 
-            System.out.println("0 - Exit library manager. :(");
+        System.out.println("You are logged in as NAMN PÅ BIBLIOTEKARIE");
+        System.out.println("Welcome to your library manager! Please enter a number below: ");
 
-            choice = Integer.parseInt(input.nextLine());
+        do {
+            System.out.println("----------- MENU ------------");
+            System.out.println("\t1 - Register member");
+            System.out.println("\t2 - Add book");
+            System.out.println("\t3 - Lend book");
+            System.out.println("\t4 - Return book");
+            System.out.println("\t5 - Remove book");
+            System.out.println("\t6 - Suspend member");
+            System.out.println("\t7 - Ban member");
+            System.out.println("\t8 - Remove member");
+            System.out.println("\t0 - Exit");
+            System.out.println("-----------------------------");
+
+            while (!validChoice) {
+                try {
+                    choice = Integer.parseInt(input.nextLine());
+                    if (choice <= 9) {
+                        validChoice = true;
+                    }
+                    else {
+                        System.out.println("The number has to be in the range of 0-9.");
+                        System.out.println("Enter number: ");
+                    }
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Enter a digit (0-9): ");
+                }
+            }
 
             switch (choice)
             {
@@ -70,6 +102,7 @@ public class mainProgram {
                     }break;
 
                 case 3:
+                    System.out.println("Add Member");
                     System.out.println("Please enter your member ID: ");
                     int memID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter the ISBN of your requested book: ");
@@ -77,6 +110,7 @@ public class mainProgram {
                     libraryManager.lendItem(memID, borrowISBN);
                     break;
                 case 4:
+                    System.out.println("Lend Book");
                     System.out.println("Please enter book ID: ");
                     int book_ID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter your member ID: ");
@@ -84,57 +118,67 @@ public class mainProgram {
                     libraryManager.returnBook(book_ID, memb_ID);
                     break;
                 case 5:
+                    System.out.println("Remove Book");
                     System.out.println("Enter the book ID to remove it: ");
                     int bookID = Integer.parseInt(input.nextLine());
                     DBManager.deleteBook(bookID);
                     System.out.println("Book successfully removed.");
                     break;
                 case 6:
+                    System.out.println("Suspend Member");
                     System.out.println("Enter memberId to suspend: ");
                     int suspendMemberId = Integer.parseInt(input.nextLine());
                     DBManager.addSuspension(suspendMemberId);
                     System.out.println("Member suspended for 15 days.");
                     break;
                 case 7:
-                    System.out.println("Enter memberId to ban: ");
+                    System.out.println("Ban Member");
+                    System.out.println("Enter member ID to ban: ");
                     int banMember = Integer.parseInt(input.nextLine());
                     libraryManager.ban(libraryManager.getMemberById(banMember));
                     System.out.println("Member successfully banned.");
                 case 8:
+                    System.out.println("Remove Member");
                     System.out.println("Enter the members ID to remove the member: ");
                     int usedMemberID = Integer.parseInt(input.nextLine());
                     DBManager.deleteMember(usedMemberID);
                     System.out.println("Member successfully removed.");
                     break;
                 case 9:
-
-                    int medlem = 5;
-                    int book = 5;
-                    ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
-                    ArrayList<Book> bookArray = DBManager.getBookArrayList();
-                    LocalDate todaysDate = LocalDate.now();
-                    for (String[] st : loanArray) {
-                        if (parseInt(st[1]) == medlem && (parseInt(st[0]) == book)) {
-                           // LocalDate endDate = LocalDate.of(Integer.parseInt(st[3].substring(0,3)), Integer.parseInt(st[3].substring(4,5)), Integer.parseInt(st[3].substring(6,7)));
-                            String date = st[3];
-                            System.out.println(date);
-                            LocalDate endDate = LocalDate.parse(date);
-                            System.out.println(endDate);
-                            if (todaysDate.isAfter(endDate)) {
-                                libraryManager.suspendMember(medlem);
-                            }
-                        }
-                    }
-
-
-                            default:
-                                break;
-                            //  System.out.println("Choice must be a value between 1 and 9.");
-                        }
-                    }
-                    while (choice != 0) ;
-                    System.out.println("Thanks for using library manager.");
-
+                default:
+                    break;
+                //  System.out.println("Choice must be a value between 1 and 9.");
 
             }
         }
+        while (choice != 0) ;
+        System.out.println("Thanks for using library manager.");
+
+
+    }
+
+    private static String getAnswer() {
+        Scanner input = new Scanner(System.in);
+        int answer;
+        System.out.println("1. Student\n2. Masterstudent\n3. PhD student\n4. Teacher");
+        boolean validChoice = false;
+
+        while (!validChoice) {
+        try {
+            answer = Integer.parseInt(input.nextLine());
+            if (answer == 1) {
+                return "Student";
+            } else if (answer == 2) {
+                return "Masterstudent";
+            } else if (answer == 3) {
+                return "PhD Student";
+            } else if (answer == 4) {
+                return "Teacher";
+            }
+        } catch (NumberFormatException ne) {
+            System.out.println("Type a digit (1-4).");
+        }
+        }
+        return "Invalid";
+    }
+}
