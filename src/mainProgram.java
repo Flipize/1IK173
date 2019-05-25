@@ -16,6 +16,7 @@ public class mainProgram {
 
         System.out.println("Log in");
         int id = 0;
+        int testID =1234;
 
         do {
             System.out.println("User ID: ");
