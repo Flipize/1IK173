@@ -363,4 +363,36 @@ public class libraryManager {
         return true;
     }
 
+    public static Librarian getLibrarian(int id) {
+        ArrayList<Librarian> librarians = new ArrayList<>();
+        try {
+            librarians = DBManager.getLibrarianArrayList();
+        }catch (SQLException e){
+            System.out.println("SQL error!");
+            return null;
+        }
+        for (Librarian l : librarians) {
+            if (id == l.getId()) {
+                return l;
+            }
+        }
+        return null;
+    }
+
+    public static boolean validLibrarian(int id) {
+        ArrayList<Librarian> librarians = new ArrayList<>();
+        try {
+            librarians = DBManager.getLibrarianArrayList();
+        }catch (SQLException e) {
+            System.out.println("SQL error!" + e.getMessage());
+            return false;
+    }
+    for (Librarian l : librarians) {
+        if (id == l.getId()) {
+            return true;
+        }
+    }
+    return false;
+    }
+
 }

@@ -13,7 +13,6 @@ public class mainProgram {
         Scanner textInput = new Scanner(System.in);
         int choice = 0;
         boolean validChoice = false;
-        int testID = 1234;
 
         System.out.println("Log in");
         int id = 0;
@@ -22,15 +21,15 @@ public class mainProgram {
             System.out.println("User ID: ");
             try {
                 id = Integer.parseInt(input.nextLine());
-                if (id != testID) {
-                    System.out.println("ID is not registered.");
-                }
             }catch (NumberFormatException e) {
                 System.out.println("ID not valid. Enter an ID consisting of 4 digits.");
             }
-        }while (id != testID);
+            if (!libraryManager.validLibrarian(id)) {
+                System.out.println("ID is not registered");
+            }
+        }while (!libraryManager.validLibrarian(id));
 
-        System.out.println("You are logged in as NAMN PÅ BIBLIOTEKARIE");
+        System.out.println("You are logged in as " + libraryManager.getLibrarian(id).getName());
         System.out.println("Welcome to your library manager! Please enter a number below: ");
 
         do {

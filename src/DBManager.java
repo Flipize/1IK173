@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "Hallonsaft1";
-    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "eldorado5";
+    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -314,7 +314,7 @@ public class DBManager {
 
             statement.executeUpdate();
 
-    } catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
@@ -357,21 +357,21 @@ public class DBManager {
         ArrayList<Long> bannedMembers = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(
-            driver, "root", password)) {
+                driver, "root", password)) {
 
-        Statement statement = conn.createStatement();
-        ResultSet rs_banned = statement.executeQuery(
-                "SELECT PersonalNumber FROM OldMembers WHERE Banned = true;");
+            Statement statement = conn.createStatement();
+            ResultSet rs_banned = statement.executeQuery(
+                    "SELECT PersonalNumber FROM OldMembers WHERE Banned = true;");
 
-        while (rs_banned.next()) {
-            bannedMembers.add(rs_banned.getLong(1));
+            while (rs_banned.next()) {
+                bannedMembers.add(rs_banned.getLong(1));
+            }
+
+        } catch (SQLException ex) {
         }
 
-    } catch (SQLException ex) {
-    }
-
         return bannedMembers;
-}
+    }
 
     public static void addOldMember(Member m, boolean banned) {
         try (Connection conn = DriverManager.getConnection(
@@ -402,4 +402,23 @@ public class DBManager {
         }
     }
 
+    public static ArrayList<Librarian> getLibrarianArrayList() throws SQLException {
+        ArrayList<Librarian> registeredLibrarians = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(
+                driver, "root", password)) {
+
+            Statement statement = conn.createStatement();
+            ResultSet rs_librarian = statement.executeQuery(
+                    "SELECT * FROM Librarian");
+
+            while (rs_librarian.next()) {
+                registeredLibrarians.add(new Librarian(rs_librarian.getInt(1), rs_librarian.getString(2)));
+            }
+        }
+
+        return registeredLibrarians;
+    }
 }
+
+
