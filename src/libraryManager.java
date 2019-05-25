@@ -1,4 +1,5 @@
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -141,37 +142,35 @@ public class libraryManager {
 
 
             //Kollar om medlemmen får låna fler böcker
-            boolean canMemberLend = true;
+            int canMemberLend = 1;
 
-            for (Member m : members) {
-                if (m.getMembershipType().equals("Student")) {
+            if (foundMember) {
+                if (member.getMembershipType().equals("Student")) {
                     if (DBManager.loanCount(memberID) >= 3) {
-                        canMemberLend = false;
-                        break;
+                        canMemberLend = 0;
                     }
-                } else if (m.getMembershipType().equals("Masterstudent")) {
+                } else if (member.getMembershipType().equals("Master Student")) {
                     if (DBManager.loanCount(memberID) >= 5) {
-                        canMemberLend = false;
-                        break;
+                        canMemberLend = 0;
                     }
-                } else if (m.getMembershipType().equals("PhD")) {
+                } else if (member.getMembershipType().equals("PhD Student")) {
                     if (DBManager.loanCount(memberID) >= 7) {
-                        canMemberLend = false;
-                        break;
+                        canMemberLend = 0;
                     }
-                } else if (m.getMembershipType().equals("Teacher")) {
+                } else if (member.getMembershipType().equals("Teacher")) {
                     if (DBManager.loanCount(memberID) >= 10) {
-                        canMemberLend = false;
-                        break;
+                        canMemberLend = 0;
                     }
                 } else {
                     System.out.println("Member does not have/has wrong membership type.");
+                    canMemberLend = 2;
                 }
             }
-            if (!canMemberLend) {
+            if (canMemberLend == 0) {
                 System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + DBManager.loanCount(memberID) + " books");
 
-            } else {
+            }
+            else if (canMemberLend == 1) {
                 System.out.println("Borrowing books allowed. Loan count is currently: " + DBManager.loanCount(memberID) + " books.");
 
                 boolean foundBook = false;
@@ -205,19 +204,24 @@ public class libraryManager {
                                 System.out.println("Book is currently not available, please come again");
                         }
                     } else {
-                        System.out.println("Book not found");
+                        System.out.println("Book (ISBN: " + isbn + ") was not found");
                     }
                 }
             }
     }
 
     public static int getRandId(){
-        StringBuilder numberStringB = new StringBuilder();
         Random rnd = new Random();
-        for (int i = 0; i < 4; i++){
-            numberStringB.append(rnd.nextInt(9));
-        }
-        int number = Integer.parseInt(numberStringB.toString());
+        int number;
+        char c;
+        do {
+            StringBuilder numberStringB = new StringBuilder();
+            for (int i = 0; i < 4; i++) {
+                numberStringB.append(rnd.nextInt(9));
+            }
+            number = Integer.parseInt(numberStringB.toString());
+            c = numberStringB.charAt(0);
+        } while (c == '0');
         return number;
     }
 
@@ -241,9 +245,9 @@ public class libraryManager {
     }*/
 
     public static boolean isBanned(Long personalNumber){
-       ArrayList<Long> members = DBManager.getBannedMembers();
-       for (Long l : members) {
-           if (personalNumber == l) {
+       ArrayList<Long> bannedMembers = DBManager.getBannedMembers();
+       for (Long pn : bannedMembers) {
+           if (personalNumber.equals(pn)) {
                return true;
            }
        }
@@ -335,20 +339,28 @@ public class libraryManager {
     }
 
     public static boolean checkIfExistingMember(long personalNum){
-        Member newMember = new Member();
-        if (getMemberByPN(personalNum) != null && !(isBanned(personalNum))) {
-            newMember = getMemberByPN(personalNum);
-            System.out.println(newMember.getName() + " (" + newMember.getPersonalNumber() + ") is already registered.");
-            return true;
-        }
-        else if (getMemberByPN(personalNum) == null && isBanned(personalNum)) {
+        Member newMember = getMemberByPN(personalNum);
+        if (isBanned(personalNum)) {
             System.out.println("The account has been terminated due to misconduct.");
             return false;
         }
+        else if ((newMember != null) && (!(isBanned(personalNum)))) {
+            System.out.println(newMember.getName() + " (" + newMember.getPersonalNumber() + ") is already registered.");
+            return false;
+        }
         else {
-            System.out.println("continue");
             return true;
         }
+    }
+
+    public static boolean addBook(int id, int isbn, String title, boolean available) {
+        try {
+            DBManager.addBook(new Book(id, isbn, title, available));
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 }

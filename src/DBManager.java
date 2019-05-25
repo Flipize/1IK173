@@ -161,7 +161,7 @@ public class DBManager {
         return loanArrayList;
     }
 
-    public static void addBook (Book b) {
+    public static void addBook (Book b) throws SQLException {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -173,8 +173,6 @@ public class DBManager {
             statement.setBoolean(4, b.isAvailable());
 
             statement.executeUpdate();
-        } catch (SQLException ex) {
-            System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
 
@@ -369,6 +367,7 @@ public class DBManager {
 
     } catch (SQLException ex) {
     }
+
 
         return bannedMembers;
 }
