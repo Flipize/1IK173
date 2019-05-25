@@ -12,7 +12,7 @@ public class libraryManager {
 
     public static void main(String[] args) {
 
-        //returnBook(1,1);
+        returnBook(1,1);
         //lendItem(2, 100005);
         ban(getMemberById(6));
     }

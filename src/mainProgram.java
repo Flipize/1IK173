@@ -17,7 +17,6 @@ public class mainProgram {
         System.out.println("Log in");
         int id = 0;
 
-        int testID = 1234;
         do {
             System.out.println("User ID: ");
             try {
@@ -62,56 +61,46 @@ public class mainProgram {
                 }
             }
 
-            switch (choice) {
+            switch (choice)
+            {
                 case 1:
-                    System.out.println("Register Member");
-                    String name;
-                    long personalNum = 0L;
-                    String type;
 
-                    System.out.println("Enter personal number: ");
+                    try {
+                        System.out.println("Please enter member ID: ");
+                        int memberID = Integer.parseInt(input.nextLine());
+                        System.out.println("Please enter member name: ");
+                        String memberName = textInput.nextLine();
+                        System.out.println("Please enter personal number: ");
+                        long personalNumber = Long.parseLong(input.nextLine());
+                        System.out.println("Please enter membership type: ");
+                        String type = textInput.nextLine();
+                        System.out.println("Who do you want to register?");
+                        //libraryManager.registerNewMember(input.nextLine());
+                        input.nextLine();
 
-                    while (personalNum == 0L) {
-                        try {
-                            personalNum = Long.parseLong(input.nextLine());
-                        } catch (NumberFormatException e) {
-                            System.out.println("Not a valid number. Try again.");
-                        }
-                    }
-                    if (!libraryManager.checkIfExistingMember(personalNum)){
-                        System.out.println("Registration has been cancelled.");
-                    }
-
-                    else {
-                        Member newMember = new Member();
-                        int rndId = libraryManager.getRandId();
-                        while (!libraryManager.idIsValid(rndId)) {
-                            rndId = libraryManager.getRandId();
-                        }
-                        System.out.println("Enter name: ");
-                        name = textInput.nextLine();
-                        System.out.println("Enter type: ");
-                        type = getAnswer();
-                        libraryManager.addMember(rndId, name, personalNum, type);
-                        System.out.println("Member (Name: " + name + ", ID number: " + rndId + ") was successfully added.");
+                        Member newMember = new Member(memberID, memberName, personalNumber, type);
+                        DBManager.addMember(newMember);
+                        System.out.println("Member successfully added.");
+                    }catch (NumberFormatException efe){
+                        System.out.println("Wrong information input");
                     }
                     break;
                 case 2:
-                    System.out.println("Add book");
-                    System.out.println("Please enter book ID: ");
-                    int ID = Integer.parseInt(input.nextLine());
-                    System.out.println("Please enter book ISBN: ");
-                    int ISBN = Integer.parseInt(input.nextLine());
-                    System.out.println("Please enter book title: ");
-                    String Title = textInput.nextLine();
+                    try {
+                        System.out.println("Please enter book ID: ");
+                        int ID = Integer.parseInt(input.nextLine());
+                        System.out.println("Please enter book ISBN: ");
+                        int ISBN = Integer.parseInt(input.nextLine());
+                        System.out.println("Please enter book title: ");
+                        String Title = textInput.nextLine();
 
-                    if (libraryManager.addBook(ID, ISBN, Title, true)) {
+                        Book newBook = new Book(ID, ISBN, Title, true);
+                        DBManager.addBook(newBook);
                         System.out.println("Book successfully added.");
-                    }
-                    else {
-                        System.out.println("Book could not be added. Choose a unique ID.");
-                    }
-                    break;
+                    }catch (NumberFormatException nfe){
+                        System.out.println("Wrong information input");
+                    }break;
+
                 case 3:
                     System.out.println("Lend Book");
                     System.out.println("Please enter your member ID: ");

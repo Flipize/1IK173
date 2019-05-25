@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
 
     public static void main(String[] args) {
@@ -161,7 +161,7 @@ public class DBManager {
         return loanArrayList;
     }
 
-    public static void addBook (Book b) throws SQLException {
+    public static void addBook (Book b) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -173,6 +173,8 @@ public class DBManager {
             statement.setBoolean(4, b.isAvailable());
 
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
 
@@ -367,7 +369,6 @@ public class DBManager {
 
     } catch (SQLException ex) {
     }
-
 
         return bannedMembers;
 }
