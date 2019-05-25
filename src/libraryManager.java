@@ -149,7 +149,7 @@ public class libraryManager {
                     if (DBManager.loanCount(memberID) >= 3) {
                         canMemberLend = 0;
                     }
-                } else if (member.getMembershipType().equals("Master Student")) {
+                } else if (member.getMembershipType().equals("Masterstudent")) {
                     if (DBManager.loanCount(memberID) >= 5) {
                         canMemberLend = 0;
                     }
