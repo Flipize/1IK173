@@ -13,6 +13,7 @@ public class mainProgram {
         Scanner textInput = new Scanner(System.in);
         int choice = 0;
         boolean validChoice = false;
+        int testID = 1234;
 
         System.out.println("Log in");
         int id = 0;
@@ -87,6 +88,7 @@ public class mainProgram {
                     break;
                 case 2:
                     try {
+                        System.out.println("Add book");
                         System.out.println("Please enter book ID: ");
                         int ID = Integer.parseInt(input.nextLine());
                         System.out.println("Please enter book ISBN: ");
