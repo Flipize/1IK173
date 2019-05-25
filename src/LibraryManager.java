@@ -1,4 +1,3 @@
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
 
-public class libraryManager {
+public class LibraryManager {
 
     public static void main(String[] args) {
 
@@ -61,7 +60,7 @@ public class libraryManager {
                 String date = st[3];
                 LocalDate endDate = LocalDate.parse(date);
                 if (todaysDate.isAfter(endDate)) {
-                    libraryManager.suspendMember(memberID);
+                    LibraryManager.suspendMember(memberID);
                 }
             }
         }

@@ -1,6 +1,3 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -24,12 +21,12 @@ public class mainProgram {
             }catch (NumberFormatException e) {
                 System.out.println("ID not valid. Enter an ID consisting of 4 digits.");
             }
-            if (!libraryManager.validLibrarian(id)) {
+            if (!LibraryManager.validLibrarian(id)) {
                 System.out.println("ID is not registered");
             }
-        }while (!libraryManager.validLibrarian(id));
+        }while (!LibraryManager.validLibrarian(id));
 
-        System.out.println("You are logged in as " + libraryManager.getLibrarian(id).getName());
+        System.out.println("You are logged in as " + LibraryManager.getLibrarian(id).getName());
         System.out.println("Welcome to your library manager! Please enter a number below: ");
 
         do {
@@ -75,7 +72,7 @@ public class mainProgram {
                         System.out.println("Please enter membership type: ");
                         String type = textInput.nextLine();
                         System.out.println("Who do you want to register?");
-                        //libraryManager.registerNewMember(input.nextLine());
+                        //LibraryManager.registerNewMember(input.nextLine());
                         input.nextLine();
 
                         Member newMember = new Member(memberID, memberName, personalNumber, type);
@@ -108,7 +105,7 @@ public class mainProgram {
                     int memID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter the ISBN of your requested book: ");
                     int borrowISBN = Integer.parseInt(input.nextLine());
-                    libraryManager.lendItem(memID, borrowISBN);
+                    LibraryManager.lendItem(memID, borrowISBN);
                     break;
                 case 4:
                     System.out.println("Return Book");
@@ -116,7 +113,7 @@ public class mainProgram {
                     int book_ID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter your member ID: ");
                     int memb_ID = Integer.parseInt(input.nextLine());
-                    libraryManager.returnBook(book_ID, memb_ID);
+                    LibraryManager.returnBook(book_ID, memb_ID);
                     break;
                 case 5:
                     System.out.println("Remove Book");
@@ -136,7 +133,7 @@ public class mainProgram {
                     System.out.println("Ban Member");
                     System.out.println("Enter member ID to ban: ");
                     int banMember = Integer.parseInt(input.nextLine());
-                    libraryManager.ban(libraryManager.getMemberById(banMember));
+                    LibraryManager.ban(LibraryManager.getMemberById(banMember));
                     System.out.println("Member successfully banned.");
                 case 8:
                     System.out.println("Remove Member");
