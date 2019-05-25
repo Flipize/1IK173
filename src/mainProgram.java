@@ -102,7 +102,7 @@ public class mainProgram {
                     }break;
 
                 case 3:
-                    System.out.println("Add Member");
+                    System.out.println("Lend Book");
                     System.out.println("Please enter your member ID: ");
                     int memID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter the ISBN of your requested book: ");
@@ -110,7 +110,7 @@ public class mainProgram {
                     libraryManager.lendItem(memID, borrowISBN);
                     break;
                 case 4:
-                    System.out.println("Lend Book");
+                    System.out.println("Return Book");
                     System.out.println("Please enter book ID: ");
                     int book_ID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter your member ID: ");
@@ -126,7 +126,7 @@ public class mainProgram {
                     break;
                 case 6:
                     System.out.println("Suspend Member");
-                    System.out.println("Enter memberId to suspend: ");
+                    System.out.println("Enter member ID to suspend: ");
                     int suspendMemberId = Integer.parseInt(input.nextLine());
                     DBManager.addSuspension(suspendMemberId);
                     System.out.println("Member suspended for 15 days.");
@@ -149,7 +149,7 @@ public class mainProgram {
                     break;
                 //  System.out.println("Choice must be a value between 1 and 9.");
 
-            }
+            } validChoice = false;
         }
         while (choice != 0) ;
         System.out.println("Thanks for using library manager.");
