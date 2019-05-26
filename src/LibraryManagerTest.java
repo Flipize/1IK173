@@ -89,12 +89,28 @@ class LibraryManagerTest {
         verify(db).getBannedMembers();
     }
 
-    @Test
-    void ban() {
-    }
+   // @Test
+   /* void ban() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        Member test = new Member(10, "Henk", 9202020202, "Student");
+        lm.ban(test);
+        doNothing().when(db).addOldMember().thenReturn(test);
+        assertTrue(lm.isBanned(9003135218L));
+        verify(db).getBannedMembers();
+
+        //        dbM.addOldMember(m, true);
+        //        dbM.deleteMember(m.getId());
+        //        dbM.deleteSuspension(m.getId());
+    }*/
 
     @Test
     void getMemberById() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Member> member = members;
+        when(db.getMemberArrayList()).thenReturn(member);
+       // assertEquals(new Member(1, "aa", 111, "Student"), lm.getMemberById(1));
     }
 
     @Test
