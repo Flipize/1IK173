@@ -66,25 +66,36 @@ public class MainProgram {
             switch (choice)
             {
                 case 1:
+                    System.out.println("Register Member");
+                    String name;
+                    long personalNum = 0L;
+                    String type;
 
-                    try {
-                        System.out.println("Please enter member ID: ");
-                        int memberID = Integer.parseInt(input.nextLine());
-                        System.out.println("Please enter member name: ");
-                        String memberName = textInput.nextLine();
-                        System.out.println("Please enter personal number: ");
-                        long personalNumber = Long.parseLong(input.nextLine());
-                        System.out.println("Please enter membership type: ");
-                        String type = textInput.nextLine();
-                        System.out.println("Who do you want to register?");
-                        //libraryManager.registerNewMember(input.nextLine());
-                        input.nextLine();
+                    System.out.println("Enter personal number: ");
 
-                        Member newMember = new Member(memberID, memberName, personalNumber, type);
-                        dbM.addMember(newMember);
-                        System.out.println("Member successfully added.");
-                    }catch (NumberFormatException efe){
-                        System.out.println("Wrong information input");
+                    while (personalNum == 0L) {
+                        try {
+                            personalNum = Long.parseLong(input.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Not a valid number. Try again.");
+                        }
+                    }
+                    if (!lbm.checkIfExistingMember(personalNum)){
+                        System.out.println("Registration has been cancelled.");
+                    }
+
+                    else {
+                        Member newMember = new Member();
+                        int rndId = lbm.getRandId();
+                        while (!lbm.idIsValid(rndId)) {
+                            rndId = lbm.getRandId();
+                        }
+                        System.out.println("Enter name: ");
+                        name = textInput.nextLine();
+                        System.out.println("Enter type: ");
+                        type = getAnswer();
+                        lbm.addMember(rndId, name, personalNum, type);
+                        System.out.println("Member (Name: " + name + ", ID number: " + rndId + ") was successfully added.");
                     }
                     break;
                 case 2:

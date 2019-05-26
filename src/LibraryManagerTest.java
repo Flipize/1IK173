@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -30,7 +31,7 @@ class LibraryManagerTest {
         librarians.add(new Librarian(1234, "Gunilla Andersson"));
         librarians.add(new Librarian(5678, "Alfred Persson"));
         suspensions.add(new Suspension(3,3, LocalDate.parse ("1330-12-21"), LocalDate.parse("2019-05-30")));
-        loans.add(new String[]{"2", "2", "20190526", "20190603"});
+        loans.add(new String[]{"2", "2", "2019-05-26", "2019-06-03"});
 
     }
 
@@ -49,6 +50,18 @@ class LibraryManagerTest {
 
     @Test
     void returnBook() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Book> booksAL = books;
+        ArrayList<String[]> loansAL = loans;
+        ArrayList<Member> membersAl = members;
+        when(db.getLoanArrayList()).thenReturn(loansAL);
+        when(db.getBookArrayList()).thenReturn(booksAL);
+        when(db.getMemberArrayList()).thenReturn(membersAl);
+        lm.returnBook(2,2);
+
+
+
     }
 
     @Test
