@@ -75,10 +75,18 @@ class LibraryManagerTest {
         mem.add(new Member(7, "lillan lill", 9004090101L, "Student"));
         when(db.getMemberArrayList()).thenReturn(mem);
         assertTrue(lm.idIsValid(8));
+        verify(db).getMemberArrayList();
     }
 
     @Test
     void isBanned() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Long> banned = new ArrayList<>();
+        banned.add(9003135218L);
+        when(db.getBannedMembers()).thenReturn(banned);
+        assertTrue(lm.isBanned(9003135218L));
+        verify(db).getBannedMembers();
     }
 
     @Test
