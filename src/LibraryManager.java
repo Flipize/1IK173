@@ -39,10 +39,10 @@ public class LibraryManager {
         return false;
     }
 
-    public  void returnBook(int bookID, int memberID) {
+    public  void returnBook(int bookID, int memberID) throws NullPointerException {
 
         ArrayList<String[]> loanArray = dbM.getLoanArrayList();
-        ArrayList<Book> bookArray = new DBManager().getBookArrayList();
+        ArrayList<Book> bookArray = dbM.getBookArrayList();
         boolean bookReturned = false;
         Book book = new Book();
 

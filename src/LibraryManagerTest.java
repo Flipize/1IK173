@@ -18,7 +18,7 @@ class LibraryManagerTest {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> bookAL = new ArrayList<>();
-        bookAL.add(new Book(7, 7766, "Hejsan", false));
+        bookAL.add(new Book(7, 7766, "Hejsan", true));
         bookAL.add(new Book(8, 7765, "Hejsan", true));
         when(db.getBookArrayList()).thenReturn(bookAL);
         assertTrue(lm.isBookAvailable(7766));
@@ -50,6 +50,12 @@ class LibraryManagerTest {
 
     @Test
     void idIsValid() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Member> mem = new ArrayList<>();
+        mem.add(new Member(7, "lillan lill", 9004090101L, "Student"));
+        when(db.getMemberArrayList()).thenReturn(mem);
+        assertTrue(lm.idIsValid(8));
     }
 
     @Test
