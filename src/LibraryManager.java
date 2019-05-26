@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,18 +8,27 @@ import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class LibraryManager {
 
-    public static void main(String[] args) {
+    DBManager dbM = null;
 
-        returnBook(1,1);
-        //lendItem(2, 100005);
-        ban(getMemberById(6));
+    public LibraryManager (DBManager db) {
+        dbM = db;
     }
 
-    public static boolean isBookAvailable(int isbn) {
-        ArrayList<Book> bookArrayList = DBManager.getBookArrayList();
+    public static void main(String[] args) {
+
+     /*   returnBook(1,1);
+        //lendItem(2, 100005);
+        ban(getMemberById(6));*/
+    }
+
+    public boolean isBookAvailable(int isbn) {
+        ArrayList<Book> bookArrayList = dbM.getBookArrayList();
         for (Book b : bookArrayList) {
             if (b.getIsbn() == isbn) {
                 if (b.isAvailable()) {
@@ -28,10 +39,10 @@ public class LibraryManager {
         return false;
     }
 
-    public static void returnBook(int bookID, int memberID) {
+    public  void returnBook(int bookID, int memberID) {
 
-        ArrayList<String[]> loanArray = DBManager.getLoanArrayList();
-        ArrayList<Book> bookArray = DBManager.getBookArrayList();
+        ArrayList<String[]> loanArray = dbM.getLoanArrayList();
+        ArrayList<Book> bookArray = new DBManager().getBookArrayList();
         boolean bookReturned = false;
         Book book = new Book();
 
@@ -41,9 +52,9 @@ public class LibraryManager {
                     if (b.getId() == bookID) {
                         book = b;
                         b.setAvailable(true);
-                        DBManager.updateBook(b);
+                        dbM.updateBook(b);
                         bookReturned = true;
-                        DBManager.deleteLoan(bookID, memberID);
+                        dbM.deleteLoan(bookID, memberID);
                     }
                 }
             }
@@ -60,14 +71,14 @@ public class LibraryManager {
                 String date = st[3];
                 LocalDate endDate = LocalDate.parse(date);
                 if (todaysDate.isAfter(endDate)) {
-                    LibraryManager.suspendMember(memberID);
+                    suspendMember(memberID);
                 }
             }
         }
     }
 
-    public static Member regApplicant(long personalNumber) {
-        ArrayList<Member> members = DBManager.getMemberArrayList();
+    public  Member regApplicant(long personalNumber) {
+        ArrayList<Member> members = dbM.getMemberArrayList();
         for (Member m : members) {
             if (m.getPersonalNumber() == personalNumber) {
                 return m;
@@ -105,13 +116,13 @@ public class LibraryManager {
         }
     } */
 
-    public static void deleteMemberLibrary(int id) {
+    public  void deleteMemberLibrary(int id) {
 
-        ArrayList<Member> tempArray = DBManager.getMemberArrayList();
+        ArrayList<Member> tempArray = dbM.getMemberArrayList();
 
         for (Member m : tempArray) {
             if (m.getId() == id) {
-                DBManager.deleteMember(id);
+                dbM.deleteMember(id);
                 System.out.println("Member is deleted");
             } else
                 System.out.println("No member found");
@@ -119,10 +130,10 @@ public class LibraryManager {
 
     }
 
-    public static void lendItem(int memberID, int isbn) {
+    public  void lendItem(int memberID, int isbn) {
 
-        ArrayList<Member> members = DBManager.getMemberArrayList();
-        ArrayList<Book> books = DBManager.getBookArrayList();
+        ArrayList<Member> members = dbM.getMemberArrayList();
+        ArrayList<Book> books = new DBManager().getBookArrayList();
         ArrayList<Book> askedBook = new ArrayList<>();
         Scanner input = new Scanner(System.in);
 
@@ -145,19 +156,19 @@ public class LibraryManager {
 
             if (foundMember) {
                 if (member.getMembershipType().equals("Student")) {
-                    if (DBManager.loanCount(memberID) >= 3) {
+                    if (dbM.loanCount(memberID) >= 3) {
                         canMemberLend = 0;
                     }
                 } else if (member.getMembershipType().equals("Masterstudent")) {
-                    if (DBManager.loanCount(memberID) >= 5) {
+                    if (dbM.loanCount(memberID) >= 5) {
                         canMemberLend = 0;
                     }
                 } else if (member.getMembershipType().equals("PhD Student")) {
-                    if (DBManager.loanCount(memberID) >= 7) {
+                    if (dbM.loanCount(memberID) >= 7) {
                         canMemberLend = 0;
                     }
                 } else if (member.getMembershipType().equals("Teacher")) {
-                    if (DBManager.loanCount(memberID) >= 10) {
+                    if (dbM.loanCount(memberID) >= 10) {
                         canMemberLend = 0;
                     }
                 } else {
@@ -166,11 +177,11 @@ public class LibraryManager {
                 }
             }
             if (canMemberLend == 0) {
-                System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + DBManager.loanCount(memberID) + " books");
+                System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + dbM.loanCount(memberID) + " books");
 
             }
             else if (canMemberLend == 1) {
-                System.out.println("Borrowing books allowed. Loan count is currently: " + DBManager.loanCount(memberID) + " books.");
+                System.out.println("Borrowing books allowed. Loan count is currently: " + dbM.loanCount(memberID) + " books.");
 
                 boolean foundBook = false;
                 for (Book b : books) {
@@ -194,9 +205,9 @@ public class LibraryManager {
                                 System.out.println("Book available.");
                                 System.out.println("Add: " + book.getTitle() + " as a loan for: " + member.getName() + "? (Y/N)");
                                 if (input.nextLine().toUpperCase().equals("Y")) {
-                                    DBManager.addLoan(book.getId(), memberID, LocalDate.now(), LocalDate.now().plusDays(7));
+                                    dbM.addLoan(book.getId(), memberID, LocalDate.now(), LocalDate.now().plusDays(7));
                                     book.setAvailable(false);
-                                    DBManager.updateBook(book);
+                                    dbM.updateBook(book);
                                 }
                                 break;
                             } else
@@ -209,7 +220,7 @@ public class LibraryManager {
             }
     }
 
-    public static int getRandId(){
+    public  int getRandId(){
         Random rnd = new Random();
         int number;
         char c;
@@ -224,8 +235,8 @@ public class LibraryManager {
         return number;
     }
 
-    public static boolean idIsValid(int id) {
-        ArrayList<Member> members = DBManager.getMemberArrayList();
+    public  boolean idIsValid(int id) {
+        ArrayList<Member> members = dbM.getMemberArrayList();
         for (Member m : members) {
             if (id == m.getId()) {
                 return false;
@@ -243,8 +254,8 @@ public class LibraryManager {
         }
     }*/
 
-    public static boolean isBanned(Long personalNumber){
-       ArrayList<Long> bannedMembers = DBManager.getBannedMembers();
+    public  boolean isBanned(Long personalNumber){
+       ArrayList<Long> bannedMembers = dbM.getBannedMembers();
        for (Long pn : bannedMembers) {
            if (personalNumber.equals(pn)) {
                return true;
@@ -253,14 +264,14 @@ public class LibraryManager {
        return false;
    }
 
-    public static void ban(Member m){
-        DBManager.addOldMember(m, true);
-        DBManager.deleteMember(m.getId());
-        DBManager.deleteSuspension(m.getId());
+    public  void ban(Member m){
+        dbM.addOldMember(m, true);
+        dbM.deleteMember(m.getId());
+        dbM.deleteSuspension(m.getId());
    }
 
-    public static Member getMemberById(int id) {
-        ArrayList<Member> members = DBManager.getMemberArrayList();
+    public  Member getMemberById(int id) {
+        ArrayList<Member> members = dbM.getMemberArrayList();
         Member newMember = new Member();
         for(Member m : members) {
             if (m.getId() == id) {
@@ -270,9 +281,9 @@ public class LibraryManager {
         return newMember;
    }
 
-    public static void suspendMember (int memberID) {
-        ArrayList<Suspension> suspensionList = DBManager.getSuspensionsArrayList();
-        ArrayList<Member> memberList = DBManager.getMemberArrayList();
+    public  void suspendMember (int memberID) {
+        ArrayList<Suspension> suspensionList = dbM.getSuspensionsArrayList();
+        ArrayList<Member> memberList = dbM.getMemberArrayList();
         boolean found = false;
         Suspension eS = new Suspension();
 
@@ -282,7 +293,7 @@ public class LibraryManager {
                 eS = s;
             }}
                 if (!found) {
-                    DBManager.addSuspension(memberID);
+                    dbM.addSuspension(memberID);
                 }
                 else if (eS.getMemberID() == memberID && eS.getSuspensions() == 1) {
                     int nmrOfsusp = eS.getSuspensions();
@@ -290,15 +301,15 @@ public class LibraryManager {
                     eS.setSuspensions(nmrOfsusp);
                     LocalDate endDate = eS.getEndDate();
                     eS.setEndDate(endDate.plusDays(15));
-                    DBManager.updateSuspension(eS, memberID);
+                    dbM.updateSuspension(eS, memberID);
                 }
              else if (eS.getMemberID() == memberID && eS.getSuspensions() >= 2) {
                 ban(getMemberById(memberID));
             }
         }
 
-    public static boolean isMemberIn(int id){
-        ArrayList<Member> members = DBManager.getMemberArrayList();
+    public  boolean isMemberIn(int id){
+        ArrayList<Member> members = dbM.getMemberArrayList();
         boolean found = false;
 
         for (Member m : members){
@@ -309,8 +320,8 @@ public class LibraryManager {
         return found;
     }
 
-    public static Member getMemberByPN(long personalNum) {
-        ArrayList<Member> members = DBManager.getMemberArrayList();
+    public  Member getMemberByPN(long personalNum) {
+        ArrayList<Member> members = dbM.getMemberArrayList();
         Member newMember = new Member();
         for(Member m : members) {
             if (m.getPersonalNumber() == personalNum) {
@@ -321,8 +332,8 @@ public class LibraryManager {
         return null;
     }
 
-    public static boolean isSuspensionIn(int id){
-        ArrayList<Suspension> susp = DBManager.getSuspensionsArrayList();
+    public  boolean isSuspensionIn(int id){
+        ArrayList<Suspension> susp = dbM.getSuspensionsArrayList();
         boolean found = false;
 
         for (Suspension s : susp){
@@ -333,11 +344,11 @@ public class LibraryManager {
         return found;
     }
 
-    public static void addMember(int id, String name, long personalNumber, String membershipType){
-        DBManager.addMember(new Member(id, name, personalNumber, membershipType));
+    public  void addMember(int id, String name, long personalNumber, String membershipType){
+        dbM.addMember(new Member(id, name, personalNumber, membershipType));
     }
 
-    public static boolean checkIfExistingMember(long personalNum){
+    public  boolean checkIfExistingMember(long personalNum){
         Member newMember = getMemberByPN(personalNum);
         if (isBanned(personalNum)) {
             System.out.println("The account has been terminated due to misconduct.");
@@ -352,9 +363,9 @@ public class LibraryManager {
         }
     }
 
-    public static boolean addBook(int id, int isbn, String title, boolean available) {
+    public  boolean addBook(int id, int isbn, String title, boolean available) {
         try {
-            DBManager.addBook(new Book(id, isbn, title, available));
+            dbM.addBook(new Book(id, isbn, title, available));
         }
         catch (Exception e) {
             return false;
@@ -362,10 +373,10 @@ public class LibraryManager {
         return true;
     }
 
-    public static Librarian getLibrarian(int id) {
+    public  Librarian getLibrarian(int id) {
         ArrayList<Librarian> librarians = new ArrayList<>();
         try {
-            librarians = DBManager.getLibrarianArrayList();
+            librarians = dbM.getLibrarianArrayList();
         }catch (SQLException e){
             System.out.println("SQL error!");
             return null;
@@ -378,10 +389,10 @@ public class LibraryManager {
         return null;
     }
 
-    public static boolean validLibrarian(int id) {
+    public  boolean validLibrarian(int id) {
         ArrayList<Librarian> librarians = new ArrayList<>();
         try {
-            librarians = DBManager.getLibrarianArrayList();
+            librarians = dbM.getLibrarianArrayList();
         }catch (SQLException e) {
             System.out.println("SQL error!" + e.getMessage());
             return false;

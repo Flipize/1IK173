@@ -33,6 +33,6 @@
     </orderEntry>
     <orderEntry type="library" name="mysql-connector-java-8.0.13" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.161" level="project" />
-    <orderEntry type="library" name="mockito-junit-jupiter-2.27.5-sources" level="project" />
+    <orderEntry type="library" exported="" name="mockito-junit-jupiter-2.27.5-sources" level="project" />
   </component>
 </module>

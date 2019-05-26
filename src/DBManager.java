@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
+    private static String password = "Jim1337!";
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
@@ -46,15 +46,15 @@ public class DBManager {
         for (Long l : banned){
             System.out.println(l);
         }*/
-        Member newMember = new Member(1211, "Testare", 1232233212L, "Student");
+       /* Member newMember = new Member(1211, "Testare", 1232233212L, "Student");
 
         //addLoan(3,4, LocalDate.now(), LocalDate.now().plusDays(7));
 
         addOldMember(newMember, true);
-
+*/
     }
 
-    public static ArrayList<Member> getMemberArrayList() {
+    public ArrayList<Member> getMemberArrayList() {
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {
@@ -79,7 +79,7 @@ public class DBManager {
         return memberArrayList;
     }
 
-    public static ArrayList<Book> getBookArrayList() {
+    public ArrayList<Book> getBookArrayList() {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
         try {
@@ -104,7 +104,7 @@ public class DBManager {
         return bookArrayList;
     }
 
-    public static ArrayList<Suspension> getSuspensionsArrayList() {
+    public  ArrayList<Suspension> getSuspensionsArrayList() {
         ArrayList<Suspension> suspensionsList = new ArrayList<>();
 
         try {
@@ -128,7 +128,7 @@ public class DBManager {
         return suspensionsList;
     }
 
-    public static ArrayList<String[]> getLoanArrayList() {
+    public  ArrayList<String[]> getLoanArrayList() {
         ArrayList<String[]> loanArrayList = new ArrayList<>();
         String[] temp = new String[4];
 
@@ -161,7 +161,7 @@ public class DBManager {
         return loanArrayList;
     }
 
-    public static void addBook (Book b) {
+    public  void addBook (Book b) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -178,7 +178,7 @@ public class DBManager {
         }
     }
 
-    public static void addMember (Member m) {
+    public  void addMember (Member m) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -196,7 +196,7 @@ public class DBManager {
         }
     }
 
-    public static void deleteBook (int id) {
+    public  void deleteBook (int id) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -211,7 +211,7 @@ public class DBManager {
         }
     }
 
-    public static void deleteMember (int id) {
+    public  void deleteMember (int id) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -227,7 +227,7 @@ public class DBManager {
 
     }
 
-    public static void addLoan(int bookID, int memberID, LocalDate startDate, LocalDate endDate){
+    public  void addLoan(int bookID, int memberID, LocalDate startDate, LocalDate endDate){
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
@@ -246,7 +246,7 @@ public class DBManager {
         }
     }
 
-    public static void deleteLoan(int bookID, int memberID){
+    public  void deleteLoan(int bookID, int memberID){
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
@@ -260,7 +260,7 @@ public class DBManager {
 
     }
 
-    public static void updateBook(Book b){
+    public  void updateBook(Book b){
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
@@ -278,7 +278,7 @@ public class DBManager {
         }
     }
 
-    public static void updateMember(Member m){
+    public  void updateMember(Member m){
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
@@ -296,7 +296,7 @@ public class DBManager {
         }
     }
 
-    public static void addSuspension (int memberId){
+    public  void addSuspension (int memberId){
 
 
         try (Connection conn = DriverManager.getConnection(
@@ -319,7 +319,7 @@ public class DBManager {
         }
     }
 
-    public static void updateSuspension (Suspension s, int memberId) {
+    public  void updateSuspension (Suspension s, int memberId) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -337,7 +337,7 @@ public class DBManager {
         }
     }
 
-    public static int loanCount(int memberID){
+    public  int loanCount(int memberID){
         int count = 0;
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -353,7 +353,7 @@ public class DBManager {
         return count;
     }
 
-    public static ArrayList<Long> getBannedMembers(){
+    public  ArrayList<Long> getBannedMembers(){
         ArrayList<Long> bannedMembers = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(
@@ -373,7 +373,7 @@ public class DBManager {
         return bannedMembers;
     }
 
-    public static void addOldMember(Member m, boolean banned) {
+    public  void addOldMember(Member m, boolean banned) {
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
 
@@ -388,7 +388,7 @@ public class DBManager {
         }
     }
 
-    public static void deleteSuspension (int memberID) {
+    public  void deleteSuspension (int memberID) {
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
@@ -402,7 +402,7 @@ public class DBManager {
         }
     }
 
-    public static ArrayList<Librarian> getLibrarianArrayList() throws SQLException {
+    public  ArrayList<Librarian> getLibrarianArrayList() throws SQLException {
         ArrayList<Librarian> registeredLibrarians = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(

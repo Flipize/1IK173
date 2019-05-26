@@ -6,18 +6,26 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LibraryManagerTest {
-    DBManager dbMock = mock(DBManager.class);
-    ArrayList<Book> bookAL = new ArrayList<>();
+
+    @Test
+    void testOst() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Book> bookAL = new ArrayList<>();
+        bookAL.add(new Book(7, 7766, "Hejsan", false));
+        bookAL.add(new Book(8, 7765, "Hejsan", true));
+        when(db.getBookArrayList()).thenReturn(bookAL);
+        assertTrue(lm.isBookAvailable(7766));
+    }
 
     @Test
     void isBookAvailable() {
-        when(dbMock.getBookArrayList()).thenReturn(bookAL);
-        assertEquals(true, LibraryManager.isBookAvailable(1234));
     }
 
     @Test

@@ -1,11 +1,16 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
-public class mainProgram {
+public class MainProgram {
 
     public static void main(String[] args) {
 
+        DBManager dbM = new DBManager();
+        LibraryManager lbm = new LibraryManager(dbM);
         Scanner input = new Scanner(System.in);
         Scanner textInput = new Scanner(System.in);
         int choice = 0;
@@ -13,7 +18,6 @@ public class mainProgram {
 
         System.out.println("Log in");
         int id = 0;
-        int testID =1234;
 
         do {
             System.out.println("User ID: ");
@@ -22,12 +26,12 @@ public class mainProgram {
             }catch (NumberFormatException e) {
                 System.out.println("ID not valid. Enter an ID consisting of 4 digits.");
             }
-            if (!LibraryManager.validLibrarian(id)) {
+            if (!lbm.validLibrarian(id)) {
                 System.out.println("ID is not registered");
             }
-        }while (!LibraryManager.validLibrarian(id));
+        }while (!lbm.validLibrarian(id));
 
-        System.out.println("You are logged in as " + LibraryManager.getLibrarian(id).getName());
+        System.out.println("You are logged in as " + lbm.getLibrarian(id).getName());
         System.out.println("Welcome to your library manager! Please enter a number below: ");
 
         do {
@@ -73,11 +77,11 @@ public class mainProgram {
                         System.out.println("Please enter membership type: ");
                         String type = textInput.nextLine();
                         System.out.println("Who do you want to register?");
-                        //LibraryManager.registerNewMember(input.nextLine());
+                        //libraryManager.registerNewMember(input.nextLine());
                         input.nextLine();
 
                         Member newMember = new Member(memberID, memberName, personalNumber, type);
-                        DBManager.addMember(newMember);
+                        dbM.addMember(newMember);
                         System.out.println("Member successfully added.");
                     }catch (NumberFormatException efe){
                         System.out.println("Wrong information input");
@@ -94,7 +98,7 @@ public class mainProgram {
                         String Title = textInput.nextLine();
 
                         Book newBook = new Book(ID, ISBN, Title, true);
-                        DBManager.addBook(newBook);
+                        dbM.addBook(newBook);
                         System.out.println("Book successfully added.");
                     }catch (NumberFormatException nfe){
                         System.out.println("Wrong information input");
@@ -106,7 +110,7 @@ public class mainProgram {
                     int memID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter the ISBN of your requested book: ");
                     int borrowISBN = Integer.parseInt(input.nextLine());
-                    LibraryManager.lendItem(memID, borrowISBN);
+                    lbm.lendItem(memID, borrowISBN);
                     break;
                 case 4:
                     System.out.println("Return Book");
@@ -114,36 +118,39 @@ public class mainProgram {
                     int book_ID = Integer.parseInt(input.nextLine());
                     System.out.println("Please enter your member ID: ");
                     int memb_ID = Integer.parseInt(input.nextLine());
-                    LibraryManager.returnBook(book_ID, memb_ID);
+                    lbm.returnBook(book_ID, memb_ID);
                     break;
                 case 5:
                     System.out.println("Remove Book");
                     System.out.println("Enter the book ID to remove it: ");
                     int bookID = Integer.parseInt(input.nextLine());
-                    DBManager.deleteBook(bookID);
+                    dbM.deleteBook(bookID);
                     System.out.println("Book successfully removed.");
                     break;
                 case 6:
                     System.out.println("Suspend Member");
                     System.out.println("Enter member ID to suspend: ");
                     int suspendMemberId = Integer.parseInt(input.nextLine());
-                    DBManager.addSuspension(suspendMemberId);
+                    dbM.addSuspension(suspendMemberId);
                     System.out.println("Member suspended for 15 days.");
                     break;
                 case 7:
                     System.out.println("Ban Member");
                     System.out.println("Enter member ID to ban: ");
                     int banMember = Integer.parseInt(input.nextLine());
-                    LibraryManager.ban(LibraryManager.getMemberById(banMember));
+                    lbm.ban(lbm.getMemberById(banMember));
                     System.out.println("Member successfully banned.");
                 case 8:
                     System.out.println("Remove Member");
                     System.out.println("Enter the members ID to remove the member: ");
                     int usedMemberID = Integer.parseInt(input.nextLine());
-                    DBManager.deleteMember(usedMemberID);
+                    dbM.deleteMember(usedMemberID);
                     System.out.println("Member successfully removed.");
                     break;
                 case 9:
+                    System.out.println( lbm.isBookAvailable(100001));
+
+                        break;
                 default:
                     break;
                 //  System.out.println("Choice must be a value between 1 and 9.");
