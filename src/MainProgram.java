@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +9,6 @@ public class MainProgram {
     private static Logger logger = LogManager.getLogger(MainProgram.class.getName());
 
     public static void main(String[] args) {
-        logger.info("Testing");
 
         DBManager dbM = new DBManager();
         LibraryManager lbm = new LibraryManager(dbM);
@@ -173,7 +170,7 @@ public class MainProgram {
                     else {
 
                         book = lbm.returnBook(book_ID, memb_ID);
-                        if (!lbm.returnedInTime(loan)) {
+                        if (lbm.returnedInTime(loan)) {
                             System.out.println("Book is returned too late. Suspension has been added to member.");
                         }
                         if (book != null) {

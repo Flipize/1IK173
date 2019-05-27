@@ -17,38 +17,35 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LibraryManagerTest {
-    public ArrayList<Book> books = new ArrayList<>();
-    public ArrayList<Member> members = new ArrayList<>();
-    public ArrayList<Librarian> librarians = new ArrayList<>();
-    public ArrayList<Suspension> suspensions = new ArrayList<>();
-    public ArrayList<String[]> loans = new ArrayList<>();
+    private ArrayList<Book> books = new ArrayList<>();
+    private ArrayList<Member> members = new ArrayList<>();
+    private ArrayList<Librarian> librarians = new ArrayList<>();
+    private ArrayList<Suspension> suspensions = new ArrayList<>();
+    private ArrayList<String[]> loans = new ArrayList<>();
 
 
-    public LibraryManagerTest() {
+    LibraryManagerTest() {
         books.add(new Book(1,1010101,"Game of Thrones", true));
         books.add(new Book(2,2020202,"Game of Phonies", false));
         books.add(new Book(3,3030303,"Game of Bros", true));
-        members.add(new Member(1, "Flipize", 12891212L, "Student"));
-        members.add(new Member(2, "Gurr", 12891212L, "Teacher"));
-        members.add(new Member(1, "Beggan", 12891212L, "PhD Student"));
+        members.add(new Member(1, "Flipize", 24242424L, "Student"));
+        members.add(new Member(2, "Gurr", 25252525L, "Teacher"));
+        members.add(new Member(1, "Beggan", 26262626L, "PhD Student"));
         librarians.add(new Librarian(1234, "Gunilla Andersson"));
         librarians.add(new Librarian(5678, "Alfred Persson"));
         suspensions.add(new Suspension(3,1, LocalDate.parse ("1330-12-21"), LocalDate.parse("2019-05-30")));
         loans.add(new String[]{"2", "2", "2019-05-26", "2019-06-03"});
 
+
     }
 
     @Test
-   void testOst() throws SQLException {
+    void isBookAvailable() throws SQLException{
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> bookAL = books;
         when(db.getBookArrayList()).thenReturn(bookAL);
         assertTrue(lm.isBookAvailable(3030303));
-    }
-
-    @Test
-    void isBookAvailable() {
     }
 
     @Test
@@ -75,22 +72,6 @@ class LibraryManagerTest {
 
         assertTrue(booksAL.get(1).isAvailable());
 
-    }
-
-    @Test
-    void regApplicant() {
-    }
-
-    @Test
-    void deleteMemberLibrary() {
-    }
-
-    @Test
-    void lendItem() {
-    }
-
-    @Test
-    void getRandId() {
     }
 
     @Test
@@ -140,16 +121,13 @@ class LibraryManagerTest {
     }
 
     @Test
-    void suspendMember() throws SQLException {
+    void getMemberByPN() throws SQLException{
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Member> membersAL = members;
+        when(db.getMemberArrayList()).thenReturn(membersAL);
+        assertEquals(1 ,lm.getMemberByPN(24242424L).getId());
 
-    }
-
-    @Test
-    void isMemberIn() {
-    }
-
-    @Test
-    void getMemberByPN() {
     }
 
     @Test
@@ -163,22 +141,29 @@ class LibraryManagerTest {
     }
 
     @Test
-    void addMember() {
+    void getBookById() throws SQLException{
+            DBManager db = mock(DBManager.class);
+            LibraryManager lm = new LibraryManager(db);
+            ArrayList<Book> booksAL = books;
+            when(db.getBookArrayList()).thenReturn(booksAL);
+            assertEquals(booksAL.get(0) ,lm.getBookById(1));
+
     }
 
     @Test
-    void checkIfExistingMember() {
-    }
+    void returnedInTime() {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        String[] loan = new String[]{"1","2","2019-05-09", "2019-05-10"};
 
-    @Test
-    void addBook() {
-    }
+        assertFalse(lm.returnedInTime(loan));
 
-    @Test
-    void getLibrarian() {
-    }
+        String[] loan2 = new String[]{"1","2","2019-05-09", "2019-06-10"};
 
-    @Test
-    void validLibrarian() {
+        assertTrue(lm.returnedInTime(loan2));
+
+
+
+
     }
 }
