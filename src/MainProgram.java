@@ -44,6 +44,7 @@ public class MainProgram {
             System.out.println("\t6 - Suspend member");
             System.out.println("\t7 - Ban member");
             System.out.println("\t8 - Remove member");
+            System.out.println("\t9 - Show content");
             System.out.println("\t0 - Exit");
             System.out.println("-----------------------------");
 
@@ -159,7 +160,42 @@ public class MainProgram {
                     System.out.println("Member successfully removed.");
                     break;
                 case 9:
-                    System.out.println( lbm.isBookAvailable(100001));
+                    System.out.println("Show content");
+                    System.out.println("\t1. Show members\n\t2. Show books\n\t3. Show loans");
+                    int choiceShowContent = 0;
+                    do {
+                        try {
+                            choiceShowContent = Integer.parseInt(input.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Type a digit (1-3)");
+                        }
+                        switch (choiceShowContent) {
+                            case 1:
+                                ArrayList<Member> members = dbM.getMemberArrayList();
+                                for (Member m : members) {
+                                    System.out.println(m.toString());
+                                    System.out.println("-----------------------------");
+                                }
+                                break;
+                            case 2:
+                                ArrayList<Book> books = dbM.getBookArrayList();
+                                for (Book b : books) {
+                                    System.out.println(b.toString());
+                                    System.out.println();
+                                }
+                                break;
+                            case 3:
+                                ArrayList<String[]> loans = dbM.getLoanArrayList();
+                                for (String[] loan : loans) {
+                                    System.out.println("Book ID: " + loan[0] + " Member ID: " + loan[1] + " Start date: " + loan[2] + " End date: " +loan[3]);
+                                }
+                                break;
+                                default:
+                                    System.out.println("Enter a number in the range of 1-3");
+
+                        }
+
+                    }while (choiceShowContent != 1 && choiceShowContent != 2 && choiceShowContent != 3);
 
                         break;
                 default:

@@ -48,7 +48,7 @@ public class Book {
 
     public String toString() {
         String name = "";
-        name = "ID: " + this.id + " ISBN: " + this.isbn + " Title: " + this.title;
+        name = "ID: " + this.id + " ISBN: " + this.isbn + " Title: " + this.title + " Available: " + this.isAvailable;
         return name;
     }
 }

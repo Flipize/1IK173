@@ -3,8 +3,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,9 +60,15 @@ class LibraryManagerTest {
         when(db.getLoanArrayList()).thenReturn(loansAL);
         when(db.getBookArrayList()).thenReturn(booksAL);
         when(db.getMemberArrayList()).thenReturn(membersAl);
+
+        doAnswer((i) -> {
+            booksAL.get(1).setAvailable(true);
+            return null;
+        }).when(db).updateBook(booksAL.get(1));
+
         lm.returnBook(2,2);
 
-
+        assertTrue(booksAL.get(1).isAvailable());
 
     }
 

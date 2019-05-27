@@ -8,9 +8,6 @@ import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class LibraryManager {
 
@@ -69,9 +66,14 @@ public class LibraryManager {
         for (String[] st : loanArray) {
             if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
                 String date = st[3];
+                try {
+
                 LocalDate endDate = LocalDate.parse(date);
                 if (todaysDate.isAfter(endDate)) {
                     suspendMember(memberID);
+                }
+                }catch (NullPointerException e) {
+                    System.out.println("The book did not have a end date for some weird reason.");
                 }
             }
         }
