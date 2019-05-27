@@ -7,6 +7,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -16,6 +18,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+
 class LibraryManagerTest {
     public ArrayList<Book> books = new ArrayList<>();
     public ArrayList<Member> members = new ArrayList<>();
@@ -23,6 +27,7 @@ class LibraryManagerTest {
     public ArrayList<Suspension> suspensions = new ArrayList<>();
     public ArrayList<String[]> loans = new ArrayList<>();
 
+    private static Logger logger = LogManager.getLogger(LibraryManagerTest.class.getName());
 
     public LibraryManagerTest() {
         books.add(new Book(1,1010101,"Game of Thrones", true));
@@ -38,17 +43,16 @@ class LibraryManagerTest {
 
     }
 
+
+
     @Test
-   void testOst() throws SQLException {
+    void isBookAvailable() throws SQLException {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> bookAL = books;
         when(db.getBookArrayList()).thenReturn(bookAL);
         assertTrue(lm.isBookAvailable(3030303));
-    }
-
-    @Test
-    void isBookAvailable() {
+        verify(db).getBookArrayList();
     }
 
     @Test
@@ -136,7 +140,8 @@ class LibraryManagerTest {
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Member> member = members;
         when(db.getMemberArrayList()).thenReturn(member);
-       // assertEquals(new Member(1, "aa", 111, "Student"), lm.getMemberById(1));
+        assertEquals(members.get(2), lm.getMemberById(1));
+        verify(db).getMemberArrayList();
     }
 
     @Test

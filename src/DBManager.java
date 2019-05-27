@@ -9,9 +9,9 @@ import java.util.NoSuchElementException;
 public class DBManager {
 
 
-    private static String password = "Jim1337!";
-    private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
+    private static String password = "Hallonsaft1!";
+    //private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
 
     // Hämtar medlemmar ifrån databasen och returnerar de i en ArrayList
     public ArrayList<Member> getMemberArrayList() throws SQLException{
