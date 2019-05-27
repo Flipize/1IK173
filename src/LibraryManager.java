@@ -14,18 +14,12 @@ public class LibraryManager {
 
     DBManager dbM = null;
 
-    //
+    // skapar ett objekt av libman och skickar in ett objekt av databashanteraren
     public LibraryManager (DBManager db) {
         dbM = db;
     }
 
-    public static void main(String[] args) {
-
-     /*   returnBook(1,1);
-        //lendItem(2, 100005);
-        ban(getMemberById(6));*/
-    }
-
+    // kollar ISBN och avgör om en bok finns tillgänglig eller ej
     public boolean isBookAvailable(int isbn) {
         ArrayList<Book> books;
         try {
@@ -43,6 +37,7 @@ public class LibraryManager {
         }
         return false;
     }
+
 
     public Book returnBook(int bookID, int memberID) {
         ArrayList<Book> books = new ArrayList<>();
