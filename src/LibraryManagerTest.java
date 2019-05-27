@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ class LibraryManagerTest {
     }
 
     @Test
-   void testOst() {
+   void testOst() throws SQLException {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> bookAL = books;
@@ -51,7 +52,7 @@ class LibraryManagerTest {
     }
 
     @Test
-    void returnBook() {
+    void returnBook() throws SQLException {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> booksAL = books;
@@ -61,10 +62,14 @@ class LibraryManagerTest {
         when(db.getBookArrayList()).thenReturn(booksAL);
         when(db.getMemberArrayList()).thenReturn(membersAl);
 
+        doNothing().when(db).deleteLoan(2,2);
+
         doAnswer((i) -> {
             booksAL.get(1).setAvailable(true);
             return null;
         }).when(db).updateBook(booksAL.get(1));
+
+
 
         lm.returnBook(2,2);
 
@@ -89,7 +94,7 @@ class LibraryManagerTest {
     }
 
     @Test
-    void idIsValid() {
+    void idIsValid() throws SQLException {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Member> mem = new ArrayList<>();
@@ -126,7 +131,7 @@ class LibraryManagerTest {
     }*/
 
     @Test
-    void getMemberById() {
+    void getMemberById() throws SQLException {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Member> member = members;
