@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -42,7 +43,7 @@ public class LibraryManager {
         return false;
     }
 
-    public  void returnBook(int bookID, int memberID) {
+    public Book returnBook(int bookID, int memberID) {
         ArrayList<Book> books = new ArrayList<>();
         ArrayList<String[]> loans = new ArrayList<>();
         try {
@@ -52,9 +53,9 @@ public class LibraryManager {
             System.out.println("Something went wrong with database connection.");
         }
         boolean bookReturned = false;
-        Book book = new Book();
+        Book book;
 
-        for (String[] st : loans) {
+        /*for (String[] st : loans) {
             if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
                 for (Book b : books) {
                     if (b.getId() == bookID) {
@@ -66,28 +67,19 @@ public class LibraryManager {
                     }
                 }
             }
-        }
-        if (bookReturned) {
-            System.out.println("Book: " + book.getTitle() + " has been returned");
-        }
-        else {
-            System.out.println("Something went wrong. The book is not eligible for return.");
-        }
-        LocalDate todaysDate = LocalDate.now();
-        for (String[] st : loans) {
-            if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
-                String date = st[3];
-                try {
-
-                LocalDate endDate = LocalDate.parse(date);
-                if (todaysDate.isAfter(endDate)) {
-                    suspendMember(memberID);
-                }
-                }catch (NullPointerException e) {
-                    System.out.println("The book did not have a end date for some weird reason.");
-                }
+        }*/
+        String[] loan = getLoanById(memberID, bookID);
+        if (loan != null) {
+            book = getBookById(bookID);
+            book.setAvailable(true);
+            dbM.updateBook(book);
+            dbM.deleteLoan(bookID, memberID);
+            if (!returnedInTime(loan)) {
+                 suspendMember(getMemberById(memberID).getId());
             }
+            return book;
         }
+        return null;
     }
 
     public  Member regApplicant(long personalNumber) {
@@ -535,5 +527,37 @@ public class LibraryManager {
         return members;
     }
 
+    public String[] getLoanById(int memberID, int bookID) {
+        ArrayList<String[]> loans;
+
+        loans = dbM.getLoanArrayList();
+        for (String[] loan : loans) {
+            if (Integer.parseInt(loan[0]) == bookID && Integer.parseInt(loan[1]) == memberID) {
+                return loan;
+            }
+        }
+        return null;
+    }
+
+    public Book getBookById(int bookId) {
+        ArrayList<Book> books = getBooks();
+
+        for (Book b : books) {
+            if (b.getId() == bookId) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public boolean returnedInTime(String[] loan) {
+        LocalDate todaysDate = LocalDate.now();
+
+        LocalDate endDate = LocalDate.parse(loan[3]);
+        if (todaysDate.isAfter(endDate)) {
+            return false;
+        }
+        return true;
+    }
 
 }

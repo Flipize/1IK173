@@ -129,12 +129,55 @@ public class MainProgram {
                     lbm.lendItem(memID, borrowISBN);
                     break;
                 case 4:
+                    int book_ID = 0;
+                    int memb_ID = 0;
+                    Book book = new Book();
+                    Member member = new Member();
+
                     System.out.println("Return Book");
-                    System.out.println("Please enter book ID: ");
-                    int book_ID = Integer.parseInt(input.nextLine());
-                    System.out.println("Please enter your member ID: ");
-                    int memb_ID = Integer.parseInt(input.nextLine());
-                    lbm.returnBook(book_ID, memb_ID);
+                    do {
+                        System.out.println("Please enter book ID: ");
+                        try {
+                            book_ID = Integer.parseInt(input.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("The input for ID has to be digits.");
+                        }
+                        book = lbm.getBookById(book_ID);
+                        if (book == null) {
+                            System.out.println("The book does not exist.");
+                        }
+                    }while (book == null);
+
+                    do {
+                        try {
+                            System.out.println("Please enter your member ID: ");
+                            memb_ID = Integer.parseInt(input.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("The input for member ID has to be digits.");
+                        }
+                        member = lbm.getMemberById(memb_ID);
+                        if (member == null) {
+                            System.out.println("The member is not registered.");
+                        }
+                    } while (member == null);
+
+                    String[] loan = lbm.getLoanById(memb_ID, book_ID);
+                    if (loan == null) {
+                        System.out.println("No such loan exists.");
+                        break;
+                    }
+                    else {
+
+                        book = lbm.returnBook(book_ID, memb_ID);
+                        if (!lbm.returnedInTime(loan)) {
+                            System.out.println("Book is returned too late. Suspension has been added to member.");
+                        }
+                        if (book != null) {
+                            System.out.println("Book: (" + book.getTitle() + ") was successfully returned.");
+                        } else {
+                            System.out.println("Book could not be returned.");
+                        }
+                    }
                     break;
                 case 5:
                     System.out.println("Remove Book");
@@ -195,8 +238,8 @@ public class MainProgram {
                                 break;
                             case 3:
                                 ArrayList<String[]> loans = dbM.getLoanArrayList();
-                                for (String[] loan : loans) {
-                                    System.out.println("Book ID: " + loan[0] + " Member ID: " + loan[1] + " Start date: " + loan[2] + " End date: " +loan[3]);
+                                for (String[] loan2 : loans) {
+                                    System.out.println("Book ID: " + loan2[0] + " Member ID: " + loan2[1] + " Start date: " + loan2[2] + " End date: " +loan2[3]);
                                 }
                                 break;
                                 default:
