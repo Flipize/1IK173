@@ -191,7 +191,7 @@ public class MainProgram {
                     else {
 
                         book = lbm.returnBook(book_ID, memb_ID);
-                        if (lbm.returnedInTime(loan)) {
+                        if (!lbm.returnedInTime(loan)) {
                             System.out.println("Book is returned too late. Suspension has been added to member.");
                             logger.info("A book was returned late");
                         }

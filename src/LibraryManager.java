@@ -134,6 +134,9 @@ public class LibraryManager {
         if (foundMember) {
             System.out.println("Member found: " + member.getName());
         }
+        else {
+            System.out.println("Member not found.");
+        }
 
 
         //Kollar om medlemmen får låna fler böcker
