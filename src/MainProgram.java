@@ -30,12 +30,12 @@ public class MainProgram {
             }
             if (!lbm.validLibrarian(id)) {
                 System.out.println("ID is not registered");
-                logger.error("The ID was not resgistred");
+                logger.error("The ID was not resgistered");
             }
         }while (!lbm.validLibrarian(id));
 
         System.out.println("You are logged in as " + lbm.getLibrarian(id).getName());
-        logger.info("Someone has logged in to the system");
+        logger.info(lbm.getLibrarian(id).getName() + " (ID: " + lbm.getLibrarian(id).getId() + ") logged in to the system");
         System.out.println("Welcome to your library manager! Please enter a number below: ");
 
         do {

@@ -1,20 +1,9 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.mockito.stubbing.Answer;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -40,21 +29,15 @@ class LibraryManagerTest {
         librarians.add(new Librarian(5678, "Alfred Persson"));
         suspensions.add(new Suspension(3,1, LocalDate.parse ("1330-12-21"), LocalDate.parse("2019-05-30")));
         loans.add(new String[]{"2", "2", "2019-05-26", "2019-06-03"});
-
-
     }
-
-
 
     @Test
     void isBookAvailable() throws SQLException{
-    void isBookAvailable() throws SQLException {
         DBManager db = mock(DBManager.class);
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> bookAL = books;
         when(db.getBookArrayList()).thenReturn(bookAL);
         assertTrue(lm.isBookAvailable(3030303));
-    }
 
         verify(db).getBookArrayList();
     }
@@ -83,22 +66,6 @@ class LibraryManagerTest {
 
         assertTrue(booksAL.get(1).isAvailable());
 
-    }
-
-    @Test
-    void regApplicant() {
-    }
-
-    @Test
-    void deleteMemberLibrary() {
-    }
-
-    @Test
-    void lendItem() {
-    }
-
-    @Test
-    void getRandId() {
     }
 
     @Test
@@ -189,9 +156,6 @@ class LibraryManagerTest {
         String[] loan2 = new String[]{"1","2","2019-05-09", "2019-06-10"};
 
         assertTrue(lm.returnedInTime(loan2));
-
-
-
 
     }
 }

@@ -239,15 +239,6 @@ public class LibraryManager {
             }
         }
         return false;
-    }
-
-       ArrayList<Long> bannedMembers = dbM.getBannedMembers();
-       for (Long pn : bannedMembers) {
-           if (personalNumber.equals(pn)) {
-               return true;
-           }
-       }
-       return false;
    }
     // bannar medlem genom att lägga till medlem i gamlamedlemstabell, ta bort medlemmens suspension och till sist ta bort medlemmen
     public  boolean ban(Member m){
