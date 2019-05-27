@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -12,6 +14,7 @@ import static java.lang.Integer.valueOf;
 
 public class LibraryManager {
 
+    private static Logger libManLogger = LogManager.getLogger(LibraryManager.class.getName());
     DBManager dbM = null;
 
     // skapar ett objekt av libman och skickar in ett objekt av databashanteraren
@@ -19,13 +22,16 @@ public class LibraryManager {
         dbM = db;
     }
 
+
     // kollar ISBN och avgör om en bok finns tillgänglig eller ej
     public boolean isBookAvailable(int isbn) {
         ArrayList<Book> books;
         try {
             books = dbM.getBookArrayList();
+            libManLogger.info("Someone connected to the database");
         }catch (SQLException e) {
             System.out.println("Something went wrong with database connection");
+            libManLogger.error("SQLException in librarymanager.isBookAvailable ");
             return false;
         }
         for (Book b : books) {
@@ -38,7 +44,7 @@ public class LibraryManager {
         return false;
     }
 
-
+    // returnerar en bok och tar bort medlemmens lån. Kollar lånet mot utgångstid och ropar på suspendMember om tiden överskridits
     public Book returnBook(int bookID, int memberID) {
         ArrayList<Book> books = new ArrayList<>();
         ArrayList<String[]> loans = new ArrayList<>();
@@ -47,6 +53,7 @@ public class LibraryManager {
             books = dbM.getBookArrayList();
         } catch (SQLException e) {
             System.out.println("Something went wrong with database connection.");
+            libManLogger.error("SQLException in librarymanager.returnBook ");
         }
         boolean bookReturned = false;
         Book book;
@@ -78,6 +85,7 @@ public class LibraryManager {
         return null;
     }
 
+    // lägger in ny medlem via databasmetod, om medlem finns returneras medlemmen
     public  Member regApplicant(long personalNumber) {
 
         ArrayList<Member> members = new ArrayList<>();
@@ -85,6 +93,7 @@ public class LibraryManager {
             members = dbM.getMemberArrayList();
         }catch (SQLException e) {
             System.out.println("Something wrong with database connection. " + e.getMessage());
+            libManLogger.error("SQLException in librarymanager.regApplicant ");
             return null;
         }
 
@@ -125,6 +134,7 @@ public class LibraryManager {
         }
     } */
 
+    // tar bort medlem via databasmetod,
     public  void deleteMemberLibrary(int id) {
 
         ArrayList<Member> members = new ArrayList<>();
@@ -144,6 +154,7 @@ public class LibraryManager {
 
     }
 
+    // kollar medlemmens id och tillgänglighet på bok,
     public  void lendItem(int memberID, int isbn) {
 
         ArrayList<Book> books;
@@ -221,6 +232,8 @@ public class LibraryManager {
                     }*/
                     }
                 }
+
+                // skapar lån och uppdaterar status på bok
                 if (foundBook) {
                     for (Book book : askedBook) {
                         if (book.isAvailable()) {
@@ -242,6 +255,7 @@ public class LibraryManager {
         }
     }
 
+    // skapar ett slumpmässigt fyrsiffrigt ID som inte tidigare existerar
     public  int getRandId(){
         Random rnd = new Random();
         int number;
@@ -257,6 +271,7 @@ public class LibraryManager {
         return number;
     }
 
+    // validerar en medlems ID
     public  boolean idIsValid(int id) {
         ArrayList<Member> members = new ArrayList<>();
         try {
@@ -283,6 +298,7 @@ public class LibraryManager {
         }
     }*/
 
+    // kollar om medlem är bannad
     public  boolean isBanned(Long personalNumber){
        ArrayList<Long> bannedMembers = dbM.getBannedMembers();
        for (Long pn : bannedMembers) {
@@ -292,7 +308,7 @@ public class LibraryManager {
        }
        return false;
    }
-
+    // bannar medlem genom att lägga till medlem i gamlamedlemstabell, ta bort medlemmens suspension och till sist ta bort medlemmen
     public  boolean ban(Member m){
         try {
 
@@ -306,6 +322,7 @@ public class LibraryManager {
         return true;
    }
 
+   // letar upp ett medlemsobjekt via ID och anropar en databasmetod
     public  Member getMemberById(int id) {
         ArrayList<Member> members = new ArrayList<>();
         try {
@@ -322,6 +339,8 @@ public class LibraryManager {
         return newMember;
    }
 
+   // skapar en ny suspension om medlemmen inte har en, adderar suspension och antal dagar om medlemmen redan har
+    // till sist anropar den banmetoden om medlemmen redan har två suspensions
     public  Suspension suspendMember (int memberID) {
         ArrayList<Suspension> suspensionList = new ArrayList<>();
         ArrayList<Member> memberList = new ArrayList<>();
@@ -339,6 +358,7 @@ public class LibraryManager {
                 found = true;
                 suspendedMember = s;
             }}
+            // skapar suspension om medlemmen inte tidigare haft
                 if (!found) {
                     dbM.addSuspension(memberID);
                     ArrayList<Suspension> suspList = dbM.getSuspensionsArrayList();
@@ -348,6 +368,7 @@ public class LibraryManager {
                         }
                     }
                 }
+                // om medlemmen har en suspension får den en till och 15 dagars påslag
                 else if (suspendedMember.getMemberID() == memberID && suspendedMember.getSuspensions() == 1) {
                     int nmrOfsusp = suspendedMember.getSuspensions();
                     nmrOfsusp++;
@@ -357,6 +378,7 @@ public class LibraryManager {
                     dbM.updateSuspension(suspendedMember, memberID);
                     return suspendedMember;
                 }
+                // om medlemmen redan har två suspensions blir den bannad
              else if (suspendedMember.getMemberID() == memberID && suspendedMember.getSuspensions() >= 2) {
                 ban(getMemberById(memberID));
                 suspendedMember.setSuspensions(3);
@@ -364,6 +386,7 @@ public class LibraryManager {
             } return null;
         }
 
+        // kollar om en medlem finns i databasen
     public  boolean isMemberIn(int id){
 
         ArrayList<Member> members = new ArrayList<>();
@@ -383,6 +406,7 @@ public class LibraryManager {
         return found;
     }
 
+    // kollar om en medlem finns via personnummer
     public  Member getMemberByPN(long personalNum) {
 
         ArrayList<Member> members = new ArrayList<>();
@@ -402,6 +426,7 @@ public class LibraryManager {
         return null;
     }
 
+    // kollar om medlemmen har en suspension
     public  boolean isSuspensionIn(int id){
         ArrayList<Suspension> susp = dbM.getSuspensionsArrayList();
         boolean found = false;
@@ -414,6 +439,7 @@ public class LibraryManager {
         return found;
     }
 
+    // lägger till en medlem via databasmetod
     public  Member addMember(int id, String name, long personalNumber, String membershipType) {
 
         try {
@@ -428,6 +454,7 @@ public class LibraryManager {
             System.out.println("Something went wrong.");
         } return null;}
 
+        // kollar om medlemmen tidigare varit medlem och om den isåfall varit bannad
     public  boolean checkIfExistingMember(long personalNum){
         Member newMember = getMemberByPN(personalNum);
         if (isBanned(personalNum)) {
@@ -443,6 +470,7 @@ public class LibraryManager {
         }
     }
 
+    // lägger till en bok via databasmetod
     public  boolean addBook(int id, int isbn, String title, boolean available) {
         try {
             dbM.addBook(new Book(id, isbn, title, available));
@@ -453,6 +481,7 @@ public class LibraryManager {
         }
     }
 
+    // hämtar alla bibliotekarier via databasen
     public  Librarian getLibrarian(int id) {
         ArrayList<Librarian> librarians = new ArrayList<>();
         try {
@@ -469,6 +498,7 @@ public class LibraryManager {
         return null;
     }
 
+    // validerar librarians via inlogg
     public  boolean validLibrarian(int id) {
         ArrayList<Librarian> librarians = new ArrayList<>();
         try {
@@ -485,6 +515,7 @@ public class LibraryManager {
     return false;
     }
 
+    // kollar så att en bok faktiskt får/har ett unikt ID
     public boolean isUniqueBookID(int id) {
         ArrayList<Book> books;
         try {
@@ -501,6 +532,7 @@ public class LibraryManager {
         return true;
     }
 
+    // hämtar alla böcker via databasmetod
     public ArrayList<Book> getBooks() {
         ArrayList<Book> books = new ArrayList<>();
         try {
@@ -512,10 +544,12 @@ public class LibraryManager {
         return books;
     }
 
+    // hämtar alla medlemmar via databasmetod
     public ArrayList<Member> getMembers() {
         ArrayList<Member> members = new ArrayList<>();
         try {
             members = dbM.getMemberArrayList();
+            libManLogger.info("Someone connected to the database");
         }catch (SQLException e){
             System.out.println("Something wrong with database connection. " + e.getMessage());
             return null;
@@ -523,6 +557,7 @@ public class LibraryManager {
         return members;
     }
 
+    // tittar vilka boklån en viss medlem har
     public String[] getLoanById(int memberID, int bookID) {
         ArrayList<String[]> loans;
 
@@ -535,6 +570,7 @@ public class LibraryManager {
         return null;
     }
 
+    // hämtar en specifik bok via ID
     public Book getBookById(int bookId) {
         ArrayList<Book> books = getBooks();
 
@@ -545,7 +581,7 @@ public class LibraryManager {
         }
         return null;
     }
-
+    // kollar om en bok returnerats i tid
     public boolean returnedInTime(String[] loan) {
         LocalDate todaysDate = LocalDate.now();
 
