@@ -100,7 +100,6 @@ public class MainProgram {
                     }
                     break;
                 case 2:
-                    try {
                         System.out.println("Add book");
                         System.out.println("Please enter book ID: ");
                         int ID = Integer.parseInt(input.nextLine());
@@ -109,9 +108,14 @@ public class MainProgram {
                         System.out.println("Please enter book title: ");
                         String Title = textInput.nextLine();
 
-                        Book newBook = new Book(ID, ISBN, Title, true);
-                        dbM.addBook(newBook);
-                        System.out.println("Book successfully added.");
+                    try {
+                        if (lbm.addBook(ID, ISBN, Title, true)) {
+                            System.out.println("Book successfully added.");
+                        }
+                        else {
+                            System.out.println("Something went wrong. Book was not added. Make sure to input a unique ID.");
+                        }
+
                     }catch (NumberFormatException nfe){
                         System.out.println("Wrong information input");
                     }break;
@@ -143,8 +147,9 @@ public class MainProgram {
                     System.out.println("Suspend Member");
                     System.out.println("Enter member ID to suspend: ");
                     int suspendMemberId = Integer.parseInt(input.nextLine());
-                    dbM.addSuspension(suspendMemberId);
-                    System.out.println("Member suspended for 15 days.");
+                    String nameOfSuspendedMember = lbm.getMemberById(suspendMemberId).getName();
+                    lbm.suspendMember(suspendMemberId);
+                    System.out.println("Suspension has been added to member (" + nameOfSuspendedMember + ").");
                     break;
                 case 7:
                     System.out.println("Ban Member");
@@ -171,14 +176,14 @@ public class MainProgram {
                         }
                         switch (choiceShowContent) {
                             case 1:
-                                ArrayList<Member> members = dbM.getMemberArrayList();
+                                ArrayList<Member> members = lbm.getMembers();
                                 for (Member m : members) {
                                     System.out.println(m.toString());
                                     System.out.println("-----------------------------");
                                 }
                                 break;
                             case 2:
-                                ArrayList<Book> books = dbM.getBookArrayList();
+                                ArrayList<Book> books = lbm.getBooks();
                                 for (Book b : books) {
                                     System.out.println(b.toString());
                                     System.out.println();
