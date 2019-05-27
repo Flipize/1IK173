@@ -335,8 +335,14 @@ public class LibraryManager {
    }
 
     public  Suspension suspendMember (int memberID) {
-        ArrayList<Suspension> suspensionList = dbM.getSuspensionsArrayList();
-        ArrayList<Member> memberList = dbM.getMemberArrayList();
+        ArrayList<Suspension> suspensionList = new ArrayList<>();
+        ArrayList<Member> memberList = new ArrayList<>();
+        try {
+            suspensionList = dbM.getSuspensionsArrayList();
+            memberList = dbM.getMemberArrayList();
+        } catch (SQLException ex ) {
+            System.out.println("Something went wrong.");
+        }
         boolean found = false;
         Suspension suspendedMember = new Suspension();
 
@@ -369,7 +375,6 @@ public class LibraryManager {
                 return suspendedMember;
             } return null;
         }
-    }
 
     public  boolean isMemberIn(int id){
 
@@ -431,8 +436,9 @@ public class LibraryManager {
                     return m;
                 }
             }
-        } catch (NullPointerException ex){
-        }return null;}
+        } catch (SQLException ex){
+            System.out.println("Something went wrong.");
+        } return null;}
 
     public  boolean checkIfExistingMember(long personalNum){
         Member newMember = getMemberByPN(personalNum);
