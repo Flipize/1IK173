@@ -48,7 +48,11 @@ public class Book {
 
     public String toString() {
         String name = "";
-        name = "ID: " + this.id + " ISBN: " + this.isbn + " Title: " + this.title + " Available: " + this.isAvailable;
+        String availability;
+        if (this.isAvailable) {
+            availability = " is available.";
+        } else availability = " is not available.";
+        name = "ID: " + this.id + " ISBN: " + this.isbn + " Title: " + this.title + availability;
         return name;
     }
 }

@@ -6,3 +6,17 @@
 2019-05-27 20:52:20,305 INFO MainProgram [main] Testing
 2019-05-27 20:53:37,678 INFO MainProgram [main] Testing
 2019-05-27 20:54:08,941 INFO MainProgram [main] Testing
+2019-05-27 21:47:11,124 ERROR MainProgram [main] The ID was not resgistered
+2019-05-27 21:47:36,567 ERROR MainProgram [main] The ID was not resgistered
+2019-05-27 21:48:16,719 INFO MainProgram [main] Mikael "Beggan" Beigart (ID: 2222) logged in to the system
+2019-05-27 21:48:18,005 INFO MainProgram [main] Lend a book selected
+2019-05-27 21:48:22,435 INFO MainProgram [main] End
+2019-05-27 21:48:37,232 INFO MainProgram [main] Lend a book selected
+2019-05-27 21:51:16,976 INFO MainProgram [main] End
+2019-05-27 21:51:21,504 INFO MainProgram [main] Show content was selected
+2019-05-27 21:51:22,271 INFO MainProgram [main] Option 2 selected
+2019-05-27 21:51:22,305 INFO MainProgram [main] End
+2019-05-27 21:56:19,966 INFO MainProgram [main] Mikael "Beggan" Beigart (ID: 2222) logged in to the system
+2019-05-27 21:56:22,017 INFO MainProgram [main] Show content was selected
+2019-05-27 21:56:23,560 INFO MainProgram [main] Option 2 selected
+2019-05-27 21:56:23,599 INFO MainProgram [main] End

@@ -231,6 +231,8 @@ public class LibraryManager {
         return true;
     }
 
+
+    // kollar om medlem är bannad
     public  boolean isBanned(Long personalNumber){
         ArrayList<Long> bannedMembers = dbM.getBannedMembers();
         for (Long pn : bannedMembers) {
