@@ -49,6 +49,6 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Id:" + id + "\nNamn: " + name  + "\nPersonal Number: " + personalNumber +  "\nMembership type: " + membershipType;
+        return "Id: " + id + "\nNamn: " + name  + "\nPersonal Number: " + personalNumber +  "\nMembership type: " + membershipType;
     }
 }

@@ -64,8 +64,7 @@ public class MainProgram {
                 }
             }
 
-            switch (choice)
-            {
+            switch (choice) {
                 case 1:
                     System.out.println("Register Member");
                     String name;
@@ -81,11 +80,9 @@ public class MainProgram {
                             System.out.println("Not a valid number. Try again.");
                         }
                     }
-                    if (!lbm.checkIfExistingMember(personalNum)){
+                    if (!lbm.checkIfExistingMember(personalNum)) {
                         System.out.println("Registration has been cancelled.");
-                    }
-
-                    else {
+                    } else {
                         Member newMember = new Member();
                         int rndId = lbm.getRandId();
                         while (!lbm.idIsValid(rndId)) {
@@ -95,8 +92,10 @@ public class MainProgram {
                         name = textInput.nextLine();
                         System.out.println("Enter type: ");
                         type = getAnswer();
-                        lbm.addMember(rndId, name, personalNum, type);
-                        System.out.println("Member (Name: " + name + ", ID number: " + rndId + ") was successfully added.");
+                        Member member = lbm.addMember(rndId, name, personalNum, type);
+                        if (member != null) {
+                            System.out.println("Member was successfully added! \n" + member.toString());
+                        } else System.out.println("Member was not added.");
                     }
                     break;
                 case 2:
@@ -112,9 +111,10 @@ public class MainProgram {
                         Book newBook = new Book(ID, ISBN, Title, true);
                         dbM.addBook(newBook);
                         System.out.println("Book successfully added.");
-                    }catch (NumberFormatException nfe){
+                    } catch (NumberFormatException nfe) {
                         System.out.println("Wrong information input");
-                    }break;
+                    }
+                    break;
 
                 case 3:
                     System.out.println("Lend Book");
@@ -143,8 +143,12 @@ public class MainProgram {
                     System.out.println("Suspend Member");
                     System.out.println("Enter member ID to suspend: ");
                     int suspendMemberId = Integer.parseInt(input.nextLine());
-                    dbM.addSuspension(suspendMemberId);
-                    System.out.println("Member suspended for 15 days.");
+                    Suspension susp = lbm.suspendMember(suspendMemberId);
+                    if (susp != null && susp.getSuspensions() <= 2) {
+                        System.out.println("Member with ID: " + susp.getMemberID() + " suspended to " + susp.getEndDate() + "");
+                    } else if (susp != null && susp.getSuspensions() == 3) {
+                    System.out.println("Member with ID: " + susp.memberID + " was banned.");
+                     } else System.out.println("Member was not suspended.");
                     break;
                 case 7:
                     System.out.println("Ban Member");
@@ -152,6 +156,7 @@ public class MainProgram {
                     int banMember = Integer.parseInt(input.nextLine());
                     lbm.ban(lbm.getMemberById(banMember));
                     System.out.println("Member successfully banned.");
+                    break;
                 case 8:
                     System.out.println("Remove Member");
                     System.out.println("Enter the members ID to remove the member: ");

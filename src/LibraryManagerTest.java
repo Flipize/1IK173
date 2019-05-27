@@ -43,7 +43,7 @@ class LibraryManagerTest {
         LibraryManager lm = new LibraryManager(db);
         ArrayList<Book> bookAL = books;
         when(db.getBookArrayList()).thenReturn(bookAL);
-        assertTrue(lm.isBookAvailable(1010101));
+        assertTrue(lm.isBookAvailable(3030303));
     }
 
     @Test

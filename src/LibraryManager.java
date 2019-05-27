@@ -283,31 +283,40 @@ public class LibraryManager {
         return newMember;
    }
 
-    public  void suspendMember (int memberID) {
+    public  Suspension suspendMember (int memberID) {
         ArrayList<Suspension> suspensionList = dbM.getSuspensionsArrayList();
         ArrayList<Member> memberList = dbM.getMemberArrayList();
         boolean found = false;
-        Suspension eS = new Suspension();
+        Suspension suspendedMember = new Suspension();
 
         for (Suspension s: suspensionList) {
             if (s.getMemberID() == memberID) {
                 found = true;
-                eS = s;
+                suspendedMember = s;
             }}
                 if (!found) {
                     dbM.addSuspension(memberID);
+                    ArrayList<Suspension> suspList = dbM.getSuspensionsArrayList();
+                    for (Suspension s: suspList) {
+                        if (s.getMemberID() == memberID) {
+                            return s;
+                        }
+                    }
                 }
-                else if (eS.getMemberID() == memberID && eS.getSuspensions() == 1) {
-                    int nmrOfsusp = eS.getSuspensions();
+                else if (suspendedMember.getMemberID() == memberID && suspendedMember.getSuspensions() == 1) {
+                    int nmrOfsusp = suspendedMember.getSuspensions();
                     nmrOfsusp++;
-                    eS.setSuspensions(nmrOfsusp);
-                    LocalDate endDate = eS.getEndDate();
-                    eS.setEndDate(endDate.plusDays(15));
-                    dbM.updateSuspension(eS, memberID);
+                    suspendedMember.setSuspensions(nmrOfsusp);
+                    LocalDate endDate = suspendedMember.getEndDate();
+                    suspendedMember.setEndDate(endDate.plusDays(15));
+                    dbM.updateSuspension(suspendedMember, memberID);
+                    return suspendedMember;
                 }
-             else if (eS.getMemberID() == memberID && eS.getSuspensions() >= 2) {
+             else if (suspendedMember.getMemberID() == memberID && suspendedMember.getSuspensions() >= 2) {
                 ban(getMemberById(memberID));
-            }
+                suspendedMember.setSuspensions(3);
+                return suspendedMember;
+            } return null;
         }
 
     public  boolean isMemberIn(int id){
@@ -346,9 +355,18 @@ public class LibraryManager {
         return found;
     }
 
-    public  void addMember(int id, String name, long personalNumber, String membershipType){
-        dbM.addMember(new Member(id, name, personalNumber, membershipType));
-    }
+    public  Member addMember(int id, String name, long personalNumber, String membershipType) {
+
+        try {
+            dbM.addMember(new Member(id, name, personalNumber, membershipType));
+            ArrayList<Member> memlist = dbM.getMemberArrayList();
+            for (Member m : memlist) {
+                if (id == m.getId()) {
+                    return m;
+                }
+            }
+        } catch (NullPointerException ex){
+        }return null;}
 
     public  boolean checkIfExistingMember(long personalNum){
         Member newMember = getMemberByPN(personalNum);
@@ -406,5 +424,6 @@ public class LibraryManager {
     }
     return false;
     }
+
 
 }
