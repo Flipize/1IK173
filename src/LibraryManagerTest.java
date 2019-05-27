@@ -28,7 +28,7 @@ class LibraryManagerTest {
         books.add(new Book(2,2020202,"Game of Phonies", false));
         books.add(new Book(3,3030303,"Game of Bros", true));
         members.add(new Member(1, "Flipize", 12891212L, "Student"));
-        members.add(new Member(2, "Gurr", 12891212L, "Techer"));
+        members.add(new Member(2, "Gurr", 12891212L, "Teacher"));
         members.add(new Member(1, "Beggan", 12891212L, "PhD Student"));
         librarians.add(new Librarian(1234, "Gunilla Andersson"));
         librarians.add(new Librarian(5678, "Alfred Persson"));
