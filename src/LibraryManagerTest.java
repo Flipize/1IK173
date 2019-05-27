@@ -33,7 +33,7 @@ class LibraryManagerTest {
         members.add(new Member(1, "Beggan", 12891212L, "PhD Student"));
         librarians.add(new Librarian(1234, "Gunilla Andersson"));
         librarians.add(new Librarian(5678, "Alfred Persson"));
-        suspensions.add(new Suspension(3,3, LocalDate.parse ("1330-12-21"), LocalDate.parse("2019-05-30")));
+        suspensions.add(new Suspension(3,1, LocalDate.parse ("1330-12-21"), LocalDate.parse("2019-05-30")));
         loans.add(new String[]{"2", "2", "2019-05-26", "2019-06-03"});
 
     }
@@ -140,7 +140,8 @@ class LibraryManagerTest {
     }
 
     @Test
-    void suspendMember() {
+    void suspendMember() throws SQLException {
+
     }
 
     @Test
@@ -152,7 +153,13 @@ class LibraryManagerTest {
     }
 
     @Test
-    void isSuspensionIn() {
+    void isSuspensionIn() throws SQLException {
+        DBManager db = mock(DBManager.class);
+        LibraryManager lm = new LibraryManager(db);
+        ArrayList<Suspension> suspendedMembers = suspensions;
+        when(db.getSuspensionsArrayList()).thenReturn(suspendedMembers);
+        assertTrue(lm.isSuspensionIn(3));
+        verify(db).getSuspensionsArrayList();
     }
 
     @Test

@@ -151,7 +151,7 @@ public class MainProgram {
                     if (susp != null && susp.getSuspensions() <= 2) {
                         System.out.println("Member with ID: " + susp.getMemberID() + " suspended to " + susp.getEndDate() + "");
                     } else if (susp != null && susp.getSuspensions() == 3) {
-                    System.out.println("Member with ID: " + susp.memberID + " was banned.");
+                    System.out.println("Member with ID: " + susp.memberID + " had too many suspensions and was banned.");
                      } else System.out.println("Member was not suspended.");
                     break;
                 case 7:
