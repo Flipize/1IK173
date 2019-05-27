@@ -2,12 +2,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static java.lang.Integer.parseInt;
 
 public class MainProgram {
+    private static Logger logger = LogManager.getLogger(MainProgram.class.getName());
 
     public static void main(String[] args) {
+        logger.info("Testing");
 
         DBManager dbM = new DBManager();
         LibraryManager lbm = new LibraryManager(dbM);
