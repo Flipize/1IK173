@@ -1,3 +1,6 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -5,54 +8,10 @@ import java.util.NoSuchElementException;
 
 public class DBManager {
 
-    private static String password = "eldorado5";
+
+    private static String password = "Jim1337!";
     private static String driver = "jdbc:mysql://localhost/library?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     //private static String driver = "jdbc:mysql://localhost/Library?useSSL=false";
-
-
-    public static void main(String[] args) {
-        /*ArrayList<Member> m_array = getMemberArrayList();
-        for (Member m : m_array) {
-            System.out.println(m.toString());
-        }*/
-
-        /*ArrayList<Book> b_array = getBookArrayList();
-        for (Book b : b_array) {
-            System.out.println(b.toString());
-        }*/
-
-        /*ArrayList<String[]> l_array = getLoanArrayList();
-        for (String[] s : l_array){
-            System.out.println(s[0] + " " + s[1] + " " + s[2] + " " + s[3]);
-        }*/
-
-        //deleteBook(2222);
-
-        //addMember(new Member(6969, "Kim larksson", "Student", false));
-
-        //addBook(new Book(2222, 233223, "Sopboken", true));
-
-        //deleteMember(6969);
-
-        //addLoan(1, 66, Date.valueOf("2018-11-23"), Date.valueOf("2018-12-23"));
-        //deleteLoan(5,2);
-
-        //Book newBook = new Book(2, 2626, "A Song of Ice and Fire", false);
-        //updateBook(newBook);
-
-        //Member newMember = new Member(69, "Ibra", "VIP", false);
-        //updateMember(newMember);
-        /*ArrayList<Long> banned = getBannedMembers();
-        for (Long l : banned){
-            System.out.println(l);
-        }*/
-       /* Member newMember = new Member(1211, "Testare", 1232233212L, "Student");
-
-        //addLoan(3,4, LocalDate.now(), LocalDate.now().plusDays(7));
-
-        addOldMember(newMember, true);
-*/
-    }
 
     // Hämtar medlemmar ifrån databasen och returnerar de i en ArrayList
     public ArrayList<Member> getMemberArrayList() throws SQLException{
