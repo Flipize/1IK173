@@ -54,6 +54,7 @@ public class DBManager {
 */
     }
 
+    // Hämtar medlemmar ifrån databasen och returnerar de i en ArrayList
     public ArrayList<Member> getMemberArrayList() throws SQLException{
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
@@ -76,6 +77,7 @@ public class DBManager {
         return memberArrayList;
     }
 
+    // hämtar böcker ifrån databasen och returnerar de i en ArrayList
     public ArrayList<Book> getBookArrayList() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
@@ -96,6 +98,7 @@ public class DBManager {
         return bookArrayList;
     }
 
+    // hämtar suspensions ifrån databasen och returnerar de i en ArrayList
     public  ArrayList<Suspension> getSuspensionsArrayList() {
         ArrayList<Suspension> suspensionsList = new ArrayList<>();
 
@@ -120,6 +123,7 @@ public class DBManager {
         return suspensionsList;
     }
 
+    // hämtar lån ifrån databasen och returnerar de i en ArrayList
     public  ArrayList<String[]> getLoanArrayList() {
         ArrayList<String[]> loanArrayList = new ArrayList<>();
         String[] temp = new String[4];
@@ -153,6 +157,7 @@ public class DBManager {
         return loanArrayList;
     }
 
+    // lägger till en bok i databasen
     public  void addBook (Book b) throws SQLException{
 
         try (Connection conn = DriverManager.getConnection(
@@ -168,6 +173,7 @@ public class DBManager {
         }
     }
 
+    // lägger till en medlem i databasen
     public  void addMember (Member m) {
 
         try (Connection conn = DriverManager.getConnection(
@@ -179,13 +185,13 @@ public class DBManager {
             statement.setLong(3, m.getPersonalNumber());
             statement.setString(4, m.getMembershipType());
 
-
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
 
+    // tar bort en bok ifrån databasen
     public  void deleteBook (int id) {
 
         try (Connection conn = DriverManager.getConnection(
@@ -201,6 +207,7 @@ public class DBManager {
         }
     }
 
+    // tar bort en medlem ifrån databasen
     public  void deleteMember (int id) {
 
         try (Connection conn = DriverManager.getConnection(
@@ -217,6 +224,7 @@ public class DBManager {
 
     }
 
+    // lägger till ett lån i databasen
     public  void addLoan(int bookID, int memberID, LocalDate startDate, LocalDate endDate){
 
         try (Connection conn = DriverManager.getConnection(
@@ -236,6 +244,7 @@ public class DBManager {
         }
     }
 
+    // tar bort ett lån ifrån databasen när en bok returnerats
     public  void deleteLoan(int bookID, int memberID){
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -250,6 +259,7 @@ public class DBManager {
 
     }
 
+    // uppdaterar tillgänglighet på en bok efter att den returnerats
     public  void updateBook(Book b){
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -268,6 +278,7 @@ public class DBManager {
         }
     }
 
+    // uppdaterar en medlem ifall något behöver ändras (används ej i nuläget)
     public  void updateMember(Member m){
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -286,13 +297,12 @@ public class DBManager {
         }
     }
 
+    // lägger på en suspension på en existerande medlem
     public  void addSuspension (int memberId){
 
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
-
-            //är member suspended
 
             LocalDate date = LocalDate.now();
 
@@ -309,6 +319,7 @@ public class DBManager {
         }
     }
 
+    // uppdaterar suspension på en medlem, antingen för att de fått ytterligare suspension eller blivit bannade
     public  void updateSuspension (Suspension s, int memberId) {
 
         try (Connection conn = DriverManager.getConnection(
@@ -327,6 +338,7 @@ public class DBManager {
         }
     }
 
+    // räknar en medlems lånantal och returnerar det som en int
     public  int loanCount(int memberID){
         int count = 0;
         try (Connection conn = DriverManager.getConnection(
@@ -343,6 +355,7 @@ public class DBManager {
         return count;
     }
 
+    // hämtar bannade medlemmar och returnerar de som en ArrayList
     public  ArrayList<Long> getBannedMembers(){
         ArrayList<Long> bannedMembers = new ArrayList<>();
 
@@ -363,6 +376,7 @@ public class DBManager {
         return bannedMembers;
     }
 
+    // lägger till medlem i tabellen för tidigare medlemmar, antingen pga avslutat medlemsskap eller pga av ban
     public  void addOldMember(Member m, boolean banned) {
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -378,6 +392,7 @@ public class DBManager {
         }
     }
 
+    // tar bort en medlems suspension pga att de blivit bannade
     public  void deleteSuspension (int memberID) {
 
         try (Connection conn = DriverManager.getConnection(
@@ -392,6 +407,7 @@ public class DBManager {
         }
     }
 
+    // hämtar bibliotikarier och returnerar i en ArrayList
     public  ArrayList<Librarian> getLibrarianArrayList() throws SQLException {
         ArrayList<Librarian> registeredLibrarians = new ArrayList<>();
 
