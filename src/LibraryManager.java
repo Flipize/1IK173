@@ -25,9 +25,9 @@ public class LibraryManager {
     }
 
     public boolean isBookAvailable(int isbn) {
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Book> books;
         try {
-            ArrayList<Book> bookArrayList = dbM.getBookArrayList();
+            books = dbM.getBookArrayList();
         }catch (SQLException e) {
             System.out.println("Something went wrong with database connection");
             return false;
