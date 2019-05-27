@@ -64,7 +64,8 @@ public class MainProgram {
                 }
             }
 
-            switch (choice) {
+            switch (choice)
+            {
                 case 1:
                     System.out.println("Register Member");
                     String name;
@@ -80,9 +81,11 @@ public class MainProgram {
                             System.out.println("Not a valid number. Try again.");
                         }
                     }
-                    if (!lbm.checkIfExistingMember(personalNum)) {
+                    if (!lbm.checkIfExistingMember(personalNum)){
                         System.out.println("Registration has been cancelled.");
-                    } else {
+                    }
+
+                    else {
                         Member newMember = new Member();
                         int rndId = lbm.getRandId();
                         while (!lbm.idIsValid(rndId)) {
@@ -92,14 +95,11 @@ public class MainProgram {
                         name = textInput.nextLine();
                         System.out.println("Enter type: ");
                         type = getAnswer();
-                        Member member = lbm.addMember(rndId, name, personalNum, type);
-                        if (member != null) {
-                            System.out.println("Member was successfully added! \n" + member.toString());
-                        } else System.out.println("Member was not added.");
+                        lbm.addMember(rndId, name, personalNum, type);
+                        System.out.println("Member (Name: " + name + ", ID number: " + rndId + ") was successfully added.");
                     }
                     break;
                 case 2:
-                    try {
                         System.out.println("Add book");
                         System.out.println("Please enter book ID: ");
                         int ID = Integer.parseInt(input.nextLine());
@@ -108,13 +108,17 @@ public class MainProgram {
                         System.out.println("Please enter book title: ");
                         String Title = textInput.nextLine();
 
-                        Book newBook = new Book(ID, ISBN, Title, true);
-                        dbM.addBook(newBook);
-                        System.out.println("Book successfully added.");
-                    } catch (NumberFormatException nfe) {
+                    try {
+                        if (lbm.addBook(ID, ISBN, Title, true)) {
+                            System.out.println("Book successfully added.");
+                        }
+                        else {
+                            System.out.println("Something went wrong. Book was not added. Make sure to input a unique ID.");
+                        }
+
+                    }catch (NumberFormatException nfe){
                         System.out.println("Wrong information input");
-                    }
-                    break;
+                    }break;
 
                 case 3:
                     System.out.println("Lend Book");
@@ -176,14 +180,14 @@ public class MainProgram {
                         }
                         switch (choiceShowContent) {
                             case 1:
-                                ArrayList<Member> members = dbM.getMemberArrayList();
+                                ArrayList<Member> members = lbm.getMembers();
                                 for (Member m : members) {
                                     System.out.println(m.toString());
                                     System.out.println("-----------------------------");
                                 }
                                 break;
                             case 2:
-                                ArrayList<Book> books = dbM.getBookArrayList();
+                                ArrayList<Book> books = lbm.getBooks();
                                 for (Book b : books) {
                                     System.out.println(b.toString());
                                     System.out.println();

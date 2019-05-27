@@ -25,8 +25,14 @@ public class LibraryManager {
     }
 
     public boolean isBookAvailable(int isbn) {
-        ArrayList<Book> bookArrayList = dbM.getBookArrayList();
-        for (Book b : bookArrayList) {
+        ArrayList<Book> books;
+        try {
+            books = dbM.getBookArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something went wrong with database connection");
+            return false;
+        }
+        for (Book b : books) {
             if (b.getIsbn() == isbn) {
                 if (b.isAvailable()) {
                     return true;
@@ -36,16 +42,21 @@ public class LibraryManager {
         return false;
     }
 
-    public  void returnBook(int bookID, int memberID) throws NullPointerException {
-
-        ArrayList<String[]> loanArray = dbM.getLoanArrayList();
-        ArrayList<Book> bookArray = dbM.getBookArrayList();
+    public  void returnBook(int bookID, int memberID) {
+        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<String[]> loans = new ArrayList<>();
+        try {
+            loans = dbM.getLoanArrayList();
+            books = dbM.getBookArrayList();
+        } catch (SQLException e) {
+            System.out.println("Something went wrong with database connection.");
+        }
         boolean bookReturned = false;
         Book book = new Book();
 
-        for (String[] st : loanArray) {
+        for (String[] st : loans) {
             if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
-                for (Book b : bookArray) {
+                for (Book b : books) {
                     if (b.getId() == bookID) {
                         book = b;
                         b.setAvailable(true);
@@ -63,7 +74,7 @@ public class LibraryManager {
             System.out.println("Something went wrong. The book is not eligible for return.");
         }
         LocalDate todaysDate = LocalDate.now();
-        for (String[] st : loanArray) {
+        for (String[] st : loans) {
             if (parseInt(st[1]) == memberID && (parseInt(st[0]) == bookID)) {
                 String date = st[3];
                 try {
@@ -80,7 +91,15 @@ public class LibraryManager {
     }
 
     public  Member regApplicant(long personalNumber) {
-        ArrayList<Member> members = dbM.getMemberArrayList();
+
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+            return null;
+        }
+
         for (Member m : members) {
             if (m.getPersonalNumber() == personalNumber) {
                 return m;
@@ -120,9 +139,14 @@ public class LibraryManager {
 
     public  void deleteMemberLibrary(int id) {
 
-        ArrayList<Member> tempArray = dbM.getMemberArrayList();
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+        }
 
-        for (Member m : tempArray) {
+        for (Member m : members) {
             if (m.getId() == id) {
                 dbM.deleteMember(id);
                 System.out.println("Member is deleted");
@@ -134,8 +158,17 @@ public class LibraryManager {
 
     public  void lendItem(int memberID, int isbn) {
 
-        ArrayList<Member> members = dbM.getMemberArrayList();
-        ArrayList<Book> books = new DBManager().getBookArrayList();
+        ArrayList<Book> books;
+        ArrayList<Member> members;
+
+        try {
+            members = dbM.getMemberArrayList();
+            books = new DBManager().getBookArrayList();
+        } catch (SQLException e) {
+            System.out.println("Something went wrong with database connection.");
+            return;
+        }
+
         ArrayList<Book> askedBook = new ArrayList<>();
         Scanner input = new Scanner(System.in);
 
@@ -151,38 +184,37 @@ public class LibraryManager {
         }
         if (foundMember) {
             System.out.println("Member found: " + member.getName());
+        }
 
 
-            //Kollar om medlemmen får låna fler böcker
-            int canMemberLend = 1;
+        //Kollar om medlemmen får låna fler böcker
+        int canMemberLend = 1;
 
-            if (foundMember) {
-                if (member.getMembershipType().equals("Student")) {
-                    if (dbM.loanCount(memberID) >= 3) {
-                        canMemberLend = 0;
-                    }
-                } else if (member.getMembershipType().equals("Masterstudent")) {
-                    if (dbM.loanCount(memberID) >= 5) {
-                        canMemberLend = 0;
-                    }
-                } else if (member.getMembershipType().equals("PhD Student")) {
-                    if (dbM.loanCount(memberID) >= 7) {
-                        canMemberLend = 0;
-                    }
-                } else if (member.getMembershipType().equals("Teacher")) {
-                    if (dbM.loanCount(memberID) >= 10) {
-                        canMemberLend = 0;
-                    }
-                } else {
-                    System.out.println("Member does not have/has wrong membership type.");
-                    canMemberLend = 2;
+        if (foundMember) {
+            if (member.getMembershipType().equals("Student")) {
+                if (dbM.loanCount(memberID) >= 3) {
+                    canMemberLend = 0;
                 }
+            } else if (member.getMembershipType().equals("Masterstudent")) {
+                if (dbM.loanCount(memberID) >= 5) {
+                    canMemberLend = 0;
+                }
+            } else if (member.getMembershipType().equals("PhD Student")) {
+                if (dbM.loanCount(memberID) >= 7) {
+                    canMemberLend = 0;
+                }
+            } else if (member.getMembershipType().equals("Teacher")) {
+                if (dbM.loanCount(memberID) >= 10) {
+                    canMemberLend = 0;
+                }
+            } else {
+                System.out.println("Member does not have/has wrong membership type.");
+                canMemberLend = 2;
             }
             if (canMemberLend == 0) {
                 System.out.println("You cannot borrow any more books. The loan count is currently at maximum " + dbM.loanCount(memberID) + " books");
 
-            }
-            else if (canMemberLend == 1) {
+            } else if (canMemberLend == 1) {
                 System.out.println("Borrowing books allowed. Loan count is currently: " + dbM.loanCount(memberID) + " books.");
 
                 boolean foundBook = false;
@@ -201,25 +233,25 @@ public class LibraryManager {
                     }*/
                     }
                 }
-                    if (foundBook) {
-                        for (Book book : askedBook) {
-                            if (book.isAvailable()) {
-                                System.out.println("Book available.");
-                                System.out.println("Add: " + book.getTitle() + " as a loan for: " + member.getName() + "? (Y/N)");
-                                if (input.nextLine().toUpperCase().equals("Y")) {
-                                    dbM.addLoan(book.getId(), memberID, LocalDate.now(), LocalDate.now().plusDays(7));
-                                    book.setAvailable(false);
-                                    dbM.updateBook(book);
-                                }
-                                break;
-                            } else
-                                System.out.println("Book is currently not available, please come again");
-                        }
-                    } else {
-                        System.out.println("Book (ISBN: " + isbn + ") was not found");
+                if (foundBook) {
+                    for (Book book : askedBook) {
+                        if (book.isAvailable()) {
+                            System.out.println("Book available.");
+                            System.out.println("Add: " + book.getTitle() + " as a loan for: " + member.getName() + "? (Y/N)");
+                            if (input.nextLine().toUpperCase().equals("Y")) {
+                                dbM.addLoan(book.getId(), memberID, LocalDate.now(), LocalDate.now().plusDays(7));
+                                book.setAvailable(false);
+                                dbM.updateBook(book);
+                            }
+                            break;
+                        } else
+                            System.out.println("Book is currently not available, please come again");
                     }
+                } else {
+                    System.out.println("Book (ISBN: " + isbn + ") was not found");
                 }
             }
+        }
     }
 
     public  int getRandId(){
@@ -238,7 +270,14 @@ public class LibraryManager {
     }
 
     public  boolean idIsValid(int id) {
-        ArrayList<Member> members = dbM.getMemberArrayList();
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+            return false;
+        }
+
         for (Member m : members) {
             if (id == m.getId()) {
                 return false;
@@ -266,14 +305,26 @@ public class LibraryManager {
        return false;
    }
 
-    public  void ban(Member m){
-        dbM.addOldMember(m, true);
-        dbM.deleteMember(m.getId());
-        dbM.deleteSuspension(m.getId());
+    public  boolean ban(Member m){
+        try {
+
+            dbM.addOldMember(m, true);
+            dbM.deleteSuspension(m.getId());
+            dbM.deleteMember(m.getId());
+        }catch (Exception e) {
+            System.out.println("Something went wrong. Member did not get banned.");
+            return false;
+        }
+        return true;
    }
 
     public  Member getMemberById(int id) {
-        ArrayList<Member> members = dbM.getMemberArrayList();
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+        }
         Member newMember = new Member();
         for(Member m : members) {
             if (m.getId() == id) {
@@ -318,9 +369,17 @@ public class LibraryManager {
                 return suspendedMember;
             } return null;
         }
+    }
 
     public  boolean isMemberIn(int id){
-        ArrayList<Member> members = dbM.getMemberArrayList();
+
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+        }
+
         boolean found = false;
 
         for (Member m : members){
@@ -332,8 +391,15 @@ public class LibraryManager {
     }
 
     public  Member getMemberByPN(long personalNum) {
-        ArrayList<Member> members = dbM.getMemberArrayList();
-        Member newMember = new Member();
+
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e) {
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+        }
+
+        Member newMember;
         for(Member m : members) {
             if (m.getPersonalNumber() == personalNum) {
                 newMember = m;
@@ -386,11 +452,11 @@ public class LibraryManager {
     public  boolean addBook(int id, int isbn, String title, boolean available) {
         try {
             dbM.addBook(new Book(id, isbn, title, available));
+            return true;
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             return false;
         }
-        return true;
     }
 
     public  Librarian getLibrarian(int id) {
@@ -423,6 +489,44 @@ public class LibraryManager {
         }
     }
     return false;
+    }
+
+    public boolean isUniqueBookID(int id) {
+        ArrayList<Book> books;
+        try {
+            books = dbM.getBookArrayList();
+        } catch (SQLException e) {
+            System.out.println("Something wrong with Database connection");
+            return false;
+        }
+        for (Book b : books) {
+            if (b.getId() == id) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<Book> getBooks() {
+        ArrayList<Book> books = new ArrayList<>();
+        try {
+            books = dbM.getBookArrayList();
+        }catch (SQLException e){
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+            return null;
+        }
+        return books;
+    }
+
+    public ArrayList<Member> getMembers() {
+        ArrayList<Member> members = new ArrayList<>();
+        try {
+            members = dbM.getMemberArrayList();
+        }catch (SQLException e){
+            System.out.println("Something wrong with database connection. " + e.getMessage());
+            return null;
+        }
+        return members;
     }
 
 

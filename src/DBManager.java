@@ -54,7 +54,7 @@ public class DBManager {
 */
     }
 
-    public ArrayList<Member> getMemberArrayList() {
+    public ArrayList<Member> getMemberArrayList() throws SQLException{
         ArrayList<Member> memberArrayList = new ArrayList<>();
 
         try {
@@ -70,22 +70,15 @@ public class DBManager {
 
             while (rs_member.next()) {
                 memberArrayList.add(new Member(rs_member.getInt(1), rs_member.getString(2), rs_member.getLong(3), rs_member.getString(4)));
-
             }
-
-        } catch (SQLException ex) {
         }
 
         return memberArrayList;
     }
 
-    public ArrayList<Book> getBookArrayList() {
+    public ArrayList<Book> getBookArrayList() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-        }
         try (Connection conn = DriverManager.getConnection(
                 driver, "root", password)) {
 
@@ -98,7 +91,6 @@ public class DBManager {
 
             }
 
-        } catch (SQLException ex) {
         }
 
         return bookArrayList;
@@ -161,7 +153,7 @@ public class DBManager {
         return loanArrayList;
     }
 
-    public  void addBook (Book b) {
+    public  void addBook (Book b) throws SQLException{
 
         try (Connection conn = DriverManager.getConnection(
                 driver, "root" , password)) {
@@ -173,8 +165,6 @@ public class DBManager {
             statement.setBoolean(4, b.isAvailable());
 
             statement.executeUpdate();
-        } catch (SQLException ex) {
-            System.out.println("Something went wrong..." + ex.getMessage());
         }
     }
 
